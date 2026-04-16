@@ -1,0 +1,292 @@
+.results-tables {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  margin-top: 32px;
+}
+
+.results-table-fragment {
+  margin-top: 20px;
+}
+
+.results-table-card {
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: var(--card);
+  padding: 16px;
+  overflow-x: auto;
+}
+
+.results-table-title {
+  margin: 0 0 10px;
+  font-size: 1.05rem;
+  font-weight: 600;
+}
+
+.results-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.76rem;
+  min-width: 720px;
+}
+
+.results-table th,
+.results-table td {
+  padding: 6px 8px;
+  border-bottom: 1px solid var(--line);
+  text-align: center;
+  white-space: nowrap;
+  /* Avoid I-beam over numbers/text — keep arrow like the rest of the page */
+  cursor: default;
+}
+
+.results-table th:first-child,
+.results-table td:first-child {
+  text-align: left;
+}
+
+.results-table thead th {
+  background: #f1f5f9;
+  font-weight: 600;
+}
+
+.results-table tbody tr {
+  transition: background-color 180ms ease;
+}
+
+.results-table tbody td {
+  transition: background-color 180ms ease;
+}
+
+.results-table tbody tr:hover {
+  background: color-mix(in srgb, var(--accent) 10%, var(--card));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .results-table tbody tr,
+  .results-table tbody td {
+    transition: none;
+  }
+}
+
+.results-row-non-gs th,
+.results-row-non-gs td {
+  color: var(--muted);
+}
+
+.results-badge-top1 {
+  background: var(--top1);
+}
+
+.results-badge-top2 {
+  background: var(--top2);
+}
+
+.results-badge-top3 {
+  background: var(--top3);
+}
+
+/* Opaque badge fills sit above `tr` background — blend the same hover tint into each token */
+.results-table tbody tr:hover td.results-badge-top1 {
+  background: color-mix(in srgb, var(--accent) 10%, var(--top1));
+}
+
+.results-table tbody tr:hover td.results-badge-top2 {
+  background: color-mix(in srgb, var(--accent) 10%, var(--top2));
+}
+
+.results-table tbody tr:hover td.results-badge-top3 {
+  background: color-mix(in srgb, var(--accent) 10%, var(--top3));
+}
+
+/* Background blur overlay (image zoom; toggle via JS `.is-visible`) */
+.table-zoom-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  /* below the zoomed table card (10000) */
+  opacity: 0;
+  transition: opacity 180ms ease;
+  background: rgba(0, 0, 0, 0.28);
+  pointer-events: none;
+  /* don't block clicks when blur is disabled or overlay is hidden */
+  backdrop-filter: blur(60px) saturate(120%);
+  -webkit-backdrop-filter: blur(40px) saturate(120%);
+  will-change: opacity;
+}
+
+.table-zoom-overlay.is-visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Teaser image zoom (same UX as table zoom) */
+.zoomable-figure {
+  cursor: zoom-in;
+  transition: box-shadow 350ms ease;
+}
+
+/* Keep non-zoom tooltip above neighboring teaser elements. */
+.zoomable-figure:hover,
+.zoomable-figure:focus-within {
+  z-index: 20;
+}
+
+/*
+ * In-place zoom without transform:scale on the figure — that scales a composited layer and looks soft.
+ * Lock the layout slot, then set the img width in CSS pixels so the browser resamples from the decoded bitmap.
+ */
+.zoomable-figure.is-image-zoomed {
+  position: relative;
+  z-index: 10000;
+  box-sizing: border-box;
+  width: var(--image-zoom-slot-w);
+  height: var(--image-zoom-slot-h);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: visible;
+  box-shadow: 0 18px 48px rgba(15, 23, 42, 0.22);
+  cursor: zoom-out;
+}
+
+.zoomable-figure.is-image-zoomed img {
+  flex-shrink: 0;
+  width: var(--image-zoom-img-w) !important;
+  max-width: none !important;
+  height: auto !important;
+  object-fit: contain;
+  transition: width var(--image-zoom-duration) cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.zoomable-figure.is-image-zoomed .hover-figure__btn,
+.zoomable-figure.is-image-zoomed .hover-figure__tooltip {
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+/* Table carousel (switch between table fragments) */
+.table-carousel {
+  position: relative;
+  margin-top: 20px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.table-carousel__viewport {
+  overflow: hidden;
+  flex: 1 1 auto;
+  min-width: 0;
+  transition: height 320ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.table-carousel__track {
+  display: flex;
+  transform: translateX(0px);
+  transition: transform 320ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.table-carousel__slide {
+  flex: 0 0 var(--table-carousel-slide-width, 100%);
+  min-width: 0;
+  opacity: 0.35;
+  transition: opacity 260ms ease;
+}
+
+.table-carousel__slide.is-active {
+  opacity: 1;
+}
+
+.table-carousel .results-table-fragment {
+  margin-top: 0;
+}
+
+/* Dot indicators */
+.table-carousel__dots {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  margin-top: 14px;
+}
+
+.table-carousel__dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--line, #e2e8f0);
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition:
+    background-color 240ms ease,
+    width 260ms cubic-bezier(0.16, 1, 0.3, 1),
+    border-radius 260ms ease;
+}
+
+.table-carousel__dot.is-active {
+  background: #111827;
+  width: 22px;
+  border-radius: 4px;
+}
+
+.table-carousel__dot:hover:not(.is-active) {
+  background: color-mix(in srgb, #111827, white 55%);
+}
+
+.table-carousel__dot:focus-visible {
+  outline: 2px solid #111827;
+  outline-offset: 3px;
+}
+
+.table-carousel__nav {
+  position: static;
+  transform: none;
+  width: 44px;
+  height: 44px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: #111827;
+  color: #ffffff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  line-height: 0;
+  font-weight: 500;
+  cursor: pointer;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.2);
+  z-index: 5;
+  transition:
+    background-color 220ms cubic-bezier(0.16, 1, 0.3, 1),
+    color 220ms cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 220ms cubic-bezier(0.16, 1, 0.3, 1),
+    transform 220ms cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 220ms ease;
+}
+
+.table-carousel__nav:hover {
+  background: #ffffff;
+  color: #0f172a;
+  border-color: color-mix(in srgb, #111827, white 35%);
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.18);
+  transform: scale(1.04);
+}
+
+.table-carousel__nav:active {
+  transform: scale(0.98);
+}
+
+.table-carousel__nav:focus-visible {
+  outline: 3px solid color-mix(in srgb, #111827, white 35%);
+  outline-offset: 2px;
+}
+
+/* keep modifier classes for potential future tweaks */
+.table-carousel__nav--prev,
+.table-carousel__nav--next {
+  flex: 0 0 auto;
+}

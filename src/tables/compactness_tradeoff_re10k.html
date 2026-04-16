@@ -1,0 +1,78 @@
+<div class="results-table-card">
+  <p class="results-table-title">Compactness-Quality Trade-Off</p>
+  <p class="caption small">
+    Ablation over the number of latent scene tokens and decoded Gaussians per token.
+    Their product determines the total Gaussian budget,
+    <!-- <span style="white-space:nowrap; font-family:'Cambria Math','STIX Two Math','Times New Roman',serif; font-style:italic;">#G = (#Latents) × (Splats/Token)</span>. -->
+    <span style="white-space:nowrap; font-family:'Cambria Math','STIX Two Math','Times New Roman',serif; font-style:italic;">
+      #G = (#Latents) &times; (Splats/Token)
+    </span>
+  
+  </p>
+  <table class="results-table" aria-label="Compactness-quality trade-off on RealEstate10K">
+    <thead>
+      <tr>
+        <th style="text-align:center">Total #G</th>
+        <th style="text-align:center">#Latents</th>
+        <th style="text-align:center">Splats/Token</th>
+        <th>PSNR ↑</th>
+        <th>SSIM ↑</th>
+        <th>LPIPS ↓</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="text-align:center">2,048</td>
+        <td style="text-align:center">256</td>
+        <td style="text-align:center">8</td>
+        <td>25.25</td>
+        <td>0.785</td>
+        <td>0.250</td>
+      </tr>
+      <tr>
+        <td style="text-align:center">2,048</td>
+        <td style="text-align:center">2,048</td>
+        <td style="text-align:center">1</td>
+        <td>26.83</td>
+        <td>0.838</td>
+        <td>0.198</td>
+      </tr>
+      <tr>
+        <td colspan="6" style="border-bottom:2px solid var(--line); height:0; padding:0;"></td>
+      </tr>
+      <tr>
+        <td style="text-align:center">16,384</td>
+        <td style="text-align:center">2,048</td>
+        <td style="text-align:center">8</td>
+        <td>28.57</td>
+        <td>0.885</td>
+        <td>0.138</td>
+      </tr>
+      <tr>
+        <td colspan="6" style="border-bottom:2px solid var(--line); height:0; padding:0;"></td>
+      </tr>
+      <tr>
+        <td style="text-align:center">32,768</td>
+        <td style="text-align:center">2,048</td>
+        <td style="text-align:center">16</td>
+        <td>28.58</td>
+        <td>0.884</td>
+        <td>0.135</td>
+      </tr>
+      <tr>
+        <td style="text-align:center">32,768</td>
+        <td style="text-align:center">4,096</td>
+        <td style="text-align:center">8</td>
+        <td>29.54</td>
+        <td>0.903</td>
+        <td>0.121</td>
+      </tr>
+    </tbody>
+  </table>
+  <!-- <p class="caption small">
+    Ablation over the number of latent scene tokens and decoded Gaussians per token on RealEstate10K.
+    Their product determines the total Gaussian budget,
+    <span style="white-space:nowrap; font-family:'Cambria Math','STIX Two Math','Times New Roman',serif; font-style:italic;">#G = (#Latents) × (Splats/Token)</span>.
+  </p> -->
+</div>
+

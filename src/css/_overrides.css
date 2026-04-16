@@ -1,0 +1,36 @@
+/* this may look good - it makes it bigger. On very large desktops, allow a wider content area */
+/* @media (min-width: 1440px) {
+  :root {
+    --maxw: 1300px;
+  }
+} */
+
+/* @media (max-width: 760px) {
+  
+  .container {
+    padding: 0 16px 0 150px; 
+  }
+
+  .layout {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .sidebar {
+    position: fixed;
+    top: 96px;   
+    left: 16px;
+    transform: none;
+  }
+
+  h1 {
+    font-size: 1.9rem;
+  }
+  header h1 {
+    font-size: 1.85rem;
+  }
+  .small-video-container {
+    max-width: 100%;
+  }
+} */
+

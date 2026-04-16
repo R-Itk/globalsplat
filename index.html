@@ -1,0 +1,1830 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <script>
+    /**
+     * Local editing: set `true` to skip video network loads and heavy video JS.
+     * Set `false` before publishing.
+     */
+    window.__SITE_LITE__ = false;
+  </script>
+  <script>
+    (function () {
+      if (!window.__SITE_LITE__) return;
+      document.documentElement.classList.add('site-lite');
+
+      var origSet = Element.prototype.setAttribute;
+      Element.prototype.setAttribute = function (name, value) {
+        var n = String(name).toLowerCase();
+        if (n === 'src' && (this.tagName === 'VIDEO' || this.tagName === 'SOURCE')) {
+          return origSet.call(this, 'data-src', value);
+        }
+        return origSet.call(this, name, value);
+      };
+
+      function stripMediaSrc(el) {
+        if (!el || el.nodeType !== 1) return;
+        var tag = el.tagName;
+        if ((tag === 'VIDEO' || tag === 'SOURCE') && el.hasAttribute('src')) {
+          var u = el.getAttribute('src');
+          el.removeAttribute('src');
+          if (u && !el.hasAttribute('data-src')) origSet.call(el, 'data-src', u);
+        }
+        if (el.querySelectorAll) {
+          el.querySelectorAll('video[src], source[src]').forEach(stripMediaSrc);
+        }
+      }
+
+      var obs = new MutationObserver(function (records) {
+        records.forEach(function (r) {
+          if (r.type === 'childList') {
+            r.addedNodes.forEach(function (n) {
+              stripMediaSrc(n);
+            });
+          } else if (r.type === 'attributes' && r.attributeName === 'src') {
+            stripMediaSrc(r.target);
+          }
+        });
+      });
+      obs.observe(document.documentElement, {
+        childList: true,
+        subtree: true,
+        attributes: true,
+        attributeFilter: ['src'],
+      });
+
+      function finishStrip() {
+        obs.disconnect();
+        document.querySelectorAll('video[src], source[src]').forEach(stripMediaSrc);
+      }
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', finishStrip, { once: true });
+      } else {
+        finishStrip();
+      }
+    })();
+  </script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@500;600;700&family=Inter:wght@400;500;600;700;800&family=Montserrat:wght@600;700&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/geist-sans@5.1.0/latin-700.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons/css/academicons.min.css">
+  <link rel="stylesheet" href="src/fonts/fonts.css">
+
+  <title>GlobalSplat</title>
+  <link rel="icon" type="image/png" href="assets/icon.png" />
+  <!-- <link rel="stylesheet" href="src/css/style.css"> -->
+  <link rel="stylesheet" href="src/css/style.css?v=20260407-1">
+  <link rel="stylesheet" href="src/css/components/twentytwenty.css?v=20260407-1">
+  <!-- <link rel="stylesheet" href="tmp_sync_try/atlas_compare.css?v=20260415-1"> -->
+  <link rel="stylesheet" href="src/one_vid_sync/atlas_compare.css?v=20260415-3">
+  <link rel="stylesheet" href="src/one_vid_sync/atlas_compare_skin.css?v=20260415-3">
+  <style>
+    html.site-lite body::before {
+      content: 'Lite mode — video sources disabled (set __SITE_LITE__ = false in <head>)';
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 2147483646;
+      padding: 0.35rem 0.75rem;
+      font: 600 0.75rem/1.3 system-ui, sans-serif;
+      text-align: center;
+      color: var(--text);
+      background: color-mix(in srgb, var(--accent) 12%, var(--bg));
+      border-top: 1px solid var(--line);
+      pointer-events: none;
+    }
+  </style>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+</head>
+
+<body class="heading-option-b theme-glass-main">
+  <nav class="topnav" aria-label="Section navigation">
+    <a class="topnav-link active" href="#teaser" aria-current="page">Overview</a>
+    <a class="topnav-link" href="#results">Results</a>
+    <a class="topnav-link" href="#abstract">Abstract</a>
+    <a class="topnav-link" href="#overview">Architecture</a>
+    <a class="topnav-link" href="#how-globalsplat-works">Method</a>
+    <a class="topnav-link" href="#bibtex">BibTeX</a>
+  </nav>
+  <header>
+    <div class="container container--header">
+      <div class="title-row">
+        <div class="title-text">
+          <h1>GlobalSplat: Efficient Feed-Forward 3D Gaussian Splatting via Global Scene Tokens</h1>
+        </div>
+      </div>
+      <div class="writers">
+        <a href="#" aria-label="Roni Itkin website">Roni Itkin</a><sup class="writer-affil">1</sup><span
+          class="writers-sep">,</span>
+        <a href="https://www.linkedin.com/in/noam-issachar-659b751b7/" aria-label="Noam Issachar website">Noam
+          Issachar</a><sup class="writer-affil">1</sup><span class="writers-sep">,</span>
+        <a href="https://www.linkedin.com/in/ykeypur" aria-label="Yehonatan Keypur website">Yehonatan Keypur</a><sup
+          class="writer-affil">1</sup><span class="writers-sep">,</span>
+        <a href="https://rover-xingyu.github.io" aria-label="Xingyu Chen website">Xingyu Chen</a><sup
+          class="writer-affil">2</sup><span class="writers-sep">,</span>
+        <br><a href="https://apchenstu.github.io" aria-label="Anpei Chen website">Anpei Chen</a><sup
+          class="writer-affil">2</sup><span class="writers-sep">,</span>
+        <a href="https://sagiebenaim.github.io" aria-label="Sagie Benaim website">Sagie Benaim</a><sup
+          class="writer-affil">1</sup>
+      </div>
+      <div class="universities">
+        <span>Hebrew University of Jerusalem</span><sup class="university-affil"> 1</sup><span class="universities-sep">
+          · </span>
+        <span>Westlake University</span><sup class="university-affil"> 2</sup>
+      </div>
+      <div class="links">
+        <a class="button header-action-button" href="#">
+          <i class="fas fa-file-pdf"></i>
+          <span>Paper</span>
+        </a>
+        <a class="button header-action-button" href="#">
+          <i class="ai ai-arxiv"></i>
+          <span>arXiv</span>
+        </a>
+        <a class="button header-action-button" href="#">
+          <i class="fab fa-github"></i>
+          <span>Code (coming soon)</span>
+        </a>
+        <!-- <a class="button" href="#">
+          <i class="fab fa-youtube"></i>
+          <span>Project Video</span>
+        </a> -->
+        <!-- <a class="button" href="#">
+          <i class="fab fa-hugging-face"></i>
+          <span>Hugging Face</span>
+        </a> -->
+        <!-- <a class="button button-outline" href="#bibtex">
+          <i class="fas fa-quote-right"></i>
+          <span>BibTeX</span>
+        </a> -->
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- TL;DR summary -->
+    <section id="tldr" class="scroll-target section-band-muted reveal">
+      <div class="container">
+        <!-- <h2 class="section-title">TL;DR</h2> -->
+        <div class="content has-text-centered">
+          <p>
+            <strong>GlobalSplat</strong> is a feed-forward 3D Gaussian Splatting method that learns a compact set of
+            <em>global scene tokens</em> instead of allocating primitives per pixel. By <em>aligning first and decoding
+              later</em>, it produces globally consistent reconstructions with as few as 2K-32K Gaussians, a tiny disk
+            footprint,
+            and fast single-pass inference, while matching or surpassing the quality of dense baselines.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section id="teaser" class="scroll-target reveal">
+      <div class="container">
+        <!-- <h2>Teaser</h2> -->
+        <div class="teaser-layout">
+          <div class="teaser-top">
+            <div class="teaser-top-label">Baseline Per-Pixel Approaches</div>
+            <figure class="hover-figure zoomable-figure" data-image-zoom="true">
+              <img src="assets/figures/teaser_base.png"
+                alt="Baseline feed-forward 3DGS pipelines with dense per-pixel primitive allocation." />
+              <button class="hover-figure__btn" type="button" aria-label="Show figure info"></button>
+              <div class="hover-figure__tooltip" role="tooltip">
+                Dense per-pixel allocation produces a large number of Gaussians, leading to larger models and slower
+                inference
+              </div>
+            </figure>
+            <div class="teaser-top-label">GlobalSplat (Ours)</div>
+            <figure class="hover-figure zoomable-figure" data-image-zoom="true">
+              <img src="assets/figures/teaser_ours.png"
+                alt="GlobalSplat: align-first, decode-later feed-forward 3D Gaussian Splatting." />
+              <button class="hover-figure__btn" type="button" aria-label="Show figure info"></button>
+              <div class="hover-figure__tooltip" role="tooltip">
+                GlobalSplat fuses multi-view features into a fixed number of global tokens prior to decoding, enabling
+                compact reconstructions
+              </div>
+            </figure>
+          </div>
+        </div>
+        <br>
+        <div class="teaser-caption-card" role="note" aria-label="Teaser explanation">
+          <!-- <div class="teaser-caption-title">Latent Token Aggregation for Sparse 3DGS</div> -->
+          <h3 class="caption-title">Latent Token Aggregation for Sparse 3DGS</h3>
+          <p class="teaser-caption-text teaser-caption-text--lead">
+            Existing feed-forward 3DGS pipelines rely on view-centric, per-pixel primitive allocation, baking
+            redundancy into the representation. In contrast, <b>GlobalSplat</b> aggregates multi-view inputs into
+            a fixed set of global latent scene tokens before decoding geometry. 
+          </p>
+        </div>
+
+        <div class="teaser-stack" aria-label="Teaser details (hoverable figures + side captions)">
+          <div class="teaser-layout teaser-media-row">
+            <figure class="hover-figure zoomable-figure" data-image-zoom="true">
+              <img src="assets/figures/teaser_points.png"
+                alt="Gaussian centers visualized as a point cloud, showing sparse allocation." />
+              <button class="hover-figure__btn" type="button" aria-label="Show figure info"></button>
+              <div class="hover-figure__tooltip" role="tooltip">
+                Gaussian centers shown as a sparse point set over occupied 3D structure rather than a uniform grid
+              </div>
+            </figure>
+            <div class="teaser-side-caption">
+              <div class="teaser-caption-label">Sparse 3D Support</div>
+              <p class="teaser-caption-text">
+                Primitives are positioned only where 3D structure is occupied, yielding a sparse representation
+                without committing to a dense per-pixel grid.
+              </p>
+            </div>
+          </div>
+
+          <div class="teaser-layout teaser-media-row">
+            <figure class="hover-figure zoomable-figure" data-image-zoom="true">
+              <img src="assets/figures/teaser_ellipsoids_cropped.png"
+                alt="Gaussians visualized as disks according to their spatial scale." />
+              <button class="hover-figure__btn" type="button" aria-label="Show figure info"></button>
+              <div class="hover-figure__tooltip" role="tooltip">
+                Disks scaled by spatial variance indicate adaptive allocation
+                <!-- Gaussians visualized as disks scaled by spatial variance,
+                demonstrating adaptive allocation utilizing larger primitives for low-frequency regions. -->
+              </div>
+            </figure>
+            <div class="teaser-side-caption">
+              <div class="teaser-caption-label">Adaptive Allocation</div>
+              <p class="teaser-caption-text">
+                By decoding from a global scene context without a fixed grid, GlobalSplat places primitives only at
+                occupied 3D locations. It remains sparse while covering low-frequency regions with larger Gaussians.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="results" class="results scroll-target" aria-label="Results">
+      <!-- Qualitative: heading, 12-view comparisons, compactness / ultra-compact, 3D geometry -->
+      <div class="results-qualitative">
+        <section class="section-band-muted">
+          <div class="container content">
+            <div class="results-block">
+              <h2 class="section-title results-qualitative-heading">QUALITATIVE RESULTS</h2>
+            </div>
+          </div>
+        </section>
+
+        <!-- RE10K & ACID BAND -->
+        <section class="section-band-muted reveal reveal--dynamic">
+          <div class="container content">
+            <div class="results-block">
+              <h3 class="results-block-title section-subtitle results-group-title">RE10K &amp; ACID COMPARISON</h3>
+              <div class="results-callout" role="note" aria-label="RE10K caption">
+                <p class="caption">
+                  Qualitative comparison on RealEstate10K and ACID against baseline methods.
+                  <b>GlobalSplat successfully preserves high-frequency details and multi-view
+                    consistency despite a strictly constrained primitive budget</b>.
+                </p>
+              </div>
+              <div class="qualitative-image-block qualitative-video-comparison-block">
+                <h4 class="results-subgroup-title">12-VIEWS QUALITATIVE VIDEO COMPARISON</h4>
+                <div class="caption-text">Move your cursor over each panel to compare baselines, our method, and ground
+                  truth.</div>
+                <div class="qualitative-model-switcher" data-atlas-switcher data-scene-count="5">
+                  <div class="qualitative-model-tabs" role="tablist" aria-label="Dataset switcher">
+                    <button type="button" class="qualitative-model-tab is-active" data-atlas-tab="re10k"
+                      role="tab">RE10K</button>
+                    <button type="button" class="qualitative-model-tab" data-atlas-tab="acid" role="tab">ACID</button>
+                  </div>
+
+                  <div class="qualitative-model-panels">
+                    <!-- RE10K panel -->
+                    <div class="qualitative-model-panel" data-atlas-panel="re10k">
+                      <div class="qualitative-image-grid qualitative-image-grid--compact">
+                        <div class="qualitative-image-cell">
+                          <div class="twentytwenty-container twentytwenty-custom qualitative-video-compare"
+                            data-merged-triplet data-scene-index="0" data-scene-count="5">
+                            <video class="merged-triplet-source" src="assets/media/re10k_concat/re10k_merged_c3g.mp4"
+                              loop muted playsinline preload="metadata"></video>
+                            <canvas class="merged-triplet-canvas" aria-hidden="true"></canvas>
+                            <div class="twentytwenty-overlay" aria-hidden="true">
+                              <div class="twentytwenty-frame-1"></div>
+                              <div class="twentytwenty-frame-2"></div>
+                              <div class="twentytwenty-frame-3"></div>
+                              <div class="twentytwenty-label-1">Ours</div>
+                              <div class="twentytwenty-label-2">C3G</div>
+                              <div class="twentytwenty-label-3">GT</div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="qualitative-image-cell">
+                          <div class="twentytwenty-container twentytwenty-custom qualitative-video-compare"
+                            data-merged-triplet data-scene-index="1" data-scene-count="5">
+                            <video class="merged-triplet-source"
+                              src="assets/media/re10k_concat/re10k_merged_depthsplat.mp4" loop muted playsinline
+                              preload="metadata"></video>
+                            <canvas class="merged-triplet-canvas" aria-hidden="true"></canvas>
+                            <div class="twentytwenty-overlay" aria-hidden="true">
+                              <div class="twentytwenty-frame-1"></div>
+                              <div class="twentytwenty-frame-2"></div>
+                              <div class="twentytwenty-frame-3"></div>
+                              <div class="twentytwenty-label-1">Ours</div>
+                              <div class="twentytwenty-label-2">DepthSplat</div>
+                              <div class="twentytwenty-label-3">GT</div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="qualitative-image-cell">
+                          <div class="twentytwenty-container twentytwenty-custom qualitative-video-compare"
+                            data-merged-triplet data-scene-index="2" data-scene-count="5">
+                            <video class="merged-triplet-source" src="assets/media/re10k_concat/re10k_merged_ggn.mp4"
+                              loop muted playsinline preload="metadata"></video>
+                            <canvas class="merged-triplet-canvas" aria-hidden="true"></canvas>
+                            <div class="twentytwenty-overlay" aria-hidden="true">
+                              <div class="twentytwenty-frame-1"></div>
+                              <div class="twentytwenty-frame-2"></div>
+                              <div class="twentytwenty-frame-3"></div>
+                              <div class="twentytwenty-label-1">Ours</div>
+                              <div class="twentytwenty-label-2">GGN</div>
+                              <div class="twentytwenty-label-3">GT</div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div
+                        class="qualitative-image-grid qualitative-image-grid--compact qualitative-image-grid--two-centered">
+                        <div class="qualitative-image-cell">
+                          <div class="twentytwenty-container twentytwenty-custom qualitative-video-compare"
+                            data-merged-triplet data-scene-index="3" data-scene-count="5">
+                            <video class="merged-triplet-source"
+                              src="assets/media/re10k_concat/re10k_merged_zpressor3.mp4" loop muted playsinline
+                              preload="metadata"></video>
+                            <canvas class="merged-triplet-canvas" aria-hidden="true"></canvas>
+                            <div class="twentytwenty-overlay" aria-hidden="true">
+                              <div class="twentytwenty-frame-1"></div>
+                              <div class="twentytwenty-frame-2"></div>
+                              <div class="twentytwenty-frame-3"></div>
+                              <div class="twentytwenty-label-1">Ours</div>
+                              <div class="twentytwenty-label-2">ZPressor (3)</div>
+                              <div class="twentytwenty-label-3">GT</div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="qualitative-image-cell">
+                          <div class="twentytwenty-container twentytwenty-custom qualitative-video-compare"
+                            data-merged-triplet data-scene-index="4" data-scene-count="5">
+                            <video class="merged-triplet-source"
+                              src="assets/media/re10k_concat/re10k_merged_zpressor6.mp4" loop muted playsinline
+                              preload="metadata"></video>
+                            <canvas class="merged-triplet-canvas" aria-hidden="true"></canvas>
+                            <div class="twentytwenty-overlay" aria-hidden="true">
+                              <div class="twentytwenty-frame-1"></div>
+                              <div class="twentytwenty-frame-2"></div>
+                              <div class="twentytwenty-frame-3"></div>
+                              <div class="twentytwenty-label-1">Ours</div>
+                              <div class="twentytwenty-label-2">ZPressor (6)</div>
+                              <div class="twentytwenty-label-3">GT</div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- ACID panel -->
+                    <div class="qualitative-model-panel is-hidden" data-atlas-panel="acid">
+                      <div class="qualitative-image-grid qualitative-image-grid--compact">
+                        <div class="qualitative-image-cell">
+                          <div class="twentytwenty-container twentytwenty-custom qualitative-video-compare"
+                            data-merged-triplet data-scene-index="0" data-scene-count="5">
+                            <video class="merged-triplet-source" src="assets/media/acid_concat/acid_merged_c3g.mp4" loop
+                              muted playsinline preload="metadata"></video>
+                            <canvas class="merged-triplet-canvas" aria-hidden="true"></canvas>
+                            <div class="twentytwenty-overlay" aria-hidden="true">
+                              <div class="twentytwenty-frame-1"></div>
+                              <div class="twentytwenty-frame-2"></div>
+                              <div class="twentytwenty-frame-3"></div>
+                              <div class="twentytwenty-label-1">Ours</div>
+                              <div class="twentytwenty-label-2">C3G</div>
+                              <div class="twentytwenty-label-3">GT</div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="qualitative-image-cell">
+                          <div class="twentytwenty-container twentytwenty-custom qualitative-video-compare"
+                            data-merged-triplet data-scene-index="1" data-scene-count="5">
+                            <video class="merged-triplet-source"
+                              src="assets/media/acid_concat/acid_merged_depthsplat.mp4" loop muted playsinline
+                              preload="metadata"></video>
+                            <canvas class="merged-triplet-canvas" aria-hidden="true"></canvas>
+                            <div class="twentytwenty-overlay" aria-hidden="true">
+                              <div class="twentytwenty-frame-1"></div>
+                              <div class="twentytwenty-frame-2"></div>
+                              <div class="twentytwenty-frame-3"></div>
+                              <div class="twentytwenty-label-1">Ours</div>
+                              <div class="twentytwenty-label-2">DepthSplat</div>
+                              <div class="twentytwenty-label-3">GT</div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="qualitative-image-cell">
+                          <div class="twentytwenty-container twentytwenty-custom qualitative-video-compare"
+                            data-merged-triplet data-scene-index="2" data-scene-count="5">
+                            <video class="merged-triplet-source" src="assets/media/acid_concat/acid_merged_ggn.mp4" loop
+                              muted playsinline preload="metadata"></video>
+                            <canvas class="merged-triplet-canvas" aria-hidden="true"></canvas>
+                            <div class="twentytwenty-overlay" aria-hidden="true">
+                              <div class="twentytwenty-frame-1"></div>
+                              <div class="twentytwenty-frame-2"></div>
+                              <div class="twentytwenty-frame-3"></div>
+                              <div class="twentytwenty-label-1">Ours</div>
+                              <div class="twentytwenty-label-2">GGN</div>
+                              <div class="twentytwenty-label-3">GT</div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div
+                        class="qualitative-image-grid qualitative-image-grid--compact qualitative-image-grid--two-centered">
+                        <div class="qualitative-image-cell">
+                          <div class="twentytwenty-container twentytwenty-custom qualitative-video-compare"
+                            data-merged-triplet data-scene-index="3" data-scene-count="5">
+                            <video class="merged-triplet-source"
+                              src="assets/media/acid_concat/acid_merged_zpressor3.mp4" loop muted playsinline
+                              preload="metadata"></video>
+                            <canvas class="merged-triplet-canvas" aria-hidden="true"></canvas>
+                            <div class="twentytwenty-overlay" aria-hidden="true">
+                              <div class="twentytwenty-frame-1"></div>
+                              <div class="twentytwenty-frame-2"></div>
+                              <div class="twentytwenty-frame-3"></div>
+                              <div class="twentytwenty-label-1">Ours</div>
+                              <div class="twentytwenty-label-2">ZPressor (3)</div>
+                              <div class="twentytwenty-label-3">GT</div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="qualitative-image-cell">
+                          <div class="twentytwenty-container twentytwenty-custom qualitative-video-compare"
+                            data-merged-triplet data-scene-index="4" data-scene-count="5">
+                            <video class="merged-triplet-source"
+                              src="assets/media/acid_concat/acid_merged_zpressor6.mp4" loop muted playsinline
+                              preload="metadata"></video>
+                            <canvas class="merged-triplet-canvas" aria-hidden="true"></canvas>
+                            <div class="twentytwenty-overlay" aria-hidden="true">
+                              <div class="twentytwenty-frame-1"></div>
+                              <div class="twentytwenty-frame-2"></div>
+                              <div class="twentytwenty-frame-3"></div>
+                              <div class="twentytwenty-label-1">Ours</div>
+                              <div class="twentytwenty-label-2">ZPressor (6)</div>
+                              <div class="twentytwenty-label-3">GT</div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Compactness band -->
+        <section class="section-band-muted reveal reveal--dynamic">
+          <div class="container content">
+            <div class="results-block">
+              <h3 id="compactness" class="results-block-title section-subtitle results-group-title">
+                COMPACTNESS ABLATION (RE10K)
+              </h3>
+              <div class="results-callout" role="note" aria-label="Compactness caption">
+                <p class="caption">We compare Our 2K, 16K, and 32K Gaussian variants to visualize the
+                  quality-compactness
+                  trade-off. As the Gaussian budget increases, details improve while remaining compact.</p>
+              </div>
+              <!-- Ours variant triplet comparison: 2K vs 16K vs 32K (merged hstack → drift-free playback) -->
+              <div class="qualitative-image-block qualitative-video-comparison-block">
+                <div class="small-video-container" data-video-container="ultra-compact-single-wrap">
+                  <div class="qualitative-image-grid qualitative-image-grid--compact qualitative-image-grid--one-col">
+                    <div class="qualitative-image-cell">
+                      <div class="twentytwenty-container twentytwenty-custom qualitative-video-compare"
+                        data-merged-triplet data-scene-index="0" data-scene-count="1">
+                        <video class="merged-triplet-source"
+                          src="assets/media/re10k_concat/re10k_merged_compactness.mp4" loop muted playsinline
+                          preload="metadata"></video>
+                        <canvas class="merged-triplet-canvas" aria-hidden="true"></canvas>
+                        <div class="twentytwenty-overlay" aria-hidden="true">
+                          <div class="twentytwenty-frame-1"></div>
+                          <div class="twentytwenty-frame-2"></div>
+                          <div class="twentytwenty-frame-3"></div>
+                          <div class="twentytwenty-label-1">Ours 2K</div>
+                          <div class="twentytwenty-label-2">Ours 16K</div>
+                          <div class="twentytwenty-label-3">Ours 32K</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Ultra-compact band -->
+        <section class="section-band-strong reveal reveal--dynamic">
+          <div class="container content">
+            <div class="results-block">
+              <h3 id="ultra-compact" class="results-block-title section-subtitle results-group-title">
+                ULTRA-COMPACT COMPARISON
+              </h3>
+              <div class="results-callout" role="note" aria-label="Ultra-compact caption">
+                <p class="caption">We directly compare C3G and Our 2K variant to visualize performance under a very
+                  small
+                  representation budget. This comparison shows that even in the ultra-compact regime, our method remains
+                  superior.
+                </p>
+              </div>
+
+              <!-- Ours 2K vs C3G vs GT triplet comparison (merged hstack; not re10k_merged_c3g, which uses Ours 32K) -->
+              <div class="qualitative-image-block qualitative-video-comparison-block">
+                <div class="small-video-container" data-video-container="ultra-compact-single-wrap">
+                  <div class="qualitative-image-grid qualitative-image-grid--compact qualitative-image-grid--one-col">
+                    <div class="qualitative-image-cell">
+                      <div class="twentytwenty-container twentytwenty-custom qualitative-video-compare"
+                        data-merged-triplet data-scene-index="0" data-scene-count="1">
+                        <video class="merged-triplet-source"
+                          src="assets/media/re10k_concat/re10k_merged_ultra_compact.mp4" loop muted playsinline
+                          preload="metadata"></video>
+                        <canvas class="merged-triplet-canvas" aria-hidden="true"></canvas>
+                        <div class="twentytwenty-overlay" aria-hidden="true">
+                          <div class="twentytwenty-frame-1"></div>
+                          <div class="twentytwenty-frame-2"></div>
+                          <div class="twentytwenty-frame-3"></div>
+                          <div class="twentytwenty-label-1">Ours 2K</div>
+                          <div class="twentytwenty-label-2">C3G</div>
+                          <div class="twentytwenty-label-3">GT</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <br>
+              <div class="results-table-fragment" data-table-fragment="src/tables/efficiency_24views.html"></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 3D Geometry Visualization -->
+        <section id="geometry" class="section-band-muted reveal reveal--dynamic">
+          <div class="container content">
+            <h3 class="results-block-title section-subtitle results-group-title">
+              3D GEOMETRY VISUALIZATION
+            </h3>
+            <div class="results-callout" role="note" aria-label="Geometry caption">
+              <p class="caption">Visualization of our Gaussian mean prediction of our 32K variant, highlighting
+                compactness,
+                dynamic allocation and geometry coherence.</p>
+            </div>
+          </div>
+
+          <div class="container content">
+            <div class="results-block">
+              <div class="qualitative-image-block qualitative-video-comparison-block">
+                <div class="small-video-container" data-video-container="pointcloud-comparison">
+                  <div class="qualitative-image-grid qualitative-image-grid--compact qualitative-image-grid--one-col">
+                    <div class="qualitative-image-cell method-cell">
+                      <div class="video-loading" aria-hidden="true">
+                        <div class="dot-spinner">
+                          <div class="dot-spinner__dot"></div>
+                          <div class="dot-spinner__dot"></div>
+                          <div class="dot-spinner__dot"></div>
+                          <div class="dot-spinner__dot"></div>
+                          <div class="dot-spinner__dot"></div>
+                          <div class="dot-spinner__dot"></div>
+                          <div class="dot-spinner__dot"></div>
+                          <div class="dot-spinner__dot"></div>
+                        </div>
+                      </div>
+
+                      <div class="twentytwenty-container twentytwenty-custom qualitative-video-compare" data-merged-duo
+                        data-scene-index="0" data-scene-count="1">
+                        <div class="comparison-slider comparison-slider--merged-duo">
+                          <div class="sync-role sync-role--baseline">
+                            <video src="assets/media/re10k_concat/re10k_merged_geometry.mp4" loop muted playsinline
+                              preload="metadata"></video>
+                          </div>
+                          <div class="sync-role sync-role--ours">
+                            <video src="assets/media/re10k_concat/re10k_merged_geometry.mp4" loop muted playsinline
+                              preload="metadata"></video>
+                          </div>
+                          <div class="comparison-handle" data-merged-duo-handle aria-hidden="true">
+                            <div class="comparison-handle-line"></div>
+                            <div class="comparison-handle-knob"></div>
+                          </div>
+                          <div class="qualitative-video-playback-feedback" id="geometry-comparison-playback-feedback"
+                            aria-hidden="true">
+                            <div class="qualitative-video-playback-feedback__backdrop">
+                              <svg
+                                class="qualitative-video-playback-feedback__icon qualitative-video-playback-feedback__icon--play"
+                                viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                                <path fill="currentColor" d="M8 5v14l11-7z" />
+                              </svg>
+                              <svg
+                                class="qualitative-video-playback-feedback__icon qualitative-video-playback-feedback__icon--pause"
+                                viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                                <path fill="currentColor" d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
+                              </svg>
+                            </div>
+                          </div>
+                          <button type="button" class="qualitative-video-playback-toggle"
+                            id="geometry-comparison-playback-btn"
+                            data-feedback-id="geometry-comparison-playback-feedback"
+                            data-geometry-playback-toggle="true" aria-pressed="false"
+                            aria-label="Pause comparison videos">
+                            <span class="qualitative-video-playback-toggle__text">Pause</span>
+                          </button>
+                        </div>
+                        <input class="comparison-range" data-merged-duo-range type="range" min="0" max="100" value="50"
+                          aria-label="Comparison slider" />
+                      </div>
+                    </div>
+                  </div>
+
+                  <template id="geometry-comparison-slider-legacy">
+                    <div class="comparison-wrap comparison-wrap--geometry" data-comparison-root
+                      data-comparison-scenes="assets/data/interactive_comparison_pointcloud.json">
+                      <div class="comparison-header">
+                        <div>
+                          <div class="comparison-title" data-comparison="sceneTitle"></div>
+                          <div class="comparison-subtitle small" data-comparison="subtitle"></div>
+                        </div>
+                      </div>
+                      <div class="comparison-slider" data-comparison="slider">
+                        <div class="comparison-base">
+                          <video data-comparison="rightVideo" autoplay muted loop playsinline preload="metadata">
+                            <source src="" type="video/mp4" />
+                          </video>
+                        </div>
+                        <div class="comparison-overlay comparison-overlay--interactive-geometry"
+                          data-comparison="overlay">
+                          <video data-comparison="leftVideo" autoplay muted loop playsinline preload="metadata">
+                            <source src="" type="video/mp4" />
+                          </video>
+                        </div>
+                        <!-- <div class="comparison-corner-label comparison-corner-label-left" data-comparison="leftLabel"></div>
+                  <div class="comparison-corner-label comparison-corner-label-right" data-comparison="rightLabel"></div> -->
+
+                        <div class="comparison-handle" data-comparison="handle">
+                          <div class="comparison-handle-line"></div>
+                          <div class="comparison-handle-knob"></div>
+                        </div>
+                        <div class="qualitative-video-playback-feedback" id="geometry-comparison-playback-feedback"
+                          aria-hidden="true">
+                          <div class="qualitative-video-playback-feedback__backdrop">
+                            <svg
+                              class="qualitative-video-playback-feedback__icon qualitative-video-playback-feedback__icon--play"
+                              viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                              <path fill="currentColor" d="M8 5v14l11-7z" />
+                            </svg>
+                            <svg
+                              class="qualitative-video-playback-feedback__icon qualitative-video-playback-feedback__icon--pause"
+                              viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                              <path fill="currentColor" d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
+                            </svg>
+                          </div>
+                        </div>
+                        <button type="button" class="qualitative-video-playback-toggle"
+                          id="geometry-comparison-playback-btn" data-feedback-id="geometry-comparison-playback-feedback"
+                          data-geometry-playback-toggle="true" aria-pressed="false"
+                          aria-label="Pause comparison videos">
+                          <span class="qualitative-video-playback-toggle__text">Pause</span>
+                        </button>
+                      </div>
+                      <input class="comparison-range" data-comparison="range" type="range" min="0" max="100" value="50"
+                        aria-label="Comparison slider" />
+                    </div>
+                    <!-- <div class="caption comparison-caption" data-comparison="caption"></div> -->
+                  </template>
+                </div>
+              </div>
+            </div>
+        </section>
+
+      </div>
+
+      <!-- Quantitative: radar figure + metric table carousels -->
+      <div class="results-quantitative">
+        <section class="section-band-muted reveal">
+          <div class="container content">
+            <div class="results-block">
+              <h2 class="section-title">QUANTITATIVE RESULTS</h2>
+
+              <div
+                class="teaser-layout teaser-media-row teaser-media-row--contain teaser-media-row--solo results-spider-container">
+                <figure class="hover-figure zoomable-figure" data-image-zoom="true">
+                  <img src="assets/figures/teaser_spider.png"
+                    alt="Radar chart comparing quality, compactness, and efficiency across methods." />
+                  <button class="hover-figure__btn" type="button" aria-label="Show figure info"></button>
+                  <div class="hover-figure__tooltip" role="tooltip">
+                    Fidelity vs. cost comparison across methods
+                  </div>
+                </figure>
+              </div>
+
+              <div class="table-carousel" data-table-carousel tabindex="0">
+                <button class="table-carousel__nav table-carousel__nav--prev"
+                  aria-label="Previous table">&#8592;</button>
+                <div class="table-carousel__viewport">
+                  <div class="table-carousel__track">
+                    <div class="table-carousel__slide">
+                      <h3 class="results-subgroup-title">REALESTATE10K METRICS</h3>
+                      <div class="results-table-fragment"
+                        data-table-fragment="src/tables/re10k_extended_quantitative.html">
+                      </div>
+                    </div>
+                    <div class="table-carousel__slide">
+                      <h3 class="results-subgroup-title">ACID GENERALIZATION METRICS</h3>
+                      <div class="results-table-fragment" data-table-fragment="src/tables/acid_generalization.html">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <button class="table-carousel__nav table-carousel__nav--next" aria-label="Next table">&#8594;</button>
+              </div>
+
+              <div class="table-carousel" data-table-carousel tabindex="0">
+                <button class="table-carousel__nav table-carousel__nav--prev"
+                  aria-label="Previous table">&#8592;</button>
+                <div class="table-carousel__viewport">
+                  <div class="table-carousel__track">
+                    <div class="table-carousel__slide">
+                      <h3 class="results-subgroup-title">COMPACTNESS TRADE-OFF</h3>
+                      <div class="results-table-fragment"
+                        data-table-fragment="src/tables/compactness_tradeoff_re10k.html">
+                      </div>
+                    </div>
+                    <div class="table-carousel__slide">
+                      <h3 class="results-subgroup-title">ABLATION STUDY</h3>
+                      <div class="results-table-fragment" data-table-fragment="src/tables/ablation_re10k.html"></div>
+                    </div>
+                  </div>
+                </div>
+                <button class="table-carousel__nav table-carousel__nav--next" aria-label="Next table">&#8594;</button>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+    </section>
+
+    <!-- Abstract -->
+    <section id="abstract" class="scroll-target reveal">
+      <div class="container">
+        <h2 class="section-title">Abstract</h2>
+        <div class="content has-text-justified">
+          <p>
+            The efficient spatial allocation of primitives serves as the foundation of 3D Gaussian Splatting, as it
+            directly
+            dictates the synergy between representation compactness, reconstruction speed, and rendering fidelity.
+            Previous
+            solutions, whether based on iterative optimization or feed-forward inference, suffer from significant
+            trade-offs
+            between these goals, mainly due to the reliance on local, heuristic-driven allocation strategies that lack
+            global scene awareness. Specifically, current feed-forward methods are largely pixel-aligned or
+            primitive-aligned. By unprojecting pixels into dense, view-aligned primitives, they bake redundancy into the
+            3D
+            asset. As more input views are added, the representation size increases and global consistency becomes
+            fragile.
+          </p>
+          <p>
+            To this end, we introduce <strong>GlobalSplat</strong>, a framework built on the principle of <em>align
+              first,
+              decode later</em>. Our approach learns a compact, global, latent scene representation that encodes
+            multi-view
+            input and resolves cross-view correspondences before decoding any explicit 3D geometry. Crucially, this
+            formulation enables compact, globally consistent reconstructions without relying on pretrained
+            pixel-prediction
+            backbones or reusing latent features from dense baselines. Utilizing a coarse-to-fine training curriculum
+            that
+            gradually increases decoded capacity, GlobalSplat natively prevents representation bloat. On RealEstate10K
+            and
+            ACID, our model achieves competitive novel-view synthesis performance while utilizing as few as 2K-32K
+            Gaussians,
+            significantly less than required by dense pipelines, obtaining a light 4MB footprint. Further, GlobalSplat
+            enables significantly faster inference than the baselines, operating under 78 milliseconds in a single
+            forward
+            pass.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Architecture -->
+    <section id="overview" class="scroll-target reveal">
+      <div class="container content">
+        <h2 class="section-title">Architecture</h2>
+        <figure class="overview-figure">
+          <img src="assets/figures/overview_new.png" alt="GlobalSplat method overview." />
+        </figure>
+      </div>
+    </section>
+
+
+    <!-- Method: Global Latent Alignment -->
+    <section id="how-globalsplat-works" class="scroll-target section-band-muted reveal">
+      <div class="container content">
+        <h2 class="section-title">Method: Global Latent Alignment</h2>
+        <div class="content has-text-justified">
+          <h3 class="caption-title">The GlobalSplat Solution: Align First, Decode Later</h3>
+          <div class="results-callout" role="note" aria-label="Primitive allocation and motivation">
+            <p class="caption">
+            <div class="caption-label">Scene-Centric Alignment</div>
+            <div class="caption-text">
+              Fuses multi-view inputs into a fixed number of global latent scene tokens before decoding geometry,
+              maintaining a strict Gaussian budget.
+            </div>
+            </p>
+          </div>
+
+          <div class="results-callout" role="note" aria-label="Architecture and latent scene tokens">
+            <p class="caption">
+            <div class="caption-label">Dual-Branch Encoder</div>
+            <div class="caption-text">
+              Iteratively processes latent tokens through parallel geometry and appearance streams to prevent texture
+              from
+              masking structural errors.
+            </div>
+            </p>
+          </div>
+          <div class="results-callout" role="note" aria-label="Training, compactness and objective">
+            <p class="caption">
+            <div class="caption-label">Coarse-to-Fine Curriculum</div>
+            <div class="caption-text">
+              Progressively increases Gaussian capacity per latent slot during training to stabilize optimization and
+              prevent representation bloat.
+            </div>
+            </p>
+          </div>
+        </div>
+    </section>
+
+
+    <section id="bibtex" class="section-band-muted scroll-target reveal">
+      <div class="container content">
+        <div class="bibtex-header">
+          <h2 class="section-title">BibTeX</h2>
+        </div>
+        <pre id="bibtex-code"><button id="copy-bibtex-btn" class="copy-bibtex-btn" type="button" aria-label="Copy BibTeX to clipboard"><span class="copy-bibtex-btn__icon" aria-hidden="true"><i class="far fa-copy"></i></span><span class="copy-bibtex-btn__text">Copy</span></button><code>@article{globalsplat,
+  title   = {GlobalSplat: Efficient Feed-Forward 3D Gaussian Splatting via Global Scene Tokens},
+  author  = {Itkin, Roni and Issachar, Noam and Keypur, Yehonatan and Chen, Xingyu and Chen, Anpei and Benaim, Sagie},
+  journal = {PLACEHOLDER},
+  year    = {2026}
+}</code></pre>
+      </div>
+    </section>
+
+  </main>
+
+  <button id="scroll-top-btn" class="scroll-top-btn" type="button" aria-label="Back to top" title="Back to top">
+    <i class="fas fa-arrow-up" aria-hidden="true"></i>
+  </button>
+
+  <footer class="site-credit">
+    <p>Website designed and developed by <a href="https://www.linkedin.com/in/ykeypur" target="_blank" rel="noopener noreferrer">Yehonatan Keypur</a>.</p>
+  </footer>
+
+  <!-- INLINE_EMBEDDED_ASSETS_START -->
+  <div id="inline-embedded-assets" hidden aria-hidden="true">
+    <template data-inline-fragment="src/tables/re10k_quantitative.html">
+      <div class="results-table-card">
+        <p class="results-table-title">Quantitative Comparison on RealEstate10K</p>
+        <table class="results-table" aria-label="Quantitative comparison on RealEstate10K">
+          <thead>
+            <tr>
+              <th rowspan="2">Method</th>
+              <th colspan="4">12 Views</th>
+              <th colspan="4">24 Views</th>
+              <th colspan="4">36 Views</th>
+            </tr>
+            <tr>
+              <th>PSNR ↑</th>
+              <th>SSIM ↑</th>
+              <th>LPIPS ↓</th>
+              <th>#G (K) ↓</th>
+              <th>PSNR ↑</th>
+              <th>SSIM ↑</th>
+              <th>LPIPS ↓</th>
+              <th>#G (K) ↓</th>
+              <th>PSNR ↑</th>
+              <th>SSIM ↑</th>
+              <th>LPIPS ↓</th>
+              <th>#G (K) ↓</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="results-row-non-gs">
+              <td>LVSM (non-GS)</td>
+              <td>28.65</td>
+              <td>0.898</td>
+              <td>0.095</td>
+              <td>–</td>
+              <td>27.24</td>
+              <td>0.874</td>
+              <td>0.112</td>
+              <td>–</td>
+              <td>26.38</td>
+              <td>0.855</td>
+              <td>0.126</td>
+              <td>–</td>
+            </tr>
+            <tr>
+              <td>NoPoSplat</td>
+              <td>21.26</td>
+              <td>0.667</td>
+              <td>0.200</td>
+              <td>602</td>
+              <td>21.24</td>
+              <td>0.664</td>
+              <td>0.200</td>
+              <td>1204</td>
+              <td>21.19</td>
+              <td>0.663</td>
+              <td>0.200</td>
+              <td>1806</td>
+            </tr>
+            <tr>
+              <td>AnySplat</td>
+              <td>23.06</td>
+              <td>0.807</td>
+              <td>0.215</td>
+              <td>1500</td>
+              <td>24.11</td>
+              <td class="results-badge-top3">0.838</td>
+              <td>0.198</td>
+              <td>2636</td>
+              <td class="results-badge-top3">24.20</td>
+              <td class="results-badge-top3">0.842</td>
+              <td class="results-badge-top3">0.192</td>
+              <td>3309</td>
+            </tr>
+            <tr>
+              <td>EcoSplat</td>
+              <td>–</td>
+              <td>–</td>
+              <td>–</td>
+              <td>–</td>
+              <td class="results-badge-top3">24.72</td>
+              <td>0.822</td>
+              <td class="results-badge-top3">0.183</td>
+              <td class="results-badge-top3">78</td>
+              <td>–</td>
+              <td>–</td>
+              <td>–</td>
+              <td>–</td>
+            </tr>
+            <tr>
+              <td>DepthSplat</td>
+              <td>21.35</td>
+              <td class="results-badge-top3">0.809</td>
+              <td class="results-badge-top3">0.190</td>
+              <td>786</td>
+              <td>19.66</td>
+              <td>0.743</td>
+              <td>0.239</td>
+              <td>1572</td>
+              <td>18.84</td>
+              <td>0.704</td>
+              <td>0.268</td>
+              <td>2359</td>
+            </tr>
+            <tr>
+              <td>GGN</td>
+              <td>18.24</td>
+              <td>0.661</td>
+              <td>0.327</td>
+              <td class="results-badge-top3">138</td>
+              <td>17.20</td>
+              <td>0.634</td>
+              <td>0.343</td>
+              <td>512</td>
+              <td>–</td>
+              <td>–</td>
+              <td>–</td>
+              <td>–</td>
+            </tr>
+            <tr>
+              <td>Zpressor</td>
+              <td class="results-badge-top2">28.46</td>
+              <td class="results-badge-top1">0.910</td>
+              <td class="results-badge-top1">0.098</td>
+              <td>393</td>
+              <td class="results-badge-top2">28.51</td>
+              <td class="results-badge-top1">0.911</td>
+              <td class="results-badge-top1">0.097</td>
+              <td>393</td>
+              <td class="results-badge-top1">28.50</td>
+              <td class="results-badge-top1">0.911</td>
+              <td class="results-badge-top1">0.097</td>
+              <td class="results-badge-top3">393</td>
+            </tr>
+            <tr>
+              <td>C3G</td>
+              <td class="results-badge-top3">23.61</td>
+              <td>0.740</td>
+              <td>0.203</td>
+              <td class="results-badge-top1">2</td>
+              <td>23.80</td>
+              <td>0.747</td>
+              <td>0.198</td>
+              <td class="results-badge-top1">2</td>
+              <td>23.81</td>
+              <td>0.747</td>
+              <td>0.199</td>
+              <td class="results-badge-top1">2</td>
+            </tr>
+            <tr>
+              <td><strong>GlobalSplat (Ours)</strong></td>
+              <td class="results-badge-top1"><strong>28.57</strong></td>
+              <td class="results-badge-top2"><strong>0.885</strong></td>
+              <td class="results-badge-top2"><strong>0.138</strong></td>
+              <td class="results-badge-top2"><strong>16</strong></td>
+              <td class="results-badge-top1"><strong>28.53</strong></td>
+              <td class="results-badge-top2"><strong>0.883</strong></td>
+              <td class="results-badge-top2"><strong>0.140</strong></td>
+              <td class="results-badge-top2"><strong>16</strong></td>
+              <td class="results-badge-top2"><strong>28.45</strong></td>
+              <td class="results-badge-top2"><strong>0.880</strong></td>
+              <td class="results-badge-top2"><strong>0.144</strong></td>
+              <td class="results-badge-top2"><strong>16</strong></td>
+            </tr>
+          </tbody>
+        </table>
+        <p class="caption small">
+          <!-- PSNR, SSIM, LPIPS, and Gaussian count on RealEstate10K. 
+    Highlight colors indicate 1st/2nd/3rd best among Gaussian-based methods; LVSM is a non-Gaussian baseline. -->
+          Ranking highlights: <span class="results-badge-top1">Top 1</span>, <span class="results-badge-top2">Top
+            2</span>,
+          and <span class="results-badge-top3">Top 3</span> among Gaussian-based methods.
+          Gray indicates LVSM is not a Gaussian-based approach.
+        </p>
+      </div>
+
+
+    </template>
+    <template data-inline-fragment="src/tables/re10k_extended_quantitative.html">
+      <div class="results-table-card">
+        <p class="results-table-title">Quantitative Comparison on RealEstate10K</p>
+        <table class="results-table" aria-label="Extended quantitative comparison on RealEstate10K">
+          <thead>
+            <tr>
+              <th rowspan="2">Method</th>
+              <th colspan="4">12 Views</th>
+              <th colspan="4">24 Views</th>
+              <th colspan="4">36 Views</th>
+            </tr>
+            <tr>
+              <th>PSNR ↑</th>
+              <th>SSIM ↑</th>
+              <th>LPIPS ↓</th>
+              <th>#G (K) ↓</th>
+              <th>PSNR ↑</th>
+              <th>SSIM ↑</th>
+              <th>LPIPS ↓</th>
+              <th>#G (K) ↓</th>
+              <th>PSNR ↑</th>
+              <th>SSIM ↑</th>
+              <th>LPIPS ↓</th>
+              <th>#G (K) ↓</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="results-row-non-gs">
+              <td>LVSM (non-GS)</td>
+              <td>28.65</td>
+              <td>0.898</td>
+              <td>0.095</td>
+              <td>–</td>
+              <td>27.24</td>
+              <td>0.874</td>
+              <td>0.112</td>
+              <td>–</td>
+              <td>26.38</td>
+              <td>0.855</td>
+              <td>0.126</td>
+              <td>–</td>
+            </tr>
+
+            <tr>
+              <td>NoPoSplat</td>
+              <td>21.26</td>
+              <td>0.667</td>
+              <td>0.200</td>
+              <td>602</td>
+              <td>21.24</td>
+              <td>0.664</td>
+              <td>0.200</td>
+              <td>1204</td>
+              <td>21.19</td>
+              <td>0.663</td>
+              <td>0.200</td>
+              <td>1806</td>
+            </tr>
+
+            <tr>
+              <td>AnySplat</td>
+              <td>23.06</td>
+              <td>0.807</td>
+              <td>0.215</td>
+              <td>1500</td>
+              <td>24.11</td>
+              <td>0.838</td>
+              <td>0.198</td>
+              <td>2636</td>
+              <td>24.20</td>
+              <td>0.842</td>
+              <td>0.192</td>
+              <td>3309</td>
+            </tr>
+
+            <tr>
+              <td>EcoSplat</td>
+              <td>–</td>
+              <td>–</td>
+              <td>–</td>
+              <td>–</td>
+              <td>24.72</td>
+              <td>0.822</td>
+              <td>0.183</td>
+              <td>78</td>
+              <td>–</td>
+              <td>–</td>
+              <td>–</td>
+              <td>–</td>
+            </tr>
+
+            <tr>
+              <td>DepthSplat</td>
+              <td>21.35</td>
+              <td>0.809</td>
+              <td>0.190</td>
+              <td>786</td>
+              <td>19.66</td>
+              <td>0.743</td>
+              <td>0.239</td>
+              <td>1572</td>
+              <td>18.84</td>
+              <td>0.704</td>
+              <td>0.268</td>
+              <td>2359</td>
+            </tr>
+
+            <tr>
+              <td>GGN</td>
+              <td>20.11</td>
+              <td>0.71</td>
+              <td>0.27</td>
+              <td>278</td>
+              <td>18.50</td>
+              <td>0.68</td>
+              <td>0.299</td>
+              <td>385</td>
+              <td>17.76</td>
+              <td>0.664</td>
+              <td>0.311</td>
+              <td>466</td>
+            </tr>
+
+            <tr>
+              <td>Zpressor6</td>
+              <td class="results-badge-top3">28.46</td>
+              <td class="results-badge-top1">0.910</td>
+              <td class="results-badge-top1">0.098</td>
+              <td>393</td>
+              <td class="results-badge-top3">28.51</td>
+              <td class="results-badge-top1">0.911</td>
+              <td class="results-badge-top1">0.097</td>
+              <td>393</td>
+              <td class="results-badge-top2">28.50</td>
+              <td class="results-badge-top1">0.911</td>
+              <td class="results-badge-top1">0.097</td>
+              <td>393</td>
+            </tr>
+
+            <tr>
+              <td>Zpressor3</td>
+              <td>23.63</td>
+              <td>0.846</td>
+              <td>0.157</td>
+              <td>197</td>
+              <td>23.65</td>
+              <td>0.846</td>
+              <td>0.157</td>
+              <td>197</td>
+              <td>23.65</td>
+              <td>0.846</td>
+              <td>0.157</td>
+              <td>197</td>
+            </tr>
+
+            <tr>
+              <td>C3G</td>
+              <td>23.61</td>
+              <td>0.740</td>
+              <td>0.203</td>
+              <td class="results-badge-top1">2</td>
+              <td>23.80</td>
+              <td>0.747</td>
+              <td>0.198</td>
+              <td class="results-badge-top1">2</td>
+              <td>23.81</td>
+              <td>0.747</td>
+              <td>0.199</td>
+              <td class="results-badge-top1">2</td>
+            </tr>
+
+            <tr>
+              <td><strong>GlobalSplat2K (Ours)</strong></td>
+              <td>26.83</td>
+              <td>0.838</td>
+              <td>0.198</td>
+              <td class="results-badge-top1">2</td>
+              <td>26.84</td>
+              <td>0.838</td>
+              <td>0.198</td>
+              <td class="results-badge-top1">2</td>
+              <td>26.84</td>
+              <td>0.838</td>
+              <td>0.200</td>
+              <td class="results-badge-top1">2</td>
+            </tr>
+
+            <tr>
+              <td><strong>GlobalSplat16K (Ours)</strong></td>
+              <td class="results-badge-top2">28.57</td>
+              <td class="results-badge-top3">0.885</td>
+              <td class="results-badge-top3">0.138</td>
+              <td class="results-badge-top2">16</td>
+              <td class="results-badge-top2">28.53</td>
+              <td class="results-badge-top3">0.883</td>
+              <td class="results-badge-top3">0.140</td>
+              <td class="results-badge-top2">16</td>
+              <td class="results-badge-top3">28.45</td>
+              <td class="results-badge-top3">0.880</td>
+              <td class="results-badge-top3">0.144</td>
+              <td class="results-badge-top2">16</td>
+            </tr>
+
+            <tr>
+              <td><strong>GlobalSplat32K (Ours)</strong></td>
+              <td class="results-badge-top1">29.54</td>
+              <td class="results-badge-top2">0.903</td>
+              <td class="results-badge-top2">0.121</td>
+              <td class="results-badge-top3">32</td>
+              <td class="results-badge-top1">29.48</td>
+              <td class="results-badge-top2">0.901</td>
+              <td class="results-badge-top2">0.122</td>
+              <td class="results-badge-top3">32</td>
+              <td class="results-badge-top1">29.39</td>
+              <td class="results-badge-top2">0.899</td>
+              <td class="results-badge-top2">0.126</td>
+              <td class="results-badge-top3">32</td>
+            </tr>
+          </tbody>
+        </table>
+        <p class="caption small">
+          Ranking highlights: <span class="results-badge-top1">Top 1</span>, <span class="results-badge-top2">Top
+            2</span>,
+          and <span class="results-badge-top3">Top 3</span> among Gaussian-based methods.
+          Gray indicates LVSM is not a Gaussian-based approach.
+        </p>
+      </div>
+
+
+    </template>
+    <template data-inline-fragment="src/tables/acid_generalization.html">
+      <div class="results-table-card">
+        <p class="results-table-title">Cross-Dataset Generalization on ACID</p>
+        <table class="results-table" aria-label="Cross-dataset generalization on ACID">
+          <thead>
+            <tr>
+              <th rowspan="2">Method</th>
+              <th colspan="4">12 Views</th>
+              <th colspan="4">24 Views</th>
+              <th colspan="4">36 Views</th>
+            </tr>
+            <tr>
+              <th>PSNR ↑</th>
+              <th>SSIM ↑</th>
+              <th>LPIPS ↓</th>
+              <th>#G (K) ↓</th>
+              <th>PSNR ↑</th>
+              <th>SSIM ↑</th>
+              <th>LPIPS ↓</th>
+              <th>#G (K) ↓</th>
+              <th>PSNR ↑</th>
+              <th>SSIM ↑</th>
+              <th>LPIPS ↓</th>
+              <th>#G (K) ↓</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="results-row-non-gs">
+              <td>LVSM (non-GS)</td>
+              <td>29.23</td>
+              <td>0.849</td>
+              <td>0.142</td>
+              <td>–</td>
+              <td>28.29</td>
+              <td>0.826</td>
+              <td>0.161</td>
+              <td>–</td>
+              <td>27.61</td>
+              <td>0.807</td>
+              <td>0.178</td>
+              <td>–</td>
+            </tr>
+            <tr>
+              <td>DepthSplat</td>
+              <td>21.45</td>
+              <td class="results-badge-top2">0.769</td>
+              <td class="results-badge-top3">0.220</td>
+              <td>786</td>
+              <td>20.15</td>
+              <td class="results-badge-top2">0.711</td>
+              <td class="results-badge-top3">0.258</td>
+              <td>1572</td>
+              <td>19.60</td>
+              <td class="results-badge-top2">0.681</td>
+              <td class="results-badge-top3">0.279</td>
+              <td>2359</td>
+            </tr>
+            <tr>
+              <td>GGN</td>
+              <td>21.99</td>
+              <td>0.686</td>
+              <td>0.295</td>
+              <td class="results-badge-top3">287</td>
+              <td>20.90</td>
+              <td>0.657</td>
+              <td>0.314</td>
+              <td>396</td>
+              <td>20.43</td>
+              <td>0.644</td>
+              <td>0.323</td>
+              <td>475</td>
+            </tr>
+            <tr>
+              <td>Zpressor</td>
+              <td class="results-badge-top1">28.44</td>
+              <td class="results-badge-top1">0.859</td>
+              <td class="results-badge-top1">0.140</td>
+              <td>393</td>
+              <td class="results-badge-top1">28.53</td>
+              <td class="results-badge-top1">0.860</td>
+              <td class="results-badge-top1">0.138</td>
+              <td class="results-badge-top3">393</td>
+              <td class="results-badge-top1">28.45</td>
+              <td class="results-badge-top1">0.859</td>
+              <td class="results-badge-top1">0.139</td>
+              <td class="results-badge-top3">393</td>
+            </tr>
+            <tr>
+              <td>C3G</td>
+              <td class="results-badge-top3">22.24</td>
+              <td>0.598</td>
+              <td>0.332</td>
+              <td class="results-badge-top1">2</td>
+              <td class="results-badge-top3">22.24</td>
+              <td>0.598</td>
+              <td>0.331</td>
+              <td class="results-badge-top1">2</td>
+              <td class="results-badge-top3">22.20</td>
+              <td>0.598</td>
+              <td>0.333</td>
+              <td class="results-badge-top1">2</td>
+            </tr>
+            <tr>
+              <td><strong>GlobalSplat (Ours 16K)</strong></td>
+              <td class="results-badge-top2"><strong>28.04</strong></td>
+              <td class="results-badge-top3"><strong>0.815</strong></td>
+              <td class="results-badge-top2"><strong>0.207</strong></td>
+              <td class="results-badge-top2"><strong>16</strong></td>
+              <td class="results-badge-top2"><strong>28.03</strong></td>
+              <td class="results-badge-top3"><strong>0.813</strong></td>
+              <td class="results-badge-top2"><strong>0.208</strong></td>
+              <td class="results-badge-top2"><strong>16</strong></td>
+              <td class="results-badge-top2"><strong>27.99</strong></td>
+              <td class="results-badge-top3"><strong>0.810</strong></td>
+              <td class="results-badge-top2"><strong>0.213</strong></td>
+              <td class="results-badge-top2"><strong>16</strong></td>
+            </tr>
+          </tbody>
+        </table>
+        <p class="caption small">
+          Zero-shot transfer from RealEstate10K to ACID. <strong>GlobalSplat maintains strong performance across all
+            view counts with a fixed 16K-Gaussian budget.</strong>
+        </p>
+      </div>
+
+
+    </template>
+    <template data-inline-fragment="src/tables/ablation_re10k.html">
+      <div class="results-table-card">
+        <p class="results-table-title">Ablation Study</p>
+        <table class="results-table" aria-label="Ablation study on RealEstate10K">
+          <thead>
+            <tr>
+              <th>Variant</th>
+              <th>PSNR ↑</th>
+              <th>SSIM ↑</th>
+              <th>LPIPS ↓</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Ours (full)</strong></td>
+              <td><strong>28.57</strong></td>
+              <td><strong>0.885</strong></td>
+              <td><strong>0.139</strong></td>
+            </tr>
+            <tr>
+              <td>Plücker only</td>
+              <td>28.30</td>
+              <td>0.880</td>
+              <td>0.140</td>
+            </tr>
+            <tr>
+              <td>w/o consistency loss</td>
+              <td>28.15</td>
+              <td>0.876</td>
+              <td>0.143</td>
+            </tr>
+            <tr>
+              <td>Single-stream</td>
+              <td>28.02</td>
+              <td>0.873</td>
+              <td>0.151</td>
+            </tr>
+            <tr>
+              <td>Direct full-capacity prediction</td>
+              <td>27.69</td>
+              <td>0.867</td>
+              <td>0.150</td>
+            </tr>
+          </tbody>
+        </table>
+        <p class="caption small">
+          Removing any component (two-stream architecture, coarse-to-fine capacity, consistency loss, or enriched camera
+          metadata) degrades performance.
+        </p>
+      </div>
+
+
+    </template>
+    <template data-inline-fragment="src/tables/compactness_tradeoff_re10k.html">
+      <div class="results-table-card">
+        <p class="results-table-title">Compactness-Quality Trade-Off</p>
+        <p class="caption small">
+          Ablation over the number of latent scene tokens and decoded Gaussians per token.
+          Their product determines the total Gaussian budget,
+          <!-- <span style="white-space:nowrap; font-family:'Cambria Math','STIX Two Math','Times New Roman',serif; font-style:italic;">#G = (#Latents) × (Splats/Token)</span>. -->
+          <span
+            style="white-space:nowrap; font-family:'Cambria Math','STIX Two Math','Times New Roman',serif; font-style:italic;">
+            #G = (#Latents) &times; (Splats/Token)
+          </span>
+
+        </p>
+        <table class="results-table" aria-label="Compactness-quality trade-off on RealEstate10K">
+          <thead>
+            <tr>
+              <th style="text-align:center">Total #G</th>
+              <th style="text-align:center">#Latents</th>
+              <th style="text-align:center">Splats/Token</th>
+              <th>PSNR ↑</th>
+              <th>SSIM ↑</th>
+              <th>LPIPS ↓</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="text-align:center">2,048</td>
+              <td style="text-align:center">256</td>
+              <td style="text-align:center">8</td>
+              <td>25.25</td>
+              <td>0.785</td>
+              <td>0.250</td>
+            </tr>
+            <tr>
+              <td style="text-align:center">2,048</td>
+              <td style="text-align:center">2,048</td>
+              <td style="text-align:center">1</td>
+              <td>26.83</td>
+              <td>0.838</td>
+              <td>0.198</td>
+            </tr>
+            <tr>
+              <td colspan="6" style="border-bottom:2px solid var(--line); height:0; padding:0;"></td>
+            </tr>
+            <tr>
+              <td style="text-align:center">16,384</td>
+              <td style="text-align:center">2,048</td>
+              <td style="text-align:center">8</td>
+              <td>28.57</td>
+              <td>0.885</td>
+              <td>0.138</td>
+            </tr>
+            <tr>
+              <td colspan="6" style="border-bottom:2px solid var(--line); height:0; padding:0;"></td>
+            </tr>
+            <tr>
+              <td style="text-align:center">32,768</td>
+              <td style="text-align:center">2,048</td>
+              <td style="text-align:center">16</td>
+              <td>28.58</td>
+              <td>0.884</td>
+              <td>0.135</td>
+            </tr>
+            <tr>
+              <td style="text-align:center">32,768</td>
+              <td style="text-align:center">4,096</td>
+              <td style="text-align:center">8</td>
+              <td>29.54</td>
+              <td>0.903</td>
+              <td>0.121</td>
+            </tr>
+          </tbody>
+        </table>
+        <!-- <p class="caption small">
+    Ablation over the number of latent scene tokens and decoded Gaussians per token on RealEstate10K.
+    Their product determines the total Gaussian budget,
+    <span style="white-space:nowrap; font-family:'Cambria Math','STIX Two Math','Times New Roman',serif; font-style:italic;">#G = (#Latents) × (Splats/Token)</span>.
+  </p> -->
+      </div>
+
+
+    </template>
+    <template data-inline-fragment="src/tables/efficiency_24views.html">
+      <div class="results-table-card">
+        <p class="results-table-title">Efficiency Comparison (24 input views)</p>
+        <table class="results-table" aria-label="Efficiency comparison for 24 input views">
+          <thead>
+            <tr>
+              <th>Metric</th>
+              <th class="results-row-non-gs">LVSM</th>
+              <th>DepthSplat</th>
+              <th>Zpressor</th>
+              <th>C3G</th>
+              <th>GGN</th>
+              <th>GlobalSplat (Ours)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Peak Mem (GB)</td>
+              <td class="results-row-non-gs">4.60</td>
+              <td>29.84</td>
+              <td class="results-badge-top2">3.70</td>
+              <td class="results-badge-top3">6.04</td>
+              <td>25.08</td>
+              <td class="results-badge-top1"><strong>1.79</strong></td>
+            </tr>
+            <tr>
+              <td>Inf. Time (ms)</td>
+              <td class="results-row-non-gs">940.00</td>
+              <td>669.50</td>
+              <td class="results-badge-top2">194.20</td>
+              <td class="results-badge-top3">387.14</td>
+              <td>1800.64</td>
+              <td class="results-badge-top1"><strong>77.88</strong></td>
+            </tr>
+            <tr>
+              <td>Size on Disk (MB)</td>
+              <td class="results-row-non-gs">–</td>
+              <td>534</td>
+              <td class="results-badge-top3">134</td>
+              <td class="results-badge-top1">0.1</td>
+              <td>174</td>
+              <td class="results-badge-top2">3.8</td>
+            </tr>
+          </tbody>
+        </table>
+        <p class="caption small">
+          Peak GPU memory, inference time, and asset size on disk for 24-view evaluation. <strong>GlobalSplat achieves
+            the best memory and speed while remaining extremely compact.</strong>
+        </p>
+      </div>
+
+
+    </template>
+    <script type="application/json" data-inline-json="assets/data/interactive_comparison_re10k.json">
+{
+  "defaults": {
+    "subtitle": "Ours 32K Gaussians model vs. baseline methods.",
+    "caption": "Drag the slider to compare methods."
+},
+  "scenes": [
+    {
+      "sceneTitle": "Ours 32K vs C3G",
+      "leftLabel": "Ours 32K",
+      "rightLabel": "C3G",
+      "leftIsOurs": true,
+      "rightIsOurs": false,
+      "leftVideo": "assets/media/re10k_concat/ours32k.mp4",
+      "rightVideo": "assets/media/re10k_concat/c3g.mp4"
+    },
+    {
+      "sceneTitle": "Ours 32K vs DepthSplat",
+      "leftLabel": "Ours 32K",
+      "rightLabel": "DepthSplat",
+      "leftIsOurs": true,
+      "rightIsOurs": false,
+      "leftVideo": "assets/media/re10k_concat/ours32k.mp4",
+      "rightVideo": "assets/media/re10k_concat/depthsplat.mp4"
+    },
+    {
+      "sceneTitle": "Ours 32K vs GGN",
+      "leftLabel": "Ours 32K",
+      "rightLabel": "GGN",
+      "leftIsOurs": true,
+      "rightIsOurs": false,
+      "leftVideo": "assets/media/re10k_concat/ours32k.mp4",
+      "rightVideo": "assets/media/re10k_concat/ggn.mp4"
+    },
+    {
+      "sceneTitle": "Ours 32K vs ZPressor 3",
+      "leftLabel": "Ours 32K",
+      "rightLabel": "ZPressor 3",
+      "leftIsOurs": true,
+      "rightIsOurs": false,
+      "leftVideo": "assets/media/re10k_concat/ours32k.mp4",
+      "rightVideo": "assets/media/re10k_concat/zpressor3.mp4"
+    },
+    {
+      "sceneTitle": "Ours 32K vs ZPressor 6",
+      "leftLabel": "Ours 32K",
+      "rightLabel": "ZPressor 6",
+      "leftIsOurs": true,
+      "rightIsOurs": false,
+      "leftVideo": "assets/media/re10k_concat/ours32k.mp4",
+      "rightVideo": "assets/media/re10k_concat/zpressor6.mp4"
+    },
+    {
+      "sceneTitle": "Ours 32K vs GT",
+      "leftLabel": "Ours 32K",
+      "rightLabel": "GT",
+      "leftIsOurs": true,
+      "rightIsOurs": false,
+      "leftVideo": "assets/media/re10k_concat/ours32k.mp4",
+      "rightVideo": "assets/media/re10k_concat/video_gt.mp4"
+    }
+  ]
+}
+    </script>
+    <script type="application/json" data-inline-json="assets/data/interactive_comparison_acid.json">
+{
+    "defaults": {
+      "subtitle": "Ours 32K Gaussians model vs. baseline methods.",
+      "caption": "Drag the slider to compare methods."
+    },
+    "scenes": [
+      {
+        "sceneTitle": "Ours 32K vs C3G",
+        "leftLabel": "Ours 32K",
+        "rightLabel": "C3G",
+        "leftIsOurs": true,
+        "rightIsOurs": false,
+        "leftVideo": "assets/media/acid_concat/ours32k.mp4",
+        "rightVideo": "assets/media/acid_concat/c3g.mp4"
+      },
+      {
+        "sceneTitle": "Ours 32K vs DepthSplat",
+        "leftLabel": "Ours 32K",
+        "rightLabel": "DepthSplat",
+        "leftIsOurs": true,
+        "rightIsOurs": false,
+        "leftVideo": "assets/media/acid_concat/ours32k.mp4",
+        "rightVideo": "assets/media/acid_concat/depthsplat.mp4"
+      },
+      {
+        "sceneTitle": "Ours 32K vs GGN",
+        "leftLabel": "Ours 32K",
+        "rightLabel": "GGN",
+        "leftIsOurs": true,
+        "rightIsOurs": false,
+        "leftVideo": "assets/media/acid_concat/ours32k.mp4",
+        "rightVideo": "assets/media/acid_concat/ggn.mp4"
+      },
+      {
+        "sceneTitle": "Ours 32K vs ZPressor 3",
+        "leftLabel": "Ours 32K",
+        "rightLabel": "ZPressor 3",
+        "leftIsOurs": true,
+        "rightIsOurs": false,
+        "leftVideo": "assets/media/acid_concat/ours32k.mp4",
+        "rightVideo": "assets/media/acid_concat/zpressor3.mp4"
+      },
+      {
+        "sceneTitle": "Ours 32K vs ZPressor 6",
+        "leftLabel": "Ours 32K",
+        "rightLabel": "ZPressor 6",
+        "leftIsOurs": true,
+        "rightIsOurs": false,
+        "leftVideo": "assets/media/acid_concat/ours32k.mp4",
+        "rightVideo": "assets/media/acid_concat/zpressor6.mp4"
+      },
+      {
+        "sceneTitle": "Ours 32K vs GT",
+        "leftLabel": "Ours 32K",
+        "rightLabel": "GT",
+        "leftIsOurs": true,
+        "rightIsOurs": false,
+        "leftVideo": "assets/media/acid_concat/ours32k.mp4",
+        "rightVideo": "assets/media/acid_concat/acid_gt.mp4"
+      }
+    ]
+  }
+    </script>
+    <script type="application/json" data-inline-json="assets/data/compactness_re10k.json">
+{
+    "defaults": {
+        "subtitle": "Ours 32K Gaussians model vs. internal variants.",
+        "caption": "Drag the slider to compare variants."
+    },
+    "scenes": [
+        {
+            "sceneTitle": "Ours 32K vs Ours 16K",
+            "leftLabel": "Ours 32K",
+            "rightLabel": "Ours 16K",
+            "leftIsOurs": true,
+            "rightIsOurs": true,
+            "leftVideo": "assets/media/re10k_concat/ours32k.mp4",
+            "rightVideo": "assets/media/re10k_concat/ours16k.mp4"
+        },
+        {
+            "sceneTitle": "Ours 32K vs Ours 2K",
+            "leftLabel": "Ours 32K",
+            "rightLabel": "Ours 2K",
+            "leftIsOurs": true,
+            "rightIsOurs": true,
+            "leftVideo": "assets/media/re10k_concat/ours32k.mp4",
+            "rightVideo": "assets/media/re10k_concat/ours2k_updated.mp4"
+        }
+    ]
+}
+    </script>
+    <script type="application/json" data-inline-json="assets/data/interactive_comparison_ultra_compact.json">
+{
+    "scenes": [
+        {
+            "leftLabel": "Ours 2K",
+            "rightLabel": "C3G",
+            "leftIsOurs": true,
+            "rightIsOurs": false,
+            "leftVideo": "assets/media/acid_concat/ours2k.mp4",
+            "rightVideo": "assets/media/acid_concat/c3g.mp4"
+        }
+    ]
+}
+    </script>
+    <script type="application/json" data-inline-json="assets/data/interactive_comparison_pointcloud.json">
+{
+    "defaults": {
+        "caption": "Drag the slider to compare methods."
+    },
+    "scenes": [
+        {
+            "leftIsOurs": true,
+            "rightIsOurs": true,
+            "leftVideo": "assets/media/re10k_concat/dot_white.mp4",
+            "rightVideo": "assets/media/re10k_concat/ours32k.mp4"
+        }
+    ]
+}
+    </script>
+  </div>
+  <!-- INLINE_EMBEDDED_ASSETS_END -->
+
+
+  <script defer src="src/js/video.js?v=20260318-1"></script>
+  <script defer src="src/js/videoLoaded.js?v=20260318-1"></script>
+  <script defer src="src/js/tableFragments.js?v=20260318-1"></script>
+  <script defer src="src/js/tableCarousel.js?v=20260320-1"></script>
+  <script defer src="src/js/scrollSpy.js?v=20260406-2"></script>
+  <script defer src="src/js/exportPdf.js?v=20260318-1"></script>
+  <script defer src="src/js/comparisonSlider.js?v=20260318-1"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="src/js/jquery.event.move.js?v=20260319-1"></script>
+  <script src="src/js/jquery.twentytwenty.js?v=20260319-1"></script>
+  <script defer src="src/js/twentytwentyInit.js?v=20260319-1"></script>
+  <script defer src="src/js/qualitativeModelSwitcher.js?v=20260319-1"></script>
+  <script defer src="src/js/qualitativeVideoComparison.js?v=20260326-1"></script>
+  <script defer src="src/one_vid_sync/one_video_triplet_canvas.js?v=20260415-1"></script>
+  <script defer src="src/one_vid_sync/atlas_compare.js?v=20260415-3"></script>
+  <script defer src="src/js/scrollReveal.js"></script>
+  <script defer src="src/js/main.js?v=20260318-1"></script>
+</body>
+
+</html>

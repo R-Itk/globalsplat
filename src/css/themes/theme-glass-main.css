@@ -1,0 +1,461 @@
+/**
+ * Main theme for the website
+ * --------------------------
+ * HOW TO SWITCH:
+ *   ON  → <body class="heading-option-b theme-glass-main">
+ *   OFF → <body class="heading-option-b">
+ */
+
+/* ╔═══════════════════════════════════════════════════════════════════════╗
+   ║  1. COLOR TOKENS                                                     ║
+   ╚═══════════════════════════════════════════════════════════════════════╝ */
+
+body.theme-glass-main {
+  --bg: #eef1f5;
+  --text: #0f172a;
+  --muted: #6b7280;
+  --muted-prev: #64748b;
+  --subtitle-1: #0f172a;
+  --subtitle-2: #334155;
+  --subtitle-2-prev: #1e293b;
+  --subtitle-3: #475569;
+  --line: rgba(148, 163, 184, 0.30);
+  --accent: #2563eb;
+  --card: rgba(255, 255, 255, 0.55);
+  --section-bg-default: #eef1f5;
+  --section-bg-muted: rgba(241, 245, 249, 0.60);
+  --section-bg-strong: rgba(226, 232, 240, 0.50);
+  --btn-bg: rgba(15, 23, 42, 0.85);
+  --btn-border: rgba(15, 23, 42, 0.20);
+  --btn-text: #f8fafc;
+  --hover-sidebar-bg: rgba(15, 23, 42, 0.06);
+  --foreground: #0f172a;
+  --hover-tooltip-bg: rgba(15, 23, 42, 0.80);
+  --hover-tooltip-border: rgba(255, 255, 255, 0.15);
+  --hover-tooltip-shadow: rgba(37, 99, 235, 0.20);
+  --comparison-control-bg: rgba(241, 245, 249, 0.60);
+  --comparison-control-text: #475569;
+
+  /* Teaser hover tooltip: light glass (shared by bubble + arrow); blur/saturation tuned for frosted read */
+  --teaser-hover-tooltip-glass-from: rgba(255, 255, 255, 0.78);
+  --teaser-hover-tooltip-glass-to: rgba(241, 245, 249, 0.68);
+  --teaser-hover-tooltip-border: rgba(148, 163, 184, 0.35);
+  --teaser-hover-tooltip-blur: 24px;
+  --teaser-hover-tooltip-saturate: 135%;
+}
+
+/* ╔═══════════════════════════════════════════════════════════════════════╗
+   ║  2. TYPOGRAPHY — h1 → h2 → h3 hierarchy                             ║
+   ╚═══════════════════════════════════════════════════════════════════════╝ */
+
+body.theme-glass-main header h1 {
+  color: #0f172a;
+}
+
+body.theme-glass-main .section-title {
+  font-size: clamp(2rem, 2.6vw, 2.4rem);
+  letter-spacing: -0.01em;
+}
+
+body.theme-glass-main h3,
+body.theme-glass-main .section-subtitle {
+  font-size: clamp(1.35rem, 1.65vw, 1.5rem);
+}
+
+body.theme-glass-main .results-group-title {
+  font-size: clamp(1.45rem, 2.3vw, 1.8rem);
+}
+
+/* ╔═══════════════════════════════════════════════════════════════════════╗
+   ║  3. SECTION-TITLE UNDERLINE                                          ║
+   ╚═══════════════════════════════════════════════════════════════════════╝ */
+
+body.theme-glass-main .section-title::after {
+  content: "";
+  display: block;
+  width: 48px;
+  height: 3px;
+  background: linear-gradient(90deg, #2563eb, #60a5fa);
+  margin: 0.55rem auto 0;
+  border-radius: 2px;
+  opacity: 1;
+}
+
+/* ╔═══════════════════════════════════════════════════════════════════════╗
+   ║  4. SECTION BANDS — remove separator borders (underline is enough)   ║
+   ╚═══════════════════════════════════════════════════════════════════════╝ */
+
+body.theme-glass-main .section-band-muted {
+  background: rgba(241, 245, 249, 0.50);
+  border-top: none;
+  border-bottom: none;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+body.theme-glass-main #results .results-quantitative>.section-band-muted {
+  background:
+    radial-gradient(ellipse 600px 300px at 20% 80%, rgba(219, 234, 254, 0.35), transparent 60%),
+    rgba(241, 245, 249, 0.50);
+  border-top: none;
+  border-bottom: none;
+}
+
+body.theme-glass-main .section-band-strong {
+  background: rgba(226, 232, 240, 0.40);
+  border-top: none;
+  border-bottom: none;
+}
+
+body.theme-glass-main section {
+  border-bottom-color: rgba(148, 163, 184, 0.20);
+}
+
+/* ╔═══════════════════════════════════════════════════════════════════════╗
+   ║  5. HEADER — warm glass gradient                                     ║
+   ╚═══════════════════════════════════════════════════════════════════════╝ */
+
+body.theme-glass-main header {
+  background:
+    radial-gradient(ellipse 900px 420px at 0% 0%, rgba(219, 234, 254, 0.50), transparent 55%),
+    radial-gradient(ellipse 700px 350px at 100% 0%, rgba(199, 210, 254, 0.40), transparent 50%),
+    linear-gradient(175deg, rgba(248, 250, 252, 0.80) 0%, rgba(226, 232, 240, 0.60) 100%);
+  border-bottom: 1px solid rgba(148, 163, 184, 0.25);
+  backdrop-filter: blur(20px) saturate(140%);
+  -webkit-backdrop-filter: blur(20px) saturate(140%);
+}
+
+/* ╔═══════════════════════════════════════════════════════════════════════╗
+   ║  6. TOP NAV — warm glass pill                                        ║
+   ╚═══════════════════════════════════════════════════════════════════════╝ */
+
+body.theme-glass-main .topnav {
+  background: rgba(255, 255, 255, 0.45);
+  border: 1px solid rgba(148, 163, 184, 0.22);
+  border-bottom-color: rgba(148, 163, 184, 0.22);
+  backdrop-filter: blur(20px) saturate(150%);
+  -webkit-backdrop-filter: blur(20px) saturate(150%);
+  box-shadow:
+    0 4px 24px rgba(15, 23, 42, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.60);
+}
+
+body.theme-glass-main .topnav-link.active {
+  background: rgba(15, 23, 42, 0.88);
+  color: #f8fafc;
+}
+
+body.theme-glass-main .topnav-link.active:hover {
+  background: rgba(15, 23, 42, 0.94);
+}
+
+/* ╔═══════════════════════════════════════════════════════════════════════╗
+   ║  7. GLASS: Table containers                                          ║
+   ╚═══════════════════════════════════════════════════════════════════════╝ */
+
+body.theme-glass-main .results-table-card {
+  background: rgba(255, 255, 255, 0.50);
+  border-color: rgba(148, 163, 184, 0.25);
+  backdrop-filter: blur(14px) saturate(120%);
+  -webkit-backdrop-filter: blur(14px) saturate(120%);
+  box-shadow:
+    0 4px 20px rgba(15, 23, 42, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.50);
+}
+
+/* Keep carousel table text sharp after slide transform transitions. */
+body.theme-glass-main .table-carousel .results-table-card {
+  background: rgba(255, 255, 255, 0.74);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+/* ╔═══════════════════════════════════════════════════════════════════════╗
+   ║  8. GLASS: Video grids                                               ║
+   ╚═══════════════════════════════════════════════════════════════════════╝ */
+
+body.theme-glass-main .results-video-grid {
+  background: rgba(255, 255, 255, 0.50);
+  border-color: rgba(148, 163, 184, 0.25);
+  backdrop-filter: blur(14px) saturate(120%);
+  -webkit-backdrop-filter: blur(14px) saturate(120%);
+  box-shadow:
+    0 4px 20px rgba(15, 23, 42, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.50);
+}
+
+/* ╔═══════════════════════════════════════════════════════════════════════╗
+   ║  9. GLASS: Callout boxes                                             ║
+   ╚═══════════════════════════════════════════════════════════════════════╝ */
+
+body.theme-glass-main .results-callout {
+  background: rgba(255, 255, 255, 0.50);
+  border-color: rgba(148, 163, 184, 0.25);
+  /* Disabled container blur so caption text stays optically crisp in callouts. */
+  /* backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px); */
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.50);
+}
+
+/* Method solution callouts — keep glass rim + soft outer lift on hover */
+body.theme-glass-main #how-globalsplat-works .has-text-justified h3.caption-title ~ .results-callout:hover {
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.50),
+    0 20px 46px rgba(15, 23, 42, 0.06);
+}
+
+/* ╔═══════════════════════════════════════════════════════════════════════╗
+   ║  10. GLASS: Teaser layout card                                       ║
+   ╚═══════════════════════════════════════════════════════════════════════╝ */
+
+body.theme-glass-main .teaser-layout {
+  background: rgba(255, 255, 255, 0.50);
+  border-color: rgba(148, 163, 184, 0.25);
+  backdrop-filter: blur(14px) saturate(120%);
+  -webkit-backdrop-filter: blur(14px) saturate(120%);
+  box-shadow:
+    0 4px 20px rgba(15, 23, 42, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.50);
+}
+
+/* ╔═══════════════════════════════════════════════════════════════════════╗
+   ║  11. GLASS: Teaser caption items                                     ║
+   ╚═══════════════════════════════════════════════════════════════════════╝ */
+
+body.theme-glass-main .teaser-caption-item {
+  background: rgba(255, 255, 255, 0.50);
+  border-color: rgba(148, 163, 184, 0.25);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.50);
+}
+
+body.theme-glass-main .teaser-caption-item:hover {
+  /* Keep hovered caption text crisp by disabling backdrop blur on hover. */
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  box-shadow:
+    0 8px 24px rgba(15, 23, 42, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.50);
+}
+
+/* ╔═══════════════════════════════════════════════════════════════════════╗
+   ║  12. GLASS: Teaser hover figure                                      ║
+   ╚═══════════════════════════════════════════════════════════════════════╝ */
+body.theme-glass-main .teaser-layout .hover-figure img {
+  border-color: rgba(148, 163, 184, 0.28);
+  box-shadow:
+    0 6px 22px rgba(15, 23, 42, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.35);
+}
+
+body.theme-glass-main .teaser-layout .hover-figure__btn {
+  border-color: rgba(148, 163, 184, 0.35);
+  background: rgba(255, 255, 255, 0.68);
+  box-shadow:
+    0 8px 18px rgba(15, 23, 42, 0.14),
+    inset 0 1px 0 rgba(255, 255, 255, 0.65);
+  backdrop-filter: blur(10px) saturate(120%);
+  -webkit-backdrop-filter: blur(10px) saturate(120%);
+}
+
+body.theme-glass-main .teaser-layout .hover-figure__btn::before {
+  color: rgba(15, 23, 42, 0.82);
+}
+
+body.theme-glass-main .teaser-layout .hover-figure:hover .hover-figure__btn,
+body.theme-glass-main .teaser-layout .hover-figure:focus-within .hover-figure__btn {
+  background: rgba(255, 255, 255, 0.82);
+  box-shadow:
+    0 12px 26px rgba(15, 23, 42, 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 0.72);
+}
+
+
+body.theme-glass-main .teaser-layout .hover-figure__tooltip {
+  border-color: var(--teaser-hover-tooltip-border);
+  background: linear-gradient(
+    145deg,
+    var(--teaser-hover-tooltip-glass-from),
+    var(--teaser-hover-tooltip-glass-to)
+  );
+  color: rgba(15, 23, 42, 0.92);
+  box-shadow:
+    0 12px 28px rgba(15, 23, 42, 0.10),
+    inset 0 1px 0 rgba(255, 255, 255, 0.65);
+  backdrop-filter: blur(var(--teaser-hover-tooltip-blur)) saturate(var(--teaser-hover-tooltip-saturate));
+  -webkit-backdrop-filter: blur(var(--teaser-hover-tooltip-blur)) saturate(var(--teaser-hover-tooltip-saturate));
+}
+
+body.theme-glass-main .teaser-layout .hover-figure__tooltip::after {
+  background: linear-gradient(
+    145deg,
+    var(--teaser-hover-tooltip-glass-from),
+    var(--teaser-hover-tooltip-glass-to)
+  );
+  border-left-color: var(--teaser-hover-tooltip-border);
+  border-top-color: var(--teaser-hover-tooltip-border);
+}
+
+/* ╔═══════════════════════════════════════════════════════════════════════╗
+   ║  13. GLASS: BibTeX code block                                        ║
+   ╚═══════════════════════════════════════════════════════════════════════╝ */
+
+body.theme-glass-main #bibtex pre,
+body.theme-glass-main #bibtex #bibtex-code {
+  background: rgba(255, 255, 255, 0.50);
+  border-color: rgba(148, 163, 184, 0.25);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow:
+    0 2px 12px rgba(15, 23, 42, 0.04),
+    inset 0 1px 0 rgba(255, 255, 255, 0.50);
+}
+
+/* ╔═══════════════════════════════════════════════════════════════════════╗
+   ║  14. GLASS: Ghost buttons (comparison controls)                      ║
+   ╚═══════════════════════════════════════════════════════════════════════╝ */
+
+body.theme-glass-main .button-ghost {
+  background: rgba(255, 255, 255, 0.50);
+  border-color: rgba(148, 163, 184, 0.25);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+body.theme-glass-main .button-ghost:hover {
+  /* Prevent inherited glass blur from softening button label text on hover. */
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  background: rgba(255, 255, 255, 0.70);
+  border-color: rgba(148, 163, 184, 0.30);
+  box-shadow:
+    0 4px 16px rgba(15, 23, 42, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.50);
+}
+
+/* ╔═══════════════════════════════════════════════════════════════════════╗
+   ║  15. GLASS: Model switcher tabs                                      ║
+   ╚═══════════════════════════════════════════════════════════════════════╝ */
+
+body.theme-glass-main .qualitative-video-comparison-block .qualitative-model-tab {
+  background: rgba(255, 255, 255, 0.55);
+  border-color: rgba(148, 163, 184, 0.25);
+  color: #0f172a;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+body.theme-glass-main .qualitative-video-comparison-block .qualitative-model-tab.is-active {
+  background: rgba(15, 23, 42, 0.90);
+  border-color: rgba(15, 23, 42, 0.90);
+  color: #f8fafc;
+}
+
+/* ╔═══════════════════════════════════════════════════════════════════════╗
+   ║  16. GLASS: Carousel nav + scroll-top button                        ║
+   ╚═══════════════════════════════════════════════════════════════════════╝ */
+
+body.theme-glass-main .table-carousel__nav {
+  background: rgba(15, 23, 42, 0.82);
+  border-color: rgba(148, 163, 184, 0.30);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.12);
+}
+
+body.theme-glass-main .table-carousel__nav:hover {
+  background: rgba(255, 255, 255, 0.85);
+  color: #0f172a;
+  border-color: rgba(148, 163, 184, 0.35);
+}
+
+body.theme-glass-main .table-carousel__dot.is-active {
+  background: #0f172a;
+}
+
+/* Keep podium colors inside cells so table grid lines remain visible. */
+body.theme-glass-main .results-table td.results-badge-top1,
+body.theme-glass-main .results-table td.results-badge-top2,
+body.theme-glass-main .results-table td.results-badge-top3 {
+  background-clip: padding-box;
+  /* box-shadow: inset 0 -1px 0 rgba(148, 163, 184, 0.30); */
+}
+
+body.theme-glass-main .scroll-top-btn {
+  background: rgba(15, 23, 42, 0.82);
+  border-color: rgba(148, 163, 184, 0.30);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+body.theme-glass-main .scroll-top-btn:hover {
+  background: rgba(255, 255, 255, 0.85);
+  color: #0f172a;
+  border-color: rgba(148, 163, 184, 0.35);
+}
+
+/* ╔═══════════════════════════════════════════════════════════════════════╗
+   ║  17. GLASS: Overview section                                         ║
+   ╚═══════════════════════════════════════════════════════════════════════╝ */
+
+body.theme-glass-main #overview {
+  background: #ffffff;
+}
+
+/* ╔═══════════════════════════════════════════════════════════════════════╗
+   ║  18. HEADER ACTION BUTTONS                                           ║
+   ╚═══════════════════════════════════════════════════════════════════════╝ */
+
+body.theme-glass-main .header-action-button:hover {
+  background: rgba(255, 255, 255, 0.60);
+  color: #0f172a !important;
+  border-color: rgba(37, 99, 235, 0.25);
+  box-shadow:
+    0 4px 16px rgba(37, 99, 235, 0.10),
+    inset 0 1px 0 rgba(255, 255, 255, 0.50);
+  /* Disabled hover blur to keep CTA text sharp during interaction. */
+  /* backdrop-filter: blur(12px); */
+  /* -webkit-backdrop-filter: blur(12px); */
+}
+
+/* ╔═══════════════════════════════════════════════════════════════════════╗
+   ║  19. GEOMETRY VIDEO PANELS — lighter bezels, clearer hierarchy        ║
+   ╚═══════════════════════════════════════════════════════════════════════╝ */
+
+/* Keep these two video containers clean and less "heavy-glass". */
+body.theme-glass-main #geometry .results-video-grid {
+  background: color-mix(in srgb, #ffffff 76%, var(--bg) 24%);
+  border-color: color-mix(in srgb, var(--line) 52%, transparent);
+  box-shadow:
+    0 2px 10px rgba(15, 23, 42, 0.04),
+    inset 0 1px 0 rgba(255, 255, 255, 0.56);
+  backdrop-filter: blur(8px) saturate(112%);
+  -webkit-backdrop-filter: blur(8px) saturate(112%);
+}
+
+/* Thin frame around the single point-cloud video. */
+body.theme-glass-main #geometry .results-video-grid.pointcloud-single .method-cell video {
+  border-width: 0.8px;
+  border-color: color-mix(in srgb, var(--line) 48%, transparent);
+}
+
+/* Second panel width comes from `video-container-sizes.css`
+   (`--video-pointcloud-comparison-maxw` on `[data-video-container="pointcloud-comparison"]`).
+   Do not set max-width here — it would override the token and blow past the single video (800px). */
+body.theme-glass-main #geometry .results-video-grid.comparison-grid {
+  border-color: color-mix(in srgb, var(--line) 46%, transparent);
+  padding-top: 6px;
+}
+
+body.theme-glass-main #geometry .comparison-wrap--geometry .comparison-slider {
+  border-width: 0.8px;
+  border-color: color-mix(in srgb, var(--line) 48%, transparent);
+  border-radius: 9px;
+}
+
+body.theme-glass-main #geometry .qualitative-video-compare[data-merged-duo] {
+  border-width: 2px;
+  border-color: #fff;
+  border-radius: 0;
+}

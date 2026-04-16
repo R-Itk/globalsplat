@@ -1,0 +1,116 @@
+/* ── Merged-video styles (atlas_compare.js) ──────────────────────────────── */
+
+/* 3-up triplet: single hidden video + canvas (see one_video_triplet_canvas.js) */
+.merged-triplet-canvas-wrap {
+  position: relative;
+  overflow: hidden;
+}
+
+.merged-triplet-source {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  opacity: 0;
+  pointer-events: none;
+  clip: rect(0, 0, 0, 0);
+}
+
+/* qualitative-video-comparison.css sets `video { inset:0; width:100% }` — override for hidden source */
+.qualitative-video-comparison-block .qualitative-video-compare.merged-triplet-canvas-wrap .merged-triplet-source {
+  inset: auto !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 1px !important;
+  height: 1px !important;
+  max-width: 1px !important;
+  max-height: 1px !important;
+  object-fit: none !important;
+  background: transparent !important;
+  will-change: auto !important;
+}
+
+.merged-triplet-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.merged-triplet-canvas-wrap .twentytwenty-overlay {
+  z-index: 2;
+}
+
+/* Merged duo (2× width): two stacked videos inside .sync-role */
+.sync-role {
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  overflow: hidden !important;
+  box-sizing: border-box !important;
+}
+
+.sync-role video {
+  position: absolute !important;
+  top: 0 !important;
+  right: auto !important;
+  bottom: 0 !important;
+  width: 200% !important;
+  height: 100% !important;
+  object-fit: fill !important;
+  pointer-events: none !important;
+  box-sizing: border-box !important;
+}
+
+[data-merged-duo] .sync-role--ours video {
+  left: 0 !important;
+}
+
+[data-merged-duo] .sync-role--baseline video {
+  left: -100% !important;
+}
+
+#geometry .qualitative-video-compare[data-merged-duo] {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-height: 0;
+  container-type: inline-size;
+  background: transparent;
+  border: 1px solid color-mix(in srgb, var(--line) 55%, transparent);
+  border-radius: 10px;
+  aspect-ratio: 1 / 1;
+  overflow: visible;
+}
+
+/* Fills the aspect-ratio box; parent .comparison-slider aspect 16/9 is overridden in comparison.css */
+#geometry .comparison-slider--merged-duo {
+  flex: 1 1 auto;
+  min-height: 0;
+  width: 100%;
+  position: relative;
+  z-index: 41;
+  overflow: hidden;
+  border-radius: 9px;
+  --split: 50%;
+  background: var(--bg-v1);
+  container-type: inline-size;
+}
+
+/* Top layer: left column of merged file (dot overlay); clipped by vertical split bar */
+#geometry .comparison-slider--merged-duo .sync-role--ours {
+  clip-path: polygon(0 0, var(--split) 0, var(--split) 100%, 0 100%);
+  pointer-events: none;
+}
+
+#geometry .comparison-slider--merged-duo .sync-role--baseline {
+  pointer-events: none;
+}

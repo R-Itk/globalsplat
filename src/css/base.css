@@ -1,0 +1,59 @@
+html {
+  /* Default comfortable size (small/medium screens) */
+  font-size: calc(16px * var(--site-scale, 1));
+  scroll-behavior: smooth;
+  scroll-padding-top: 2rem;
+}
+
+/* Only on wider screens, let the base size scale up a bit */
+@media (min-width: 1200px) {
+  html {
+    font-size: clamp(
+      calc(16px * var(--site-scale, 1)),
+      calc(1.1vw * var(--site-scale, 1)),
+      calc(18px * var(--site-scale, 1))
+    );
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif;
+  color: var(--text);
+  background: var(--bg);
+  /* background:
+    radial-gradient(1200px 800px at 0% 0%, #eff6ff, transparent 60%),
+    radial-gradient(1200px 800px at 100% 0%, #f5f3ff, transparent 55%),
+    var(--bg); */
+  line-height: 1.6;
+}
+
+a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* Firefox only: Core Text vs Gecko draw the same Inter weights differently on glass UI;
+   grayscale smoothing + geometric precision nudge nav/button labels toward WebKit’s slimmer look. */
+@supports (-moz-appearance: none) {
+  body {
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  .topnav-link {
+    text-rendering: geometricPrecision;
+  }
+
+  .button,
+  .scroll-top-btn {
+    text-rendering: geometricPrecision;
+  }
+}

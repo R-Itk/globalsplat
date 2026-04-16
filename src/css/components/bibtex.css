@@ -1,0 +1,120 @@
+/* .bibtex-block {
+  margin: 12px 0 0;
+  padding: 14px 16px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--card);
+  overflow-x: auto;
+} */
+.bibtex-block {
+  margin: 24px 0 0;
+  padding: 16px 18px;
+  border-radius: 4px;
+  border: 1px solid #e2e8f0;
+  /* match C3G citation border */
+  background-color: #fbfffe;
+  /* match citation-section alt bg */
+  color: #64748b;
+  /* muted text like citation-block */
+  overflow-x: auto;
+  font-family: monospace;
+  font-size: 0.98rem;
+}
+
+.bibtex-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+#bibtex pre,
+#bibtex #bibtex-code {
+  position: relative;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 2.75rem 1.5rem 1.5rem;
+  font-size: 0.9rem;
+  overflow: auto;
+  box-shadow: var(--shadow-sm);
+  color: var(--text);
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  -webkit-overflow-scrolling: touch;
+}
+
+#bibtex #bibtex-code code {
+  background: transparent;
+  color: inherit;
+  display: block;
+  white-space: pre-wrap;
+  word-break: break-word;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Roboto Mono", monospace;
+}
+
+#bibtex .copy-bibtex-btn {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--card);
+  color: var(--text);
+  font-size: 0.8rem;
+  font-weight: 600;
+  line-height: 1;
+  width: 2.15rem;
+  height: 2rem;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: width 180ms ease, background-color 150ms ease, border-color 150ms ease, color 150ms ease;
+}
+
+#bibtex .copy-bibtex-btn__icon {
+  width: 2.15rem;
+  min-width: 2.15rem;
+  height: 2rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.88rem;
+}
+
+#bibtex .copy-bibtex-btn__text {
+  width: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: width 180ms ease, opacity 120ms ease;
+}
+
+#bibtex .copy-bibtex-btn:hover {
+  background: color-mix(in srgb, var(--card), var(--accent) 10%);
+  border-color: var(--accent);
+  width: 5.25rem;
+}
+
+#bibtex .copy-bibtex-btn:hover .copy-bibtex-btn__text {
+  width: 2.5rem;
+  opacity: 1;
+}
+
+#bibtex .copy-bibtex-btn.is-copied {
+  background: #dcfce7;
+  border-color: #16a34a;
+  color: #166534;
+  width: 5.85rem;
+}
+
+#bibtex .copy-bibtex-btn.is-copied .copy-bibtex-btn__text {
+  width: 3.1rem;
+  opacity: 1;
+}
+

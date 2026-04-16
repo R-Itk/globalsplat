@@ -1,0 +1,123 @@
+<div class="results-table-card">
+  <p class="results-table-title">Cross-Dataset Generalization on ACID</p>
+  <table class="results-table" aria-label="Cross-dataset generalization on ACID">
+    <thead>
+      <tr>
+        <th rowspan="2">Method</th>
+        <th colspan="4">12 Views</th>
+        <th colspan="4">24 Views</th>
+        <th colspan="4">36 Views</th>
+      </tr>
+      <tr>
+        <th>PSNR ↑</th>
+        <th>SSIM ↑</th>
+        <th>LPIPS ↓</th>
+        <th>#G (K) ↓</th>
+        <th>PSNR ↑</th>
+        <th>SSIM ↑</th>
+        <th>LPIPS ↓</th>
+        <th>#G (K) ↓</th>
+        <th>PSNR ↑</th>
+        <th>SSIM ↑</th>
+        <th>LPIPS ↓</th>
+        <th>#G (K) ↓</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="results-row-non-gs">
+        <td>LVSM (non-GS)</td>
+        <td>29.23</td>
+        <td>0.849</td>
+        <td>0.142</td>
+        <td>–</td>
+        <td>28.29</td>
+        <td>0.826</td>
+        <td>0.161</td>
+        <td>–</td>
+        <td>27.61</td>
+        <td>0.807</td>
+        <td>0.178</td>
+        <td>–</td>
+      </tr>
+      <tr>
+        <td>DepthSplat</td>
+        <td>21.45</td>
+        <td class="results-badge-top2">0.769</td>
+        <td class="results-badge-top3">0.220</td>
+        <td>786</td>
+        <td>20.15</td>
+        <td class="results-badge-top2">0.711</td>
+        <td class="results-badge-top3">0.258</td>
+        <td>1572</td>
+        <td>19.60</td>
+        <td class="results-badge-top2">0.681</td>
+        <td class="results-badge-top3">0.279</td>
+        <td>2359</td>
+      </tr>
+      <tr>
+        <td>GGN</td>
+        <td>22.06</td>
+        <td>0.678</td>
+        <td>0.300</td>
+        <td class="results-badge-top3">138</td>
+        <td>21.19</td>
+        <td>0.659</td>
+        <td>0.309</td>
+        <td class="results-badge-top3">275</td>
+        <td>–</td>
+        <td>–</td>
+        <td>–</td>
+        <td>–</td>
+      </tr>
+      <tr>
+        <td>Zpressor</td>
+        <td class="results-badge-top1">28.44</td>
+        <td class="results-badge-top1">0.859</td>
+        <td class="results-badge-top1">0.140</td>
+        <td>393</td>
+        <td class="results-badge-top1">28.53</td>
+        <td class="results-badge-top1">0.860</td>
+        <td class="results-badge-top1">0.138</td>
+        <td>393</td>
+        <td class="results-badge-top1">28.45</td>
+        <td class="results-badge-top1">0.859</td>
+        <td class="results-badge-top1">0.139</td>
+        <td class="results-badge-top3">393</td>
+      </tr>
+      <tr>
+        <td>C3G</td>
+        <td class="results-badge-top3">22.24</td>
+        <td>0.598</td>
+        <td>0.332</td>
+        <td class="results-badge-top1">2</td>
+        <td class="results-badge-top3">22.24</td>
+        <td>0.598</td>
+        <td>0.331</td>
+        <td class="results-badge-top1">2</td>
+        <td class="results-badge-top3">22.20</td>
+        <td>0.598</td>
+        <td>0.333</td>
+        <td class="results-badge-top1">2</td>
+      </tr>
+      <tr>
+        <td><strong>GlobalSplat (Ours)</strong></td>
+        <td class="results-badge-top2"><strong>28.04</strong></td>
+        <td class="results-badge-top3"><strong>0.815</strong></td>
+        <td class="results-badge-top2"><strong>0.207</strong></td>
+        <td class="results-badge-top2"><strong>16</strong></td>
+        <td class="results-badge-top2"><strong>28.03</strong></td>
+        <td class="results-badge-top3"><strong>0.813</strong></td>
+        <td class="results-badge-top2"><strong>0.208</strong></td>
+        <td class="results-badge-top2"><strong>16</strong></td>
+        <td class="results-badge-top2"><strong>27.99</strong></td>
+        <td class="results-badge-top3"><strong>0.810</strong></td>
+        <td class="results-badge-top2"><strong>0.213</strong></td>
+        <td class="results-badge-top2"><strong>16</strong></td>
+      </tr>
+    </tbody>
+  </table>
+  <p class="caption small">
+    Zero-shot transfer from RealEstate10K to ACID. <strong>GlobalSplat maintains strong performance across all view counts with a fixed 16K-Gaussian budget.</strong>
+    </p>
+</div>
+

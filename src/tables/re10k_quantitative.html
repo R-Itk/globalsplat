@@ -1,0 +1,172 @@
+<div class="results-table-card">
+  <p class="results-table-title">Quantitative Comparison on RealEstate10K</p>
+  <table class="results-table" aria-label="Quantitative comparison on RealEstate10K">
+    <thead>
+      <tr>
+        <th rowspan="2">Method</th>
+        <th colspan="4">12 Views</th>
+        <th colspan="4">24 Views</th>
+        <th colspan="4">36 Views</th>
+      </tr>
+      <tr>
+        <th>PSNR ↑</th>
+        <th>SSIM ↑</th>
+        <th>LPIPS ↓</th>
+        <th>#G (K) ↓</th>
+        <th>PSNR ↑</th>
+        <th>SSIM ↑</th>
+        <th>LPIPS ↓</th>
+        <th>#G (K) ↓</th>
+        <th>PSNR ↑</th>
+        <th>SSIM ↑</th>
+        <th>LPIPS ↓</th>
+        <th>#G (K) ↓</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="results-row-non-gs">
+        <td>LVSM (non-GS)</td>
+        <td>28.65</td>
+        <td>0.898</td>
+        <td>0.095</td>
+        <td>–</td>
+        <td>27.24</td>
+        <td>0.874</td>
+        <td>0.112</td>
+        <td>–</td>
+        <td>26.38</td>
+        <td>0.855</td>
+        <td>0.126</td>
+        <td>–</td>
+      </tr>
+      <tr>
+        <td>NoPoSplat</td>
+        <td>21.26</td>
+        <td>0.667</td>
+        <td>0.200</td>
+        <td>602</td>
+        <td>21.24</td>
+        <td>0.664</td>
+        <td>0.200</td>
+        <td>1204</td>
+        <td>21.19</td>
+        <td>0.663</td>
+        <td>0.200</td>
+        <td>1806</td>
+      </tr>
+      <tr>
+        <td>AnySplat</td>
+        <td>23.06</td>
+        <td>0.807</td>
+        <td>0.215</td>
+        <td>1500</td>
+        <td>24.11</td>
+        <td class="results-badge-top3">0.838</td>
+        <td>0.198</td>
+        <td>2636</td>
+        <td class="results-badge-top3">24.20</td>
+        <td class="results-badge-top3">0.842</td>
+        <td class="results-badge-top3">0.192</td>
+        <td>3309</td>
+      </tr>
+      <tr>
+        <td>EcoSplat</td>
+        <td>–</td>
+        <td>–</td>
+        <td>–</td>
+        <td>–</td>
+        <td class="results-badge-top3">24.72</td>
+        <td>0.822</td>
+        <td class="results-badge-top3">0.183</td>
+        <td class="results-badge-top3">78</td>
+        <td>–</td>
+        <td>–</td>
+        <td>–</td>
+        <td>–</td>
+      </tr>
+      <tr>
+        <td>DepthSplat</td>
+        <td>21.35</td>
+        <td class="results-badge-top3">0.809</td>
+        <td class="results-badge-top3">0.190</td>
+        <td>786</td>
+        <td>19.66</td>
+        <td>0.743</td>
+        <td>0.239</td>
+        <td>1572</td>
+        <td>18.84</td>
+        <td>0.704</td>
+        <td>0.268</td>
+        <td>2359</td>
+      </tr>
+      <tr>
+        <td>GGN</td>
+        <td>18.24</td>
+        <td>0.661</td>
+        <td>0.327</td>
+        <td class="results-badge-top3">138</td>
+        <td>17.20</td>
+        <td>0.634</td>
+        <td>0.343</td>
+        <td>512</td>
+        <td>–</td>
+        <td>–</td>
+        <td>–</td>
+        <td>–</td>
+      </tr>
+      <tr>
+        <td>Zpressor</td>
+        <td class="results-badge-top2">28.46</td>
+        <td class="results-badge-top1">0.910</td>
+        <td class="results-badge-top1">0.098</td>
+        <td>393</td>
+        <td class="results-badge-top2">28.51</td>
+        <td class="results-badge-top1">0.911</td>
+        <td class="results-badge-top1">0.097</td>
+        <td>393</td>
+        <td class="results-badge-top1">28.50</td>
+        <td class="results-badge-top1">0.911</td>
+        <td class="results-badge-top1">0.097</td>
+        <td class="results-badge-top3">393</td>
+      </tr>
+      <tr>
+        <td>C3G</td>
+        <td class="results-badge-top3">23.61</td>
+        <td>0.740</td>
+        <td>0.203</td>
+        <td class="results-badge-top1">2</td>
+        <td>23.80</td>
+        <td>0.747</td>
+        <td>0.198</td>
+        <td class="results-badge-top1">2</td>
+        <td>23.81</td>
+        <td>0.747</td>
+        <td>0.199</td>
+        <td class="results-badge-top1">2</td>
+      </tr>
+      <tr>
+        <td><strong>GlobalSplat (Ours)</strong></td>
+        <td class="results-badge-top1"><strong>28.57</strong></td>
+        <td class="results-badge-top2"><strong>0.885</strong></td>
+        <td class="results-badge-top2"><strong>0.138</strong></td>
+        <td class="results-badge-top2"><strong>16</strong></td>
+        <td class="results-badge-top1"><strong>28.53</strong></td>
+        <td class="results-badge-top2"><strong>0.883</strong></td>
+        <td class="results-badge-top2"><strong>0.140</strong></td>
+        <td class="results-badge-top2"><strong>16</strong></td>
+        <td class="results-badge-top2"><strong>28.45</strong></td>
+        <td class="results-badge-top2"><strong>0.880</strong></td>
+        <td class="results-badge-top2"><strong>0.144</strong></td>
+        <td class="results-badge-top2"><strong>16</strong></td>
+      </tr>
+    </tbody>
+  </table>
+  <p class="caption small">
+    <!-- PSNR, SSIM, LPIPS, and Gaussian count on RealEstate10K. 
+    Highlight colors indicate 1st/2nd/3rd best among Gaussian-based methods; LVSM is a non-Gaussian baseline. -->
+    Ranking highlights: <span class="results-badge-top1">Top 1</span>, <span class="results-badge-top2">Top 2</span>,
+    and <span class="results-badge-top3">Top 3</span> among Gaussian-based methods. 
+    Gray indicates LVSM is not a Gaussian-based approach.
+  </p>
+</div>
+

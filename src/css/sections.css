@@ -1,0 +1,402 @@
+.site-credit {
+  text-align: center;
+  padding: 1.5rem 1rem;
+  font-size: 0.8rem;
+  color: var(--text-muted, #94a3b8);
+  border-top: 1px solid var(--line, #e2e8f0);
+}
+
+.site-credit p {
+  margin: 0;
+}
+
+.site-credit a {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.site-credit a:hover {
+  color: var(--accent, #6366f1);
+}
+
+header {
+  border-bottom: 1px solid var(--line, #e2e8f0);
+  /* Extra top padding: breathing room below fixed .topnav */
+  padding: clamp(3.25rem, 5.5vw, 4.75rem) 0 clamp(1.5rem, 3.5vw, 3rem);
+  background:
+    radial-gradient(900px 420px at 0% 0%, rgba(219, 234, 254, 0.65), transparent 58%),
+    radial-gradient(900px 420px at 100% 0%, rgba(221, 214, 254, 0.6), transparent 58%),
+    linear-gradient(180deg, #f9fafb 0%, #eef2ff 55%, #e0f2fe 100%);
+}
+
+.title-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  margin-bottom: clamp(1rem, 2vw, 1.25rem);
+}
+
+.title-text {
+  text-align: center;
+  max-width: 1100px;
+}
+
+.writers {
+  font-size: clamp(1.1rem, 1.5vw, 1.35rem);
+  color: var(--text);
+  margin-bottom: clamp(1rem, 2vw, 1.25rem);
+  text-align: center;
+}
+
+.writers a {
+  color: #000000;
+  text-decoration: none;
+  position: relative;
+  display: inline-block;
+  padding: clamp(0.15rem, 0.3vw, 0.25rem);
+  border-radius: 0.25rem;
+  margin: clamp(2px, 0.4vw, 4px) clamp(2px, 0.4vw, 4px) clamp(4px, 0.8vw, 8px) clamp(2px, 0.4vw, 4px);
+  transition:
+    color 0.26s cubic-bezier(0.215, 0.61, 0.355, 1),
+    background-color 0.26s cubic-bezier(0.215, 0.61, 0.355, 1);
+  line-height: 1;
+}
+
+.writers a:hover {
+  text-decoration: none;
+  color: var(--foreground, #0f172a);
+  background-color: var(--hover-sidebar-bg);
+}
+
+.writers-sep {
+  color: var(--text);
+  margin: 0 clamp(2px, 0.4vw, 4px);
+}
+
+.writers sup.writer-affil,
+.universities sup.university-affil {
+  font-size: 0.525em;
+  vertical-align: super;
+  line-height: 0;
+  margin-left: 0;
+}
+
+.universities {
+  font-size: clamp(0.95rem, 1.2vw, 1.1rem);
+  color: var(--muted);
+  margin-bottom: clamp(1.2rem, 2.5vw, 1.75rem);
+  text-align: center;
+}
+
+.universities a {
+  color: var(--muted);
+  text-decoration: none;
+  position: relative;
+  display: inline-block;
+  padding: clamp(0.15rem, 0.3vw, 0.25rem) clamp(0.25rem, 0.4vw, 0.35rem);
+  border-radius: 0.25rem;
+  margin: clamp(2px, 0.4vw, 4px) clamp(4px, 0.6vw, 6px) 0 clamp(4px, 0.6vw, 6px);
+  transition:
+    color 0.26s cubic-bezier(0.215, 0.61, 0.355, 1),
+    background-color 0.26s cubic-bezier(0.215, 0.61, 0.355, 1);
+}
+
+.universities a:hover {
+  text-decoration: none;
+  color: var(--foreground, #0f172a);
+  background-color: var(--hover-sidebar-bg);
+}
+
+.universities-sep {
+  margin: 0 clamp(2px, 0.4vw, 4px);
+}
+
+.links {
+  display: flex;
+  gap: clamp(8px, 1.2vw, 12px);
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: clamp(4px, 0.8vw, 8px);
+}
+
+/* header h1 {
+  margin: 0;
+  font-size: clamp(2.4rem, 3.2vw, 3.1rem);
+  line-height: 1.18;
+  letter-spacing: -0.025em;
+  font-weight: 700;
+  color: #0f172a;
+} */
+
+
+/* Primary Page Title */
+header h1 {
+  /* font-family: "Inter", sans-serif; */
+  /* font-family: var(--font-stack-montserrat) !important; */
+  font-family: var(--font-stack-geist-mono) !important;
+  font-weight: 700;
+  font-size: clamp(2.65rem, 3.5vw, 3.45rem);
+  line-height: 1.18;
+  letter-spacing: -0.025em;
+  color: #0f172a;
+  margin: 0;
+}
+
+/* Standard Section Titles */
+h2, .section-title {
+  /* font-family: var(--font-stack-inter); */
+  /* font-family: var(--font-stack-montserrat) !important; */
+  font-family: var(--font-stack-geist-mono) !important;
+  font-weight: 700;
+  font-size: clamp(1.7rem, 2vw, 2rem);
+  color: var(--text);
+  text-align: center;
+  margin: 0 0 clamp(1.25rem, 2vw, 1.75rem);
+}
+
+/* Subsections */
+h3, .section-subtitle {
+  font-family: "Inter", sans-serif;
+  font-weight: 600;
+  font-size: clamp(1.4rem, 1.7vw, 1.6rem);
+  color: var(--text);
+  text-align: center;
+  margin: 0 0 clamp(1rem, 1.5vw, 1.25rem);
+}
+/* h3, .section-subtitle {
+  font-family: "Inter", sans-serif;
+  font-weight: 600;
+  font-size: clamp(1.25rem, 1.5vw, 1.35rem);
+  color: var(--text);
+  text-align: center;
+  margin: 0 0 clamp(1rem, 1.5vw, 1.25rem);
+} */
+
+h4, .subsection-title {
+  font-family: "Inter", sans-serif;
+  font-weight: 600;
+  font-size: clamp(1.15rem, 1.3vw, 1.3rem);
+  color: var(--text);
+  text-align: left;
+  margin: 0 0 clamp(0.85rem, 1.2vw, 1rem);
+}
+
+section {
+  padding: clamp(2rem, 4.5vw, 2.75rem) 0;
+  border-bottom: 1px solid var(--line);
+}
+
+#abstract {
+  border-bottom: none;
+}
+
+.section-band-muted {
+  background: var(--section-bg-muted);
+  border-top: 1px solid rgba(209, 220, 243, 0.55);
+  border-bottom: 1px solid rgba(209, 220, 243, 0.55);
+}
+
+/* Stack below #teaser so teaser hover tooltips can overlap this section when needed. */
+#results {
+  position: relative;
+  z-index: 0;
+}
+
+/* Quantitative band inside #results wrapper — the one indigo-tinted highlight */
+#results .results-quantitative > .section-band-muted {
+  background: linear-gradient(135deg, #e0f2fe 0%, #eef2ff 50%, #f4f6fb 100%);
+  border-top-color: rgba(165, 195, 250, 0.55);
+  border-bottom-color: rgba(165, 195, 250, 0.55);
+  padding: clamp(2rem, 4.5vw, 3rem) 0;
+}
+
+/* First qualitative band: umbrella title only — compact vertical rhythm; other bands use default section padding */
+.results-qualitative > .section-band-muted:first-child {
+  padding: clamp(1rem, 2.5vw, 1.5rem) 0 clamp(0.75rem, 1.75vw, 1.1rem);
+}
+
+/* Tighten spacing before the quantitative block without changing other muted bands. */
+#geometry {
+  padding-bottom: clamp(1rem, 2vw, 1.5rem);
+}
+
+#results .section-title {
+  margin-bottom: clamp(0.75rem, 1.5vw, 1.25rem);
+  letter-spacing: 0.06em;
+}
+
+#results .results-qualitative-heading {
+  margin-bottom: 0;
+  letter-spacing: 0.08em;
+}
+
+.section-band-strong {
+  background: var(--section-bg-strong);
+  border-top: 1px solid rgba(199, 210, 254, 0.55);
+  border-bottom: 1px solid rgba(199, 210, 254, 0.55);
+}
+
+/* Bare h2 (no .section-title) gets tighter margin by default */
+h2 {
+  margin: 0 0 clamp(6px, 1vw, 10px);
+  font-size: clamp(1.6rem, 1.9vw, 1.85rem);
+}
+
+/* Styled section titles override the bare h2 rule above */
+.section-title {
+  font-family: "Inter", sans-serif;
+  text-align: center;
+  font-weight: bold;
+  font-size: clamp(1.7rem, 2.05vw, 2rem);
+  color: var(--text);
+  margin: 0 0 clamp(1.5rem, 2.5vw, 2rem);
+}
+
+/* Accent bar beneath every section title */
+.section-title::after {
+  content: '';
+  display: block;
+  width: 36px;
+  height: 2px;
+  /* background: var(--accent); */
+  border-radius: 2px;
+  /* margin: 0.55rem auto 0; */
+  opacity: 0.7;
+}
+
+/* .title.is-3 {
+  font-family: 'Inter', sans-serif !important;
+  font-weight: 700;
+  color: var(--text);
+  margin: 0 0 clamp(1.25rem, 2vw, 1.75rem);
+  font-size: clamp(1.5rem, 1.8vw, 1.75rem);
+} */
+
+.content.has-text-justified,
+.content.has-text-centered {
+  font-size: clamp(1rem, 1.2vw, 1.1rem);
+  line-height: 1.8;
+  color: var(--muted);
+}
+
+.content.has-text-justified p,
+.content.has-text-centered p {
+  margin-bottom: clamp(1.25rem, 1.8vw, 1.5rem);
+}
+
+/* #tldr .title.is-3,
+#abstract .title.is-3 {
+  text-align: center;
+} */
+
+#tldr .content.has-text-justified,
+#abstract .content.has-text-justified {
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#tldr .content.has-text-centered,
+#abstract .content.has-text-centered {
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
+
+/* Tighten the transition from TLDR into teaser. */
+#tldr {
+  padding-bottom: clamp(0.75rem, 1.8vw, 1.1rem);
+}
+
+#teaser {
+  padding-top: clamp(1rem, 2.4vw, 1.5rem);
+}
+
+/* #tldr, */
+#abstract {
+  padding: clamp(2.5rem, 5vw, 4rem) 0;
+}
+
+#overview {
+  background: #ffffff;
+}
+
+#tldr p,
+#abstract p {
+  max-width: 900px;
+  /* top | left/right | bottom */
+  margin: 0 auto clamp(1.25rem, 1.8vw, 1.5rem);
+  color: var(--muted);
+  font-size: clamp(1.04rem, 1.26vw, 1.14rem);
+  line-height: 1.8;
+  text-align: justify;
+}
+
+#tldr p:last-child,
+#abstract p:last-child {
+  margin-bottom: 0;
+}
+
+/* Override #tldr / #abstract paragraph justify when block is centered (#tldr p sets justify with high specificity) */
+#tldr .content.has-text-centered p,
+#abstract .content.has-text-centered p {
+  text-align: center;
+}
+
+.section-subtitle {
+  font-family: "Inter", sans-serif;
+  text-align: center;
+  font-weight: 600;
+  font-size: clamp(1.25rem, 1.5vw, 1.35rem);
+  color: var(--text);
+  margin: 0 0 clamp(1rem, 1.5vw, 1.25rem);
+}
+
+.overview-figure {
+  margin: clamp(0.75rem, 1.5vw, 1rem) 0;
+}
+
+.overview-figure img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.caption {
+  margin-top: clamp(6px, 1vw, 10px);
+  color: var(--muted);
+  font-size: clamp(0.85rem, 1vw, 0.95rem);
+  text-align: left;
+}
+
+.caption-title {
+  margin: 0 0 clamp(4px, 0.8vw, 8px);
+  font-size: clamp(1rem, 1.2vw, 1.125rem);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--subtitle-2);
+  font-weight: bold;
+}
+
+#how-globalsplat-works .caption-title + ul,
+#how-globalsplat-works .caption-title + ul li {
+  font-size: clamp(0.85rem, 1vw, 0.9rem);
+}
+
+.caption-label {
+  font-size: clamp(0.85rem, 1vw, 0.9rem);
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--muted);
+  margin-bottom: clamp(2px, 0.4vw, 4px);
+}
+
+.caption-text {
+  margin: 0;
+  font-size: clamp(0.99rem, 1.06vw, 1.05rem);
+  color: var(--muted);
+}

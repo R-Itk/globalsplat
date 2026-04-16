@@ -1,0 +1,49 @@
+<div class="results-table-card">
+  <p class="results-table-title">Efficiency Comparison (24 input views)</p>
+  <table class="results-table" aria-label="Efficiency comparison for 24 input views">
+    <thead>
+      <tr>
+        <th>Metric</th>
+        <th class="results-row-non-gs">LVSM</th>
+        <th>DepthSplat</th>
+        <th>Zpressor</th>
+        <th>C3G</th>
+        <th>GGN</th>
+        <th>GlobalSplat (Ours)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Peak Mem (GB)</td>
+        <td class="results-row-non-gs">4.60</td>
+        <td>29.84</td>
+        <td class="results-badge-top2">3.70</td>
+        <td class="results-badge-top3">6.04</td>
+        <td>25.08</td>
+        <td class="results-badge-top1"><strong>1.79</strong></td>
+      </tr>
+      <tr>
+        <td>Inf. Time (ms)</td>
+        <td class="results-row-non-gs">940.00</td>
+        <td>669.50</td>
+        <td class="results-badge-top2">194.20</td>
+        <td class="results-badge-top3">387.14</td>
+        <td>1800.64</td>
+        <td class="results-badge-top1"><strong>77.88</strong></td>
+      </tr>
+      <tr>
+        <td>Size on Disk (MB)</td>
+        <td class="results-row-non-gs">–</td>
+        <td>534</td>
+        <td class="results-badge-top3">134</td>
+        <td class="results-badge-top1">0.1</td>
+        <td>174</td>
+        <td class="results-badge-top2">3.8</td>
+      </tr>
+    </tbody>
+  </table>
+  <p class="caption small">
+    Peak GPU memory, inference time, and asset size on disk for 24-view evaluation. <strong>GlobalSplat achieves the best memory and speed while remaining extremely compact.</strong>
+  </p>
+</div>
+

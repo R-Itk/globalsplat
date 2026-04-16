@@ -1,0 +1,22 @@
+.container {
+  width: 95%;
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+.container--header {
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+.layout {
+  position: relative;
+  display: flex;
+}
+
+.content {
+  max-width: var(--maxw);
+  margin: 0 auto;
+}

@@ -1,0 +1,152 @@
+/* .button-brown {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border: 1px solid var(--btn-border);
+  border-radius: 8px;
+  background: var(--btn-bg);
+  color: var(--btn-text) !important;
+  font-family: "Noto Sans", "Google Sans", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  font-weight: 600;
+  font-size: 0.98rem;
+  line-height: 1.1;
+  transition: all 0.2s ease;
+  text-decoration: none !important;
+} */
+
+/* square button */
+.button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #111827;
+  color: white !important;
+  font-weight: 600;
+  font-size: 0.98rem;
+  line-height: 1.1;
+  transition:
+    background-color 0.28s cubic-bezier(0.16, 1, 0.3, 1),
+    color 0.28s cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 0.28s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.24s ease,
+    transform 0.24s ease;
+  text-decoration: none !important;
+}
+
+/* .button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border: 1px solid var(--btn-border);
+  border-radius: 9999px;
+  background: var(--btn-bg);
+  color: var(--btn-text) !important;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-weight: 500;
+  font-size: 0.98rem;
+  line-height: 1.1;
+  transition: all 0.2s ease;
+  text-decoration: none !important;
+} */
+
+.button-brown:hover {
+  background: color-mix(in srgb, var(--btn-bg), white 10%);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-color: color-mix(in srgb, var(--btn-border), white 12%);
+  text-decoration: none;
+}
+
+.button:hover {
+  /* Default buttons keep their dark background on hover.
+     Specific link buttons (e.g. header actions) can opt into white-on-hover. */
+  background: #111827;
+  color: white !important;
+  transform: translateY(-1px);
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.18);
+  border-color: color-mix(in srgb, #111827, white 35%);
+}
+
+/* Header links: opt into white background on hover (scoped to avoid affecting all .button elements). */
+.header-action-button:hover {
+  background: #ffffff;
+  color: #0f172a !important;
+  transform: translateY(-1px);
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.18);
+  border-color: color-mix(in srgb, #111827, white 35%);
+}
+
+/* .button:hover {
+  background: #334155;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-color: #334155;
+} */
+
+.button i {
+  font-size: 1.05rem;
+}
+
+.button-outline {
+  background-color: #ffffff;
+  color: var(--text) !important;
+  border-color: #cbd5e1;
+}
+
+.button-outline:hover {
+  background-color: #fbfffe;
+  border-color: #94a3b8;
+  color: var(--text) !important;
+}
+
+.scroll-top-btn {
+  position: fixed;
+  right: 1.25rem;
+  bottom: 1.25rem;
+  width: 44px;
+  height: 44px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: #111827;
+  color: #ffffff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.2);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(8px);
+  z-index: 1000;
+  transition:
+    opacity 180ms ease,
+    transform 180ms ease,
+    visibility 180ms ease,
+    background-color 220ms cubic-bezier(0.16, 1, 0.3, 1),
+    color 220ms cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 220ms cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 220ms ease;
+}
+
+.scroll-top-btn i {
+  font-size: 0.95rem;
+}
+
+.scroll-top-btn:hover {
+  background: #ffffff;
+  color: #0f172a;
+  border-color: color-mix(in srgb, #111827, white 35%);
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.18);
+  transform: translateY(-1px);
+}
+
+.scroll-top-btn.is-visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}

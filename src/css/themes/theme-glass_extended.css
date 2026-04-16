@@ -1,0 +1,134 @@
+/**
+ * theme-glass.css — Frosted Glass UI
+ *
+ * Every surface is translucent with backdrop-filter blur, creating layered
+ * depth as sections overlap visually. Cool steel-blue accent. Inspired by
+ * macOS/visionOS glass morphism done with restraint.
+ *
+ * HOW TO SWITCH:
+ *   ON  → <body class="heading-option-b theme-glass">
+ *   OFF → <body class="heading-option-b">
+ */
+
+body.theme-glass-extended {
+  --bg:                 #eef1f5;
+  --text:               #0f172a;
+  --muted:              #64748b;
+  --subtitle-1:         #0f172a;
+  --subtitle-2:         #1e293b;
+  --subtitle-3:         #475569;
+  --line:               rgba(148, 163, 184, 0.30);
+  --accent:             #2563eb;
+  --card:               rgba(255, 255, 255, 0.55);
+  --section-bg-default: #eef1f5;
+  --section-bg-muted:   rgba(241, 245, 249, 0.60);
+  --section-bg-strong:  rgba(226, 232, 240, 0.50);
+  --btn-bg:             rgba(15, 23, 42, 0.85);
+  --btn-border:         rgba(15, 23, 42, 0.20);
+  --btn-text:           #f8fafc;
+  --hover-sidebar-bg:   rgba(15, 23, 42, 0.06);
+  --foreground:         #0f172a;
+  --hover-tooltip-bg:   rgba(15, 23, 42, 0.80);
+  --hover-tooltip-border: rgba(255, 255, 255, 0.15);
+  --hover-tooltip-shadow: rgba(37, 99, 235, 0.20);
+  --comparison-control-bg:   rgba(241, 245, 249, 0.60);
+  --comparison-control-text: #475569;
+}
+
+/* ── Header: layered glass gradient ───────────────────────────────────── */
+body.theme-glass-extended header {
+  background:
+    radial-gradient(ellipse 900px 420px at 0% 0%, rgba(219, 234, 254, 0.50), transparent 55%),
+    radial-gradient(ellipse 700px 350px at 100% 0%, rgba(199, 210, 254, 0.40), transparent 50%),
+    linear-gradient(175deg, rgba(248, 250, 252, 0.80) 0%, rgba(226, 232, 240, 0.60) 100%);
+  border-bottom: 1px solid rgba(148, 163, 184, 0.25);
+  backdrop-filter: blur(20px) saturate(140%);
+  -webkit-backdrop-filter: blur(20px) saturate(140%);
+}
+
+/* ── Top nav: glass pill ──────────────────────────────────────────────── */
+body.theme-glass-extended .topnav {
+  background: rgba(255, 255, 255, 0.45);
+  border: 1px solid rgba(148, 163, 184, 0.22);
+  border-bottom-color: rgba(148, 163, 184, 0.22);
+  backdrop-filter: blur(20px) saturate(150%);
+  -webkit-backdrop-filter: blur(20px) saturate(150%);
+  box-shadow:
+    0 4px 24px rgba(15, 23, 42, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.60);
+}
+
+/* ── Section-title underline: accent gradient bar ─────────────────────── */
+body.theme-glass-extended .section-title::after {
+  content: "";
+  display: block;
+  width: 42px;
+  height: 3px;
+  background: linear-gradient(90deg, #2563eb, #60a5fa);
+  margin: 0.5rem auto 0;
+  border-radius: 2px;
+  opacity: 1;
+}
+
+/* ── Glass cards: translucent with blur ───────────────────────────────── */
+body.theme-glass-extended .results-video-grid,
+body.theme-glass-extended .results-callout {
+  background: rgba(255, 255, 255, 0.50);
+  border-color: rgba(148, 163, 184, 0.25);
+  backdrop-filter: blur(16px) saturate(130%);
+  -webkit-backdrop-filter: blur(16px) saturate(130%);
+  box-shadow:
+    0 4px 20px rgba(15, 23, 42, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.50);
+}
+
+body.theme-glass-extended #how-globalsplat-works .has-text-justified h3.caption-title ~ .results-callout:hover {
+  box-shadow:
+    0 5px 18px rgba(15, 23, 42, 0.045),
+    0 22px 50px rgba(15, 23, 42, 0.07),
+    inset 0 1px 0 rgba(255, 255, 255, 0.50);
+}
+
+/* ── Section bands: frosted layers ────────────────────────────────────── */
+body.theme-glass-extended .section-band-muted {
+  background: rgba(241, 245, 249, 0.50);
+  border-top-color: rgba(148, 163, 184, 0.20);
+  border-bottom-color: rgba(148, 163, 184, 0.20);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+body.theme-glass-extended #results .results-quantitative > .section-band-muted {
+  background:
+    radial-gradient(ellipse 600px 300px at 20% 80%, rgba(219, 234, 254, 0.35), transparent 60%),
+    rgba(241, 245, 249, 0.50);
+  border-top-color: rgba(165, 195, 250, 0.30);
+  border-bottom-color: rgba(165, 195, 250, 0.30);
+}
+
+body.theme-glass-extended .section-band-strong {
+  background: rgba(226, 232, 240, 0.40);
+  border-top-color: rgba(148, 163, 184, 0.22);
+  border-bottom-color: rgba(148, 163, 184, 0.22);
+}
+
+/* ── Sections: translucent dividers ───────────────────────────────────── */
+body.theme-glass-extended section {
+  border-bottom-color: rgba(148, 163, 184, 0.20);
+}
+
+body.theme-glass-extended #overview {
+  background: rgba(255, 255, 255, 0.35);
+}
+
+/* ── Header action buttons ────────────────────────────────────────────── */
+body.theme-glass-extended .header-action-button:hover {
+  background: rgba(255, 255, 255, 0.60);
+  color: #0f172a !important;
+  border-color: rgba(37, 99, 235, 0.25);
+  box-shadow:
+    0 4px 16px rgba(37, 99, 235, 0.10),
+    inset 0 1px 0 rgba(255, 255, 255, 0.50);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}

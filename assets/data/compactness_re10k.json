@@ -1,0 +1,26 @@
+{
+    "defaults": {
+        "subtitle": "Ours 32K Gaussians model vs. internal variants.",
+        "caption": "Drag the slider to compare variants."
+    },
+    "scenes": [
+        {
+            "sceneTitle": "Ours 32K vs Ours 16K",
+            "leftLabel": "Ours 32K",
+            "rightLabel": "Ours 16K",
+            "leftIsOurs": true,
+            "rightIsOurs": true,
+            "leftVideo": "assets/media/re10k_concat/ours32k.mp4",
+            "rightVideo": "assets/media/re10k_concat/ours16k.mp4"
+        },
+        {
+            "sceneTitle": "Ours 32K vs Ours 2K",
+            "leftLabel": "Ours 32K",
+            "rightLabel": "Ours 2K",
+            "leftIsOurs": true,
+            "rightIsOurs": true,
+            "leftVideo": "assets/media/re10k_concat/ours32k.mp4",
+            "rightVideo": "assets/media/re10k_concat/ours2k_updated.mp4"
+        }
+    ]
+}

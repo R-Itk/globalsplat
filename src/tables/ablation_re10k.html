@@ -1,0 +1,49 @@
+<div class="results-table-card">
+  <p class="results-table-title">Ablation Study</p>
+  <table class="results-table" aria-label="Ablation study on RealEstate10K">
+    <thead>
+      <tr>
+        <th>Variant</th>
+        <th>PSNR ↑</th>
+        <th>SSIM ↑</th>
+        <th>LPIPS ↓</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Ours (full)</strong></td>
+        <td><strong>28.57</strong></td>
+        <td><strong>0.885</strong></td>
+        <td><strong>0.139</strong></td>
+      </tr>
+      <tr>
+        <td>Plücker only</td>
+        <td>28.30</td>
+        <td>0.880</td>
+        <td>0.140</td>
+      </tr>
+      <tr>
+        <td>w/o consistency loss</td>
+        <td>28.15</td>
+        <td>0.876</td>
+        <td>0.143</td>
+      </tr>
+      <tr>
+        <td>Single-stream</td>
+        <td>28.02</td>
+        <td>0.873</td>
+        <td>0.151</td>
+      </tr>
+      <tr>
+        <td>Direct full-capacity prediction</td>
+        <td>27.69</td>
+        <td>0.867</td>
+        <td>0.150</td>
+      </tr>
+    </tbody>
+  </table>
+  <p class="caption small">
+    Removing any component (two-stream architecture, coarse-to-fine capacity, consistency loss, or enriched camera metadata) degrades performance.
+  </p>
+</div>
+

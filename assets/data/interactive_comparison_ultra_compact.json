@@ -1,0 +1,12 @@
+{
+    "scenes": [
+        {
+            "leftLabel": "Ours 2K",
+            "rightLabel": "C3G",
+            "leftIsOurs": true,
+            "rightIsOurs": false,
+            "leftVideo": "assets/media/acid_concat/ours2k.mp4",
+            "rightVideo": "assets/media/acid_concat/c3g.mp4"
+        }
+    ]
+}

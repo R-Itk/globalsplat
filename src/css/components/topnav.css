@@ -1,0 +1,65 @@
+/* ─── Floating Top Navigation Bar ─────────────────────────────────────────── */
+
+.topnav {
+  position: fixed;
+  top: 1.25rem;
+  left: 50%;
+  /* translate3d promotes a composited layer — helps Gecko render sharp text over backdrop-filter */
+  transform: translate3d(-50%, 0, 0);
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  gap: 0;
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 2rem;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+  padding: 0.3rem;
+  /* Prevent any wrapping — items must never break to a second line */
+  white-space: nowrap;
+}
+
+.topnav-link {
+  font-family: inherit;
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: var(--subtitle-3);
+  text-decoration: none;
+  padding: 0.38rem 0.9rem;
+  border-radius: 1.5rem;
+  transition:
+    background 150ms ease-out,
+    color 150ms ease-out;
+}
+
+.topnav-link:hover {
+  color: var(--subtitle-1);
+  background: rgba(0, 0, 0, 0.05);
+  text-decoration: none;
+}
+
+.topnav-link.active {
+  background: var(--btn-bg);
+  color: var(--btn-text);
+}
+
+.topnav-link.active:hover {
+  background: var(--subtitle-2);
+  color: var(--btn-text);
+}
+
+/* Anchor scroll offset: floating bar + margin (topnav hidden on small viewports) */
+@media (min-width: 768px) {
+  html {
+    scroll-padding-top: 5rem;
+  }
+}
+
+/* ─── Mobile: hide rather than wrap ───────────────────────────────────────── */
+@media (max-width: 767px) {
+  .topnav {
+    display: none;
+  }
+}

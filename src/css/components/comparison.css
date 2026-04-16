@@ -1,0 +1,666 @@
+.comparison-wrap {
+  --split: 50%;
+  display: flex;
+  flex-direction: column;
+  /* Tighten spacing between title/header and the video frame. */
+  gap: 8px;
+  font-family: system-ui, -apple-system, sans-serif;
+  /* Enable container query units (cqw) for responsive controls. */
+  container-type: inline-size;
+}
+
+.comparison-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  /* Align controls with the subtitle baseline area. */
+  gap: 12px;
+}
+
+.comparison-title {
+  font-weight: 600;
+  font-size: 1.125rem;
+  color: var(--text, #1d1d1f);
+}
+
+.comparison-subtitle {
+  font-size: 0.875rem;
+  color: var(--muted, #86868b);
+}
+
+.comparison-controls {
+  display: flex;
+  gap: 4px;
+  flex-shrink: 0;
+  align-items: center;
+  /* Prevent flex "stretch" from making buttons taller than the subtitle line. */
+}
+
+.comparison-controls .button-ghost[data-comparison-action="togglePause"] i {
+  font-size: inherit;
+  /* Match the subtitle/button font-size. */
+}
+
+.comparison-controls .button-ghost[data-comparison-action="togglePause"] {
+  position: relative;
+  /* Only nudge horizontally; let vertical align be controlled by flex. */
+  /* transform: translate(clamp(4px, 0.9cqw, 10px), 0px);  */
+}
+
+/* .button-ghost {
+  background: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(10px);
+  color: var(--text, #1d1d1f) !important;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  border-radius: 8px;
+  padding: 6px 12px;
+  transition: all 0.2s ease;
+}
+
+.button-ghost:hover {
+  background: rgba(0, 0, 0, 0.05);
+  border-color: rgba(0, 0, 0, 0.1);
+} */
+
+.button-ghost {
+  appearance: none;
+  background: color-mix(in srgb, var(--card, #ffffff) 72%, transparent);
+  color: #64748b !important;
+  border: 1px solid color-mix(in srgb, var(--line, #e2e8f0) 85%, transparent);
+  border-radius: 999px;
+  padding: 0.34rem 0.78rem;
+  /* Match .comparison-subtitle */
+  font-size: 0.8rem;
+  /* 0.875rem; */
+  font-weight: 500;
+  white-space: nowrap;
+  line-height: normal;
+  /* Let it match the subtitle's default line metrics. */
+  box-shadow:
+    0 1px 1px rgba(15, 23, 42, 0.03),
+    0 4px 12px rgba(15, 23, 42, 0);
+  transition:
+    transform 0.18s ease,
+    color 0.18s ease,
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.button-ghost:hover {
+  background: #fff;
+  color: #0f172a !important;
+  border-color: color-mix(in srgb, var(--line, #cbd5e1) 60%, #94a3b8 40%);
+  box-shadow:
+    0 1px 2px rgba(15, 23, 42, 0.06),
+    0 8px 18px -12px rgba(15, 23, 42, 0.35);
+  transform: translateY(-1px);
+}
+
+.button-ghost:active {
+  transform: translateY(0) scale(0.98);
+  background: color-mix(in srgb, #ffffff 70%, #f1f5f9 30%);
+  box-shadow: 0 1px 4px rgba(15, 23, 42, 0.14) inset;
+}
+
+.button-ghost:focus-visible {
+  outline: none;
+  border-color: color-mix(in srgb, var(--brand, #3b82f6) 65%, white);
+  box-shadow:
+    0 0 0 3px color-mix(in srgb, var(--brand, #3b82f6) 26%, transparent),
+    0 1px 2px rgba(15, 23, 42, 0.08);
+}
+
+.button-ghost:disabled,
+.button-ghost[aria-disabled="true"] {
+  opacity: 0.55;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* below the video */
+.comparison-slider {
+  position: relative;
+  /* Stack above the invisible .comparison-range (z-index 40) so the handle hit-area receives pointer events. */
+  z-index: 41;
+  width: 100%;
+  /* Match the bezel styling used by the plain single videos. */
+  border-radius: 12px;
+  overflow: hidden;
+  /* box-shadow: 0 20px 40px -12px rgba(15, 23, 42, 0.1); */
+  border: 1px solid var(--line);
+  background: var(--card);
+  aspect-ratio: 16 / 9;
+}
+
+/* Grid / geometry comparisons use square frames; 16:9 here causes wide pillarboxing
+   with object-fit:contain. comparisonSlider.js still overrides from video metadata. */
+.comparison-wrap--geometry .comparison-slider {
+  aspect-ratio: 1 / 1;
+}
+
+/* Merged-file duo (2× hstack): square frame from parent aspect-ratio; do not use default 16:9 */
+#geometry .qualitative-video-compare[data-merged-duo] .comparison-slider--merged-duo {
+  aspect-ratio: unset;
+  height: 100%;
+  border: none;
+  border-radius: 0;
+  background: #000;
+}
+
+/* Match geometry video panels: lighter bezel than default comparison chrome */
+#geometry .comparison-wrap--geometry .comparison-slider {
+  border: 1px solid color-mix(in srgb, var(--line) 55%, transparent);
+  border-radius: 10px;
+  background: var(--bg-v1);
+}
+
+#geometry .comparison-wrap--geometry .comparison-base video,
+#geometry .comparison-wrap--geometry .comparison-overlay video {
+  background: var(--bg-v1);
+}
+
+#geometry .comparison-slider>.video-loading {
+  border-radius: 10px;
+}
+
+#geometry .qualitative-video-compare[data-merged-duo] .sync-role video {
+  background: #000;
+  object-fit: cover;
+}
+
+#geometry .qualitative-video-compare[data-merged-duo] .video-loading,
+#geometry .qualitative-video-compare[data-merged-duo] .comparison-slider>.video-loading {
+  border-radius: 0;
+}
+
+.comparison-base,
+.comparison-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+.comparison-base video,
+.comparison-overlay video {
+  width: 100%;
+  height: 100%;
+  /* Use letterboxing so the frame shows like the single-video bezel. */
+  object-fit: contain;
+  background: var(--card);
+}
+
+.comparison-overlay {
+  clip-path: polygon(0 0, var(--split) 0, var(--split) 100%, 0 100%);
+  z-index: 2;
+  pointer-events: none;
+}
+
+/* WHITE DOT TRANSPARENCY */
+.comparison-overlay--interactive-geometry video {
+  opacity: 0.8;
+}
+
+#geometry .comparison-slider--merged-duo .sync-role--ours video {
+  opacity: 0.8;
+}
+
+.comparison-handle {
+  position: absolute;
+  left: var(--split);
+  top: 0;
+  bottom: 0;
+  width: 40px;
+  width: clamp(28px, 9cqw, 44px);
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 45;
+  pointer-events: auto;
+  cursor: col-resize;
+  touch-action: none;
+}
+
+.comparison-handle-line {
+  width: 1px;
+  height: 100%;
+  background: #fff;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.28);
+}
+
+.comparison-handle-knob {
+  position: absolute;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2), inset 0 0 0 1px rgba(0, 0, 0, 0.05);
+  /* display: flex; */
+  display: none;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+}
+
+.comparison-handle-knob::before,
+.comparison-handle-knob::after {
+  /* content: "";
+  display: block;
+  width: 2px;
+  height: 12px;
+  background: #cbd5e1;
+  border-radius: 2px; */
+  content: none;
+}
+
+.comparison-range {
+  width: 100%;
+  appearance: none;
+  height: 48px;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  opacity: 0;
+  z-index: 40;
+  cursor: col-resize;
+  margin: 0;
+}
+
+.scene-dots {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.scene-dot {
+  width: 32px;
+  height: 4px;
+  border-radius: 2px;
+  background: #e2e8f0;
+  border: none;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.scene-dot.is-active {
+  /* background: #3b82f6; */
+  background: #2f3f5a;
+  width: 48px;
+}
+
+.comparison-caption {
+  /* Override generic .caption spacing for tighter alignment under the video frame. */
+  margin-top: 0;
+  padding-top: 2px;
+  padding-left: 0;
+}
+
+.comparison-label {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 650;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(15, 23, 42, 0.65);
+  background: rgba(2, 6, 23, 0.72);
+  color: #f8fafc;
+  text-shadow: 0 1px 2px rgba(2, 6, 23, 0.9);
+  z-index: 30;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  white-space: nowrap;
+}
+
+.comparison-label-right {
+  left: calc((100% + var(--split, 50%)) / 2);
+}
+
+.comparison-label-left {
+  left: calc(var(--split, 50%) / 2);
+}
+
+.comparison-corner-label {
+  position: absolute;
+  bottom: 10px;
+  padding: 0.35rem 0.6rem;
+  font-size: 0.75rem;
+  /* 0.85rem; */
+  /* font-weight: 700; */
+  color: #0f172a;
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  box-shadow: var(--shadow-sm);
+  z-index: 30;
+  pointer-events: none;
+  white-space: nowrap;
+  box-sizing: border-box;
+  text-align: center;
+  min-width: 7.5rem;
+  /* 8.5rem; */
+}
+
+.comparison-corner-label-left {
+  left: 10px;
+}
+
+.comparison-corner-label-right {
+  right: 10px;
+}
+
+.comparison-corner-label-ours {
+  background: rgba(224, 242, 254, 0.95);
+  border-color: #bae6fd;
+}
+
+.comparison-slider {
+  background: var(--card);
+}
+
+.comparison-slider .comparison-base video,
+.comparison-slider .comparison-overlay video {
+  width: 100% !important;
+  height: 100% !important;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain !important;
+  object-position: center;
+  /* allow letterboxing */
+  background: var(--card);
+  border: none;
+  border-radius: 0;
+  display: block;
+}
+
+/*
+.comparison-handle {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: var(--split);
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  z-index: 5;
+}
+
+.comparison-handle-line {
+  width: 2px;
+  height: 100%;
+  background: linear-gradient(to bottom, #e5e7eb, #38bdf8);
+  box-shadow:
+    0 0 0 1px rgba(15, 23, 42, 0.3),
+    0 0 16px rgba(56, 189, 248, 0.6);
+}
+
+.comparison-handle-knob {
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  border-radius: 999px;
+  border: 2px solid #e5e7eb;
+  background: radial-gradient(circle at 30% 30%, #f9fafb, #0f172a);
+  box-shadow:
+    0 8px 18px rgba(15, 23, 42, 0.55),
+    0 0 0 1px rgba(15, 23, 42, 0.7);
+}
+
+.comparison-range {
+  width: 100%;
+  margin-top: 10px;
+  -webkit-appearance: none;
+  appearance: none;
+  height: 4px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #d1d5db, #111827);
+  outline: none;
+}
+
+.comparison-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 999px;
+  background: #ffffff;
+  border: 1px solid #0f172a;
+  box-shadow:
+    0 0 0 2px rgba(15, 23, 42, 0.15),
+    0 8px 16px rgba(15, 23, 42, 0.3);
+  cursor: pointer;
+}
+
+.comparison-range::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border-radius: 999px;
+  background: #ffffff;
+  border: 1px solid #0f172a;
+  box-shadow:
+    0 0 0 2px rgba(15, 23, 42, 0.15),
+    0 8px 16px rgba(15, 23, 42, 0.3);
+  cursor: pointer;
+}
+
+.comparison-range::-moz-range-track {
+  height: 4px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #d1d5db, #111827);
+}
+
+.scene-dots {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+.scene-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 999px;
+  background: #cbd5e1;
+  border: 1px solid #94a3b8;
+  cursor: pointer;
+  transition:
+    transform 0.18s ease,
+    background 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+.scene-dot.is-active {
+  background: #111827;
+  border-color: #111827;
+  transform: scale(1.4);
+  box-shadow: 0 0 0 4px rgba(15, 23, 42, 0.16);
+}
+
+.comparison-caption {
+  margin-top: 10px;
+}
+*/
+
+/* Video loading */
+.video-loading {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  z-index: 6;
+  background: rgba(248, 250, 252, 0.72);
+  border-radius: 12px;
+  backdrop-filter: blur(1px);
+  opacity: 1;
+  visibility: visible;
+  transition:
+    opacity 300ms cubic-bezier(0.22, 1, 0.36, 1),
+    background-color 300ms cubic-bezier(0.22, 1, 0.36, 1),
+    backdrop-filter 300ms cubic-bezier(0.22, 1, 0.36, 1),
+    visibility 0s linear 0s;
+}
+
+.comparison-slider>.video-loading {
+  border-radius: inherit;
+}
+
+.method-cell.is-video-loaded .video-loading {
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity 340ms cubic-bezier(0.22, 1, 0.36, 1),
+    background-color 340ms cubic-bezier(0.22, 1, 0.36, 1),
+    backdrop-filter 340ms cubic-bezier(0.22, 1, 0.36, 1),
+    visibility 0s linear 340ms;
+}
+
+/* Qualitative image comparison layout */
+.qualitative-image-block {
+  margin-top: 18px;
+}
+
+.qualitative-image-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.qualitative-image-cell {
+  min-width: 0;
+}
+
+.qualitative-image-grid--compact {
+  gap: 6px;
+  margin-top: 8px;
+  /* Stretch columns so qualitative tiles can fill available width. */
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  justify-content: stretch;
+}
+
+.qualitative-image-grid--compact .twentytwenty-container {
+  /* Remove centering; let the grid column width define the tile width. */
+  margin: 0;
+  width: 100%;
+  max-width: 100%;
+}
+
+/* Make twentytwenty images actually scale with the container */
+.qualitative-image-grid--compact .twentytwenty-container img {
+  /* Fill available width; height follows from intrinsic aspect ratio. */
+  width: 100%;
+  max-width: none;
+  height: auto;
+}
+
+/* Model switcher (one 2x3 qualitative grid, switch baselines) */
+.qualitative-model-switcher {
+  margin-top: 6px;
+}
+
+.qualitative-model-tabs {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 6px;
+  margin-bottom: 8px;
+}
+
+.qualitative-model-tab {
+  appearance: none;
+  border: 1px solid rgba(15, 23, 42, 0.15);
+  background: rgba(255, 255, 255, 0.75);
+  color: #0f172a;
+  font-weight: 650;
+  border-radius: 999px;
+  /* padding: 6px 12px; */
+  padding: 8px 14px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.qualitative-model-tab.is-active {
+  background: rgba(15, 23, 42, 0.92);
+  border-color: rgba(15, 23, 42, 0.92);
+  color: #fff;
+}
+
+.qualitative-model-panels {
+  position: relative;
+}
+
+.qualitative-model-panel {
+  position: relative;
+}
+
+.qualitative-model-panel.is-hidden {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.twentytwenty-custom {
+  /* The twentytwenty plugin clamps max-width to naturalWidth via inline style.
+     Override it so the tile can fill the grid column width. */
+  width: 100%;
+  max-width: 100% !important;
+}
+
+.qualitative-image-grid--two-col {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.qualitative-image-grid--one-col {
+  grid-template-columns: 1fr;
+}
+
+/* Two items centered at the same width as a 3-column grid cell */
+.qualitative-image-grid--two-centered {
+  display: flex;
+  justify-content: center;
+  grid-template-columns: none;
+}
+
+.qualitative-image-grid--two-centered .qualitative-image-cell {
+  flex: 0 0 calc((100% - 12px) / 3);
+}
+
+@media (max-width: 980px) {
+  .qualitative-image-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .qualitative-image-grid--compact {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .qualitative-image-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .qualitative-image-grid--compact {
+    grid-template-columns: 1fr;
+  }
+
+  .qualitative-image-grid--two-col {
+    grid-template-columns: 1fr;
+  }
+}

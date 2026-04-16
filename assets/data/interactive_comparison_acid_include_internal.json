@@ -1,0 +1,80 @@
+{
+    "defaults": {
+      "subtitle": "Ours 16K Gaussians model vs. baseline methods and internal variants.",
+      "caption": "Drag the slider to compare methods."
+    },
+    "scenes": [
+      {
+        "sceneTitle": "Ours 16K vs C3G",
+        "leftLabel": "Ours 16K",
+        "rightLabel": "C3G",
+        "leftIsOurs": true,
+        "rightIsOurs": false,
+        "leftVideo": "assets/media/acid_concat/ours16k.mp4",
+        "rightVideo": "assets/media/acid_concat/c3g.mp4"
+      },
+      {
+        "sceneTitle": "Ours 16K vs DepthSplat",
+        "leftLabel": "Ours 16K",
+        "rightLabel": "DepthSplat",
+        "leftIsOurs": true,
+        "rightIsOurs": false,
+        "leftVideo": "assets/media/acid_concat/ours16k.mp4",
+        "rightVideo": "assets/media/acid_concat/depthsplat.mp4"
+      },
+      {
+        "sceneTitle": "Ours 16K vs GGN",
+        "leftLabel": "Ours 16K",
+        "rightLabel": "GGN",
+        "leftIsOurs": true,
+        "rightIsOurs": false,
+        "leftVideo": "assets/media/acid_concat/ours16k.mp4",
+        "rightVideo": "assets/media/acid_concat/ggn.mp4"
+      },
+      {
+        "sceneTitle": "Ours 16K vs Ours 32K",
+        "leftLabel": "Ours 16K",
+        "rightLabel": "Ours 32K",
+        "leftIsOurs": true,
+        "rightIsOurs": true,
+        "leftVideo": "assets/media/acid_concat/ours16k.mp4",
+        "rightVideo": "assets/media/acid_concat/ours32k.mp4"
+      },
+      {
+        "sceneTitle": "Ours 16K vs Ours 2K",
+        "leftLabel": "Ours 16K",
+        "rightLabel": "Ours 2K",
+        "leftIsOurs": true,
+        "rightIsOurs": true,
+        "leftVideo": "assets/media/acid_concat/ours16k.mp4",
+        "rightVideo": "assets/media/acid_concat/ours2k.mp4"
+      },
+      {
+        "sceneTitle": "Ours 16K vs GT",
+        "leftLabel": "Ours 16K",
+        "rightLabel": "GT",
+        "leftIsOurs": true,
+        "rightIsOurs": false,
+        "leftVideo": "assets/media/acid_concat/ours16k.mp4",
+        "rightVideo": "assets/media/acid_concat/acid_gt.mp4"
+      },
+      {
+        "sceneTitle": "Ours 16K vs ZPressor 3",
+        "leftLabel": "Ours 16K",
+        "rightLabel": "ZPressor 3",
+        "leftIsOurs": true,
+        "rightIsOurs": false,
+        "leftVideo": "assets/media/acid_concat/ours16k.mp4",
+        "rightVideo": "assets/media/acid_concat/zpressor3.mp4"
+      },
+      {
+        "sceneTitle": "Ours 16K vs ZPressor 6",
+        "leftLabel": "Ours 16K",
+        "rightLabel": "ZPressor 6",
+        "leftIsOurs": true,
+        "rightIsOurs": false,
+        "leftVideo": "assets/media/acid_concat/ours16k.mp4",
+        "rightVideo": "assets/media/acid_concat/zpressor6.mp4"
+      }
+    ]
+  }

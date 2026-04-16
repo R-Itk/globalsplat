@@ -1,0 +1,90 @@
+/*
+  Per-video-container sizing.
+  THE PAGE CONTAINER ITSELF IS AT --maxw: 1300px.
+*/
+
+:root {
+  /* 12-VIEWS qualitative grid: max 1080px, 3 cols, 6px gaps => ~356px per cell. */
+  --video-qualitative-cell-maxw: calc((1080px * var(--site-scale, 1) - 12px) / 3);
+
+  /* Full-width panels (default to match the page container max width). */
+  --video-re10k-single-maxw: calc(980px * var(--site-scale, 1));
+  --video-re10k-comparison-maxw: calc(640px * var(--site-scale, 1));
+
+  --video-acid-single-maxw: calc(980px * var(--site-scale, 1));
+  --video-acid-comparison-maxw: calc(640px * var(--site-scale, 1));
+
+  --video-compactness-single-maxw: calc(980px * var(--site-scale, 1));
+  --video-compactness-comparison-maxw: calc(640px * var(--site-scale, 1));
+
+  /* JS sets exact ultra-compact width at runtime. */
+  --video-ultra-compact-single-maxw: none;
+  --video-ultra-compact-comparison-maxw: none;
+
+  /* JS sets exact geometry width at runtime. */
+  --video-pointcloud-single-maxw: var(--video-qualitative-cell-maxw);
+  --video-pointcloud-comparison-maxw: none;
+}
+
+[data-video-container="re10k-single"] {
+  max-width: var(--video-re10k-single-maxw);
+  margin: 0 auto;
+}
+
+[data-video-container="re10k-comparison"] {
+  max-width: var(--video-re10k-comparison-maxw);
+  margin: 0 auto;
+}
+
+[data-video-container="acid-single"] {
+  max-width: var(--video-acid-single-maxw);
+  margin: 0 auto;
+}
+
+[data-video-container="acid-comparison"] {
+  max-width: var(--video-acid-comparison-maxw);
+  margin: 0 auto;
+}
+
+[data-video-container="compactness-single"] {
+  max-width: var(--video-compactness-single-maxw);
+  margin: 0 auto;
+}
+
+[data-video-container="compactness-comparison"] {
+  max-width: var(--video-compactness-comparison-maxw);
+  margin: 0 auto;
+}
+
+/* Wrappers used by ultra-compact + pointcloud single videos */
+[data-video-container="ultra-compact-single-wrap"] {
+  max-width: var(--video-ultra-compact-single-maxw);
+  margin: 0 auto;
+}
+
+[data-video-container="pointcloud-single-wrap"] {
+  max-width: var(--video-pointcloud-single-maxw);
+  margin: 0 auto;
+}
+
+/* Single video grids (in case you want to tighten further than the wrapper). */
+[data-video-container="ultra-compact-single"] {
+  max-width: var(--video-ultra-compact-single-maxw);
+  margin: 0 auto;
+}
+
+[data-video-container="pointcloud-single"] {
+  max-width: var(--video-pointcloud-single-maxw);
+  margin: 0 auto;
+}
+
+/* Comparison sliders */
+[data-video-container="ultra-compact-comparison"] {
+  max-width: var(--video-ultra-compact-comparison-maxw);
+  margin: 0 auto;
+}
+
+[data-video-container="pointcloud-comparison"] {
+  max-width: var(--video-pointcloud-comparison-maxw);
+  margin: 0 auto;
+}

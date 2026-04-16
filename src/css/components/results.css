@@ -1,0 +1,246 @@
+.results-block {
+  margin-bottom: 36px;
+}
+
+.results-qualitative > .section-band-muted:first-child .results-block {
+  margin-bottom: 0;
+}
+
+.results-block-title {
+  /* When combined with `.section-subtitle` in HTML, let that rule define
+     the typography; keep this only for tighter spacing. */
+  margin: 0 0 0.75rem;
+}
+
+/* Umbrella label for the whole qualitative block — one step above `.results-group-title` */
+.results-qualitative-heading.section-title {
+  text-transform: uppercase;
+  color: var(--subtitle-2);
+  font-weight: bold;
+  font-size: clamp(1.55rem, 2.6vw, 2.05rem);
+  line-height: 1.16;
+}
+
+.results-qualitative-heading.section-title::after {
+  display: none;
+}
+
+.results-group-title {
+  /* Match the look of `.caption-title` (uppercase + letter spacing),
+     but keep it prominent/bigger for the Results grouping. */
+  margin-top: 0;
+  margin-bottom: clamp(0.875rem, 1.5vw, 1.25rem);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--subtitle-2);
+  /* font-weight: 800; */
+  font-size: clamp(1.35rem, 2.2vw, 1.7rem);
+}
+
+.results-subgroup-title {
+  margin: 1.5rem 0 0.05rem;
+  /* margin: 1.5rem 0 0.75rem; */
+  font-size: clamp(0.95rem, 1.35vw, 1.1rem);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--subtitle-2);
+  text-align: left;
+}
+
+/* Spider plot (moved into Results): keep same max width as it had in the teaser stack. */
+.results-spider-container {
+  width: min(640px, 90%);
+  margin-inline: auto;
+  align-self: center;
+}
+
+/* Tooltip anchored to the figure (side bubble), consistent with teaser-top — not below the fold */
+@media (min-width: 640px) {
+  .results-spider-container .hover-figure__tooltip {
+    top: 50%;
+    left: 100%;
+    margin-top: 0;
+    width: min(200px, 36vw);
+    max-width: calc(100vw - 100% - 24px);
+    transform: translate(12px, -50%);
+    text-align: left;
+    border-left: none;
+    background: var(--hover-tooltip-bg);
+  }
+
+  .results-spider-container .hover-figure__tooltip::after {
+    top: 50%;
+    left: -6px;
+    transform: translateY(-50%) rotate(45deg);
+    border-left: none;
+    border-top: 1px solid var(--hover-tooltip-border);
+    background: var(--hover-tooltip-bg);
+  }
+
+  .results-spider-container .hover-figure:hover .hover-figure__tooltip,
+  .results-spider-container .hover-figure:focus-within .hover-figure__tooltip {
+    transform: translate(12px, -50%) scale(1);
+  }
+}
+
+.results-callout {
+  margin: 14px 0 16px;
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid rgba(229, 231, 235, 0.9);
+  background: rgba(249, 250, 251, 0.9);
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Method — callouts under "The GlobalSplat Solution: Align First, Decode Later" only */
+#how-globalsplat-works .has-text-justified h3.caption-title ~ .results-callout {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  transform: translate3d(0, 0, 0) scale(1);
+  transition:
+    transform 0.34s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.42s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+#how-globalsplat-works .has-text-justified h3.caption-title ~ .results-callout:hover {
+  transform: translate3d(0, -1px, 0) scale(1.003);
+  cursor: pointer;
+  box-shadow:
+    0 1px 2px rgba(15, 23, 42, 0.03),
+    0 18px 42px rgba(15, 23, 42, 0.065);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #how-globalsplat-works .has-text-justified h3.caption-title ~ .results-callout {
+    transition-duration: 0.01ms;
+  }
+
+  #how-globalsplat-works .has-text-justified h3.caption-title ~ .results-callout:hover {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+.results-callout::before {
+  content: none;
+}
+
+.results-callout:hover {
+  /* Disabled hover translation because subpixel movement can make caption text look blurry. */
+  /* transform: translateY(-2px); */
+  /* box-shadow: 0 8px 20px rgba(15, 23, 42, 0.12); */
+  box-shadow: var(--shadow-sm);
+}
+
+.results-callout .caption {
+  margin: 0;
+}
+
+.results-callout .caption strong {
+  font-weight: 500;
+  color: inherit;
+}
+
+.results-video-grid {
+  display: grid;
+  gap: 8px;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: var(--card);
+  padding: 14px;
+  overflow-x: auto;
+}
+
+.comparison-grid {
+  overflow: visible;
+}
+
+.method-cell {
+  min-width: 0;
+  position: relative;
+  font-family: var(--font-video-cell);
+}
+
+/* `.comparison-wrap` sets its own stack; keep Geist for titles, controls, dots */
+.results-video-grid .method-cell .comparison-wrap {
+  font-family: var(--font-video-cell);
+}
+
+.results-video-grid .method-cell video {
+  width: 100%;
+  height: auto;
+  aspect-ratio: auto;
+  object-fit: contain;
+  background: var(--card);
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  display: block;
+}
+
+/* 3D Geometry Visualization — hairline frames consistent with .results-callout */
+#geometry .results-video-grid {
+  border: 1px solid color-mix(in srgb, var(--line) 72%, var(--section-bg-muted));
+  border-radius: 12px;
+  padding: 10px;
+  background: color-mix(in srgb, var(--bg-v1) 88%, var(--card));
+  box-shadow: var(--shadow-sm);
+}
+
+/* Geometry: breathing room between the two video cards; tighter top inset on the slider card */
+#geometry>.container.content+.container.content {
+  margin-top: clamp(0.875rem, 2.2vw, 1.35rem);
+}
+
+#geometry .results-video-grid.comparison-grid {
+  width: min(860px, 100%);
+  margin-inline: auto;
+  padding-top: 4px;
+  padding-inline: 10px;
+  padding-bottom: 10px;
+}
+
+#geometry .comparison-drag-hint {
+  margin-top: clamp(0.5rem, 1.2vw, 0.75rem);
+  margin-bottom: 0;
+  max-width: var(--video-pointcloud-comparison-maxw);
+  margin-inline: auto;
+  text-align: left;
+  font-size: clamp(0.78rem, 0.92vw, 0.85rem);
+  letter-spacing: 0.02em;
+}
+
+#geometry .results-video-grid .method-cell video {
+  border: 1px solid color-mix(in srgb, var(--line) 55%, transparent);
+  border-radius: 10px;
+  background: var(--bg-v1);
+}
+
+#geometry .results-video-grid .method-cell>.video-loading,
+#geometry .results-video-grid.pointcloud-single .geometry-single-video-frame>.video-loading {
+  border-radius: 10px;
+}
+
+#geometry .results-video-grid.pointcloud-single .geometry-single-video-frame {
+  position: relative;
+  width: 100%;
+}
+
+#geometry .results-video-grid.pointcloud-single .geometry-single-video-frame .qualitative-video-playback-feedback {
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+/* --- CUSTOM SIZE CONTROL FOR LAST TWO VIDEOS --- */
+.small-video-container {
+  max-width: 860px;
+  /* <--- ADJUST THIS VALUE TO CHANGE THE SIZE */
+  margin: 0 auto;
+  /* Centers the block */
+}
+
+/* Legacy: video-overlay-btn was only used for geometry pointcloud; styling now matches qualitative comparison via
+   .qualitative-video-playback-toggle in qualitative-video-comparison.css (extended for #geometry .pointcloud-single). */

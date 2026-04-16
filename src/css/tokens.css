@@ -1,0 +1,88 @@
+/* Geist Mono — qualitative video overlays + video grid cells; Fontsource CDN */
+@font-face {
+  font-family: 'Geist Mono';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400;
+  src: url(https://cdn.jsdelivr.net/fontsource/fonts/geist-mono@5.2.7/latin-400-normal.woff2) format('woff2');
+}
+
+@font-face {
+  font-family: 'Geist Mono';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 500;
+  src: url(https://cdn.jsdelivr.net/fontsource/fonts/geist-mono@5.2.7/latin-500-normal.woff2) format('woff2');
+}
+
+@font-face {
+  font-family: 'Geist Mono';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 600;
+  src: url(https://cdn.jsdelivr.net/fontsource/fonts/geist-mono@5.2.7/latin-600-normal.woff2) format('woff2');
+}
+
+@font-face {
+  font-family: 'Geist Mono';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 700;
+  src: url(https://cdn.jsdelivr.net/fontsource/fonts/geist-mono@5.2.7/latin-700-normal.woff2) format('woff2');
+}
+
+:root {
+  /* Global scale to match the slimmer 80% presentation at normal browser zoom. */
+  --site-scale: 0.8;
+  --bg-v1: #ffffff;
+  --text-v1: #111827;
+  --bg: #ffffff;
+  --text: #0f172a;
+  --muted: #6b7280;
+  --subtitle-1: #1e293b;
+  --subtitle-2: #334155;
+  --subtitle-3: #475569;
+  --line: #e5e7eb;
+  --accent: #2563eb;
+  --card: #f8fafc;
+  --maxw: calc(1300px * var(--site-scale));
+  /* Section background bands */
+  --section-bg-default: #ffffff;
+  --section-bg-muted: #f4f6fb;
+  /* faint blue-gray tint — alternating sections */
+  --section-bg-strong: #eef2ff;
+  /* light indigo — used sparingly for one highlight section */
+  /* Shared tooltip colors so bubble + arrow always match exactly */
+  --hover-tooltip-bg: rgba(17, 24, 39, 0.95);
+  --hover-tooltip-border: rgba(255, 255, 255, 0.10);
+  --hover-tooltip-shadow: rgba(79, 70, 229, 0.15);
+  --hover-sidebar-bg: #e2e8f0;
+  /* button colors aligned with C3G hero buttons */
+  /* --btn-bg: #331400;
+  --btn-border: #331400; */
+  --btn-bg: #1e293b;
+  --btn-border: #1e293b;
+  --btn-text: #ffffff;
+  --top1: #ffcccc;
+  --top2: #ffe5cc;
+  --top3: #ffffcc;
+  --ultra-compact-size: 320px;
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --writer-hover-color: rgba(37, 99, 235, 0.15);
+  --comparison-control-bg: #f1f5f9;
+  --comparison-control-text: #64748b;
+  /* In-place figure zoom: cap matches maxScale in tableFragments.js */
+  --image-zoom-max-scale: 1.55;
+  --image-zoom-duration: 0.55s;
+  /* Video grids: method cells + comparison chrome */
+  --font-video-cell: "Geist Mono", ui-monospace, "SF Mono", monospace;
+  --font-stack-geist-mono: "Geist Mono", "Montserrat", "Inter", sans-serif;
+  --font-stack-montserrat: "Montserrat", "Geist Mono", "Inter", sans-serif;
+  --font-stack-inter: "Inter", "Geist Mono", "Montserrat", sans-serif;
+  --font-stack-noto-sans: "Noto Sans", "Geist Mono", "Montserrat", "Inter", sans-serif;
+  /* Micro-interactions: hover/focus feedback (prefer transform + opacity; see .impeccable.md) */
+  --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --motion-hover-duration: 0.2s;
+  --motion-hover-duration-fast: 0.15s;
+}

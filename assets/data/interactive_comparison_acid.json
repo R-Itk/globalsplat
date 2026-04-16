@@ -1,0 +1,62 @@
+{
+    "defaults": {
+      "subtitle": "Ours 32K Gaussians model vs. baseline methods.",
+      "caption": "Drag the slider to compare methods."
+    },
+    "scenes": [
+      {
+        "sceneTitle": "Ours 32K vs C3G",
+        "leftLabel": "Ours 32K",
+        "rightLabel": "C3G",
+        "leftIsOurs": true,
+        "rightIsOurs": false,
+        "leftVideo": "assets/media/acid_concat/ours32k.mp4",
+        "rightVideo": "assets/media/acid_concat/c3g.mp4"
+      },
+      {
+        "sceneTitle": "Ours 32K vs DepthSplat",
+        "leftLabel": "Ours 32K",
+        "rightLabel": "DepthSplat",
+        "leftIsOurs": true,
+        "rightIsOurs": false,
+        "leftVideo": "assets/media/acid_concat/ours32k.mp4",
+        "rightVideo": "assets/media/acid_concat/depthsplat.mp4"
+      },
+      {
+        "sceneTitle": "Ours 32K vs GGN",
+        "leftLabel": "Ours 32K",
+        "rightLabel": "GGN",
+        "leftIsOurs": true,
+        "rightIsOurs": false,
+        "leftVideo": "assets/media/acid_concat/ours32k.mp4",
+        "rightVideo": "assets/media/acid_concat/ggn.mp4"
+      },
+      {
+        "sceneTitle": "Ours 32K vs ZPressor 3",
+        "leftLabel": "Ours 32K",
+        "rightLabel": "ZPressor 3",
+        "leftIsOurs": true,
+        "rightIsOurs": false,
+        "leftVideo": "assets/media/acid_concat/ours32k.mp4",
+        "rightVideo": "assets/media/acid_concat/zpressor3.mp4"
+      },
+      {
+        "sceneTitle": "Ours 32K vs ZPressor 6",
+        "leftLabel": "Ours 32K",
+        "rightLabel": "ZPressor 6",
+        "leftIsOurs": true,
+        "rightIsOurs": false,
+        "leftVideo": "assets/media/acid_concat/ours32k.mp4",
+        "rightVideo": "assets/media/acid_concat/zpressor6.mp4"
+      },
+      {
+        "sceneTitle": "Ours 32K vs GT",
+        "leftLabel": "Ours 32K",
+        "rightLabel": "GT",
+        "leftIsOurs": true,
+        "rightIsOurs": false,
+        "leftVideo": "assets/media/acid_concat/ours32k.mp4",
+        "rightVideo": "assets/media/acid_concat/acid_gt.mp4"
+      }
+    ]
+  }

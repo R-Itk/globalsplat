@@ -1,0 +1,13 @@
+{
+    "defaults": {
+        "caption": "Drag the slider to compare methods."
+    },
+    "scenes": [
+        {
+            "leftIsOurs": true,
+            "rightIsOurs": true,
+            "leftVideo": "assets/media/re10k_concat/dot_white.mp4",
+            "rightVideo": "assets/media/re10k_concat/ours32k.mp4"
+        }
+    ]
+}

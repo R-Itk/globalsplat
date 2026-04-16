@@ -1,0 +1,379 @@
+.qualitative-video-comparison-block {
+  margin-top: 18px;
+  /* Overrides twentytwenty label !important (inherited custom property) */
+  --twentytwenty-label-font-stack: "Geist Mono", ui-monospace, "SF Mono", monospace;
+}
+
+.qualitative-video-comparison-block .caption-text {
+  /* Keep identical typography spacing with the image block caption. */
+}
+
+.qualitative-video-comparison-block .qualitative-model-switcher {
+  margin-top: 6px;
+  max-width: 1080px;
+  margin-inline: auto;
+}
+
+.qualitative-video-comparison-block .qualitative-model-tabs {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 6px;
+  margin-bottom: 8px;
+}
+
+.qualitative-video-comparison-block .qualitative-model-tab {
+  appearance: none;
+  border: 1px solid rgba(15, 23, 42, 0.15);
+  background: rgba(255, 255, 255, 0.75);
+  color: #0f172a;
+  font-weight: 650;
+  border-radius: 999px;
+  padding: 8px 14px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition:
+    background var(--motion-hover-duration-fast) var(--ease-out-quart),
+    border-color var(--motion-hover-duration-fast) var(--ease-out-quart),
+    transform var(--motion-hover-duration-fast) var(--ease-out-quart),
+    box-shadow var(--motion-hover-duration-fast) var(--ease-out-quart);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .qualitative-video-comparison-block .qualitative-model-tab:not(.is-active):hover {
+    background: rgba(255, 255, 255, 0.96);
+    border-color: rgba(15, 23, 42, 0.28);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .qualitative-video-comparison-block .qualitative-model-tab.is-active:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 14px rgba(15, 23, 42, 0.22);
+  }
+}
+
+.qualitative-video-comparison-block .qualitative-model-tab:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--accent) 70%, transparent);
+  outline-offset: 2px;
+}
+
+.qualitative-video-comparison-block .qualitative-model-tab:focus-visible:not(.is-active) {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-sm);
+}
+
+.qualitative-video-comparison-block .qualitative-model-tab:focus-visible.is-active {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.22);
+}
+
+.qualitative-video-comparison-block .qualitative-model-tab.is-active {
+  background: rgba(15, 23, 42, 0.92);
+  border-color: rgba(15, 23, 42, 0.92);
+  color: #fff;
+}
+
+.qualitative-video-comparison-block .qualitative-model-panels {
+  position: relative;
+}
+
+.qualitative-video-comparison-block .qualitative-model-panel {
+  position: relative;
+}
+
+.qualitative-video-comparison-block .qualitative-model-panel.is-hidden {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.qualitative-video-comparison-block .qualitative-video-compare {
+  background: #000;
+  cursor: crosshair;
+  position: relative;
+  transition: box-shadow var(--motion-hover-duration-fast) var(--ease-out-quart);
+}
+
+@media (hover: hover) {
+  .qualitative-video-comparison-block .qualitative-video-compare:hover {
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.14);
+  }
+}
+
+.qualitative-video-comparison-block .qualitative-video-compare video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  background: #000;
+  pointer-events: none;
+  /* JS updates this for split/quadrant reveal. */
+  will-change: clip;
+}
+
+/* Ensure layering matches twentytwenty's image z-order:
+   twentytwenty-1 (top), twentytwenty-2, twentytwenty-3 (bottom). */
+.qualitative-video-comparison-block .qualitative-video-compare video[data-sync-role="ours"] {
+  z-index: 20;
+}
+
+.qualitative-video-comparison-block .qualitative-video-compare video[data-sync-role="baseline"] {
+  z-index: 10;
+}
+
+.qualitative-video-comparison-block .qualitative-video-compare video[data-sync-role="gt"] {
+  z-index: 9;
+}
+
+.qualitative-video-comparison-block .qualitative-video-playback-toggle,
+#geometry .results-video-grid.pointcloud-single .qualitative-video-playback-toggle,
+#geometry .comparison-wrap--geometry .comparison-slider .qualitative-video-playback-toggle,
+#geometry .qualitative-video-compare[data-merged-duo] .qualitative-video-playback-toggle {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  z-index: 45;
+  appearance: none;
+  border: 1px solid rgba(255, 255, 255, 0.42);
+  background: rgba(15, 23, 42, 0.78);
+  color: #fff;
+  border-radius: 999px;
+  padding: 7px 12px;
+  min-width: 68px;
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  cursor: pointer;
+  user-select: none;
+  transition:
+    background var(--motion-hover-duration) var(--ease-out-quart),
+    border-color var(--motion-hover-duration) var(--ease-out-quart),
+    transform var(--motion-hover-duration) var(--ease-out-quart),
+    box-shadow var(--motion-hover-duration) var(--ease-out-quart);
+}
+
+/* Above .comparison-handle (z-index 45) */
+#geometry .comparison-wrap--geometry .comparison-slider .qualitative-video-playback-toggle,
+#geometry .qualitative-video-compare[data-merged-duo] .qualitative-video-playback-toggle {
+  z-index: 46;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .qualitative-video-comparison-block .qualitative-video-playback-toggle:hover,
+  #geometry .results-video-grid.pointcloud-single .qualitative-video-playback-toggle:hover,
+  #geometry .comparison-wrap--geometry .comparison-slider .qualitative-video-playback-toggle:hover,
+  #geometry .qualitative-video-compare[data-merged-duo] .qualitative-video-playback-toggle:hover {
+    background: rgba(15, 23, 42, 0.92);
+    border-color: rgba(255, 255, 255, 0.62);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.4);
+  }
+}
+
+.qualitative-video-comparison-block .qualitative-video-playback-toggle:active,
+#geometry .results-video-grid.pointcloud-single .qualitative-video-playback-toggle:active,
+#geometry .comparison-wrap--geometry .comparison-slider .qualitative-video-playback-toggle:active,
+#geometry .qualitative-video-compare[data-merged-duo] .qualitative-video-playback-toggle:active {
+  transform: translateY(1px);
+  box-shadow: none;
+}
+
+.qualitative-video-comparison-block .qualitative-video-playback-toggle:focus-visible,
+#geometry .results-video-grid.pointcloud-single .qualitative-video-playback-toggle:focus-visible,
+#geometry .comparison-wrap--geometry .comparison-slider .qualitative-video-playback-toggle:focus-visible,
+#geometry .qualitative-video-compare[data-merged-duo] .qualitative-video-playback-toggle:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.95);
+  outline-offset: 2px;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.4);
+}
+
+.qualitative-video-comparison-block .qualitative-video-playback-toggle[aria-pressed="true"],
+#geometry .results-video-grid.pointcloud-single .qualitative-video-playback-toggle[aria-pressed="true"],
+#geometry .comparison-wrap--geometry .comparison-slider .qualitative-video-playback-toggle[aria-pressed="true"],
+#geometry .qualitative-video-compare[data-merged-duo] .qualitative-video-playback-toggle[aria-pressed="true"] {
+  background: rgba(22, 101, 52, 0.86);
+  border-color: rgba(187, 247, 208, 0.88);
+}
+
+@media (pointer: coarse) {
+  .qualitative-video-comparison-block .qualitative-video-playback-toggle,
+  #geometry .results-video-grid.pointcloud-single .qualitative-video-playback-toggle,
+  #geometry .comparison-wrap--geometry .comparison-slider .qualitative-video-playback-toggle,
+  #geometry .qualitative-video-compare[data-merged-duo] .qualitative-video-playback-toggle {
+    padding: 9px 14px;
+    min-height: 40px;
+    min-width: 74px;
+  }
+}
+
+/* Brief center play/pause hint on user toggle */
+.qualitative-video-comparison-block .qualitative-video-playback-feedback,
+#geometry .results-video-grid.pointcloud-single .qualitative-video-playback-feedback,
+#geometry .comparison-wrap--geometry .comparison-slider .qualitative-video-playback-feedback,
+#geometry .qualitative-video-compare[data-merged-duo] .qualitative-video-playback-feedback {
+  position: absolute;
+  inset: 0;
+  z-index: 44;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  opacity: 0;
+}
+
+.qualitative-video-comparison-block .qualitative-video-playback-feedback.is-visible,
+#geometry .results-video-grid.pointcloud-single .qualitative-video-playback-feedback.is-visible,
+#geometry .comparison-wrap--geometry .comparison-slider .qualitative-video-playback-feedback.is-visible,
+#geometry .qualitative-video-compare[data-merged-duo] .qualitative-video-playback-feedback.is-visible {
+  animation: qualitative-video-feedback-pop 0.85s ease forwards;
+}
+
+.qualitative-video-comparison-block .qualitative-video-playback-feedback__backdrop,
+#geometry .results-video-grid.pointcloud-single .qualitative-video-playback-feedback__backdrop,
+#geometry .comparison-wrap--geometry .comparison-slider .qualitative-video-playback-feedback__backdrop,
+#geometry .qualitative-video-compare[data-merged-duo] .qualitative-video-playback-feedback__backdrop {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.52);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.35);
+  color: #fff;
+}
+
+.qualitative-video-comparison-block .qualitative-video-playback-feedback__icon,
+#geometry .results-video-grid.pointcloud-single .qualitative-video-playback-feedback__icon,
+#geometry .comparison-wrap--geometry .comparison-slider .qualitative-video-playback-feedback__icon,
+#geometry .qualitative-video-compare[data-merged-duo] .qualitative-video-playback-feedback__icon {
+  display: none;
+  width: 26px;
+  height: 26px;
+}
+
+.qualitative-video-comparison-block .qualitative-video-playback-feedback.is-play .qualitative-video-playback-feedback__icon--play,
+#geometry .results-video-grid.pointcloud-single .qualitative-video-playback-feedback.is-play .qualitative-video-playback-feedback__icon--play,
+#geometry .comparison-wrap--geometry .comparison-slider .qualitative-video-playback-feedback.is-play .qualitative-video-playback-feedback__icon--play,
+#geometry .qualitative-video-compare[data-merged-duo] .qualitative-video-playback-feedback.is-play .qualitative-video-playback-feedback__icon--play {
+  display: block;
+  margin-left: 3px;
+}
+
+.qualitative-video-comparison-block .qualitative-video-playback-feedback.is-pause .qualitative-video-playback-feedback__icon--pause,
+#geometry .results-video-grid.pointcloud-single .qualitative-video-playback-feedback.is-pause .qualitative-video-playback-feedback__icon--pause,
+#geometry .comparison-wrap--geometry .comparison-slider .qualitative-video-playback-feedback.is-pause .qualitative-video-playback-feedback__icon--pause,
+#geometry .qualitative-video-compare[data-merged-duo] .qualitative-video-playback-feedback.is-pause .qualitative-video-playback-feedback__icon--pause {
+  display: block;
+}
+
+@keyframes qualitative-video-feedback-pop {
+  0% {
+    opacity: 0;
+    transform: scale(0.72);
+  }
+  18% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  72% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.06);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .qualitative-video-comparison-block .qualitative-model-tab,
+  .qualitative-video-comparison-block .qualitative-video-compare,
+  #geometry .qualitative-video-compare[data-merged-duo],
+  .qualitative-video-comparison-block .qualitative-video-playback-toggle,
+  #geometry .results-video-grid.pointcloud-single .qualitative-video-playback-toggle,
+  #geometry .comparison-wrap--geometry .comparison-slider .qualitative-video-playback-toggle,
+  #geometry .qualitative-video-compare[data-merged-duo] .qualitative-video-playback-toggle {
+    transition-duration: 0.01ms !important;
+  }
+
+  .qualitative-video-comparison-block .qualitative-model-tab:focus-visible:not(.is-active),
+  .qualitative-video-comparison-block .qualitative-model-tab:focus-visible.is-active {
+    transform: none;
+    box-shadow: none;
+  }
+
+  .qualitative-video-comparison-block .qualitative-video-playback-toggle:focus-visible,
+  #geometry .results-video-grid.pointcloud-single .qualitative-video-playback-toggle:focus-visible,
+  #geometry .comparison-wrap--geometry .comparison-slider .qualitative-video-playback-toggle:focus-visible,
+  #geometry .qualitative-video-compare[data-merged-duo] .qualitative-video-playback-toggle:focus-visible {
+    transform: none;
+    box-shadow: none;
+  }
+
+  .qualitative-video-comparison-block .qualitative-video-playback-feedback.is-visible,
+  #geometry .results-video-grid.pointcloud-single .qualitative-video-playback-feedback.is-visible,
+  #geometry .comparison-wrap--geometry .comparison-slider .qualitative-video-playback-feedback.is-visible,
+  #geometry .qualitative-video-compare[data-merged-duo] .qualitative-video-playback-feedback.is-visible {
+    animation: qualitative-video-feedback-fade 0.45s ease forwards;
+  }
+
+  @keyframes qualitative-video-feedback-fade {
+    0% {
+      opacity: 0;
+    }
+    35% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+}
+
+/* ---------- */
+/* Split UI   */
+/* ---------- */
+
+.qualitative-video-comparison-block .qualitative-video-compare .twentytwenty-overlay,
+.qualitative-video-comparison-block .qualitative-video-compare .twentytwenty-handle {
+  pointer-events: none;
+}
+
+.qualitative-video-comparison-block .qualitative-video-compare .twentytwenty-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 25;
+  overflow: hidden;
+}
+
+.qualitative-video-comparison-block .qualitative-video-compare .twentytwenty-frame-1,
+.qualitative-video-comparison-block .qualitative-video-compare .twentytwenty-frame-2,
+.qualitative-video-comparison-block .qualitative-video-compare .twentytwenty-frame-3 {
+  position: absolute;
+  z-index: 30;
+}
+
+/* Mirrors the default twentytwenty "compare-3" quadrant borders. */
+.qualitative-video-comparison-block .qualitative-video-compare .twentytwenty-frame-1 {
+  border-right: 1px solid #fff;
+  border-bottom: 1px solid #fff;
+}
+
+.qualitative-video-comparison-block .qualitative-video-compare .twentytwenty-frame-2 {
+  border-left: 1px solid #fff;
+  border-bottom: 1px solid #fff;
+}
+
+.qualitative-video-comparison-block .qualitative-video-compare .twentytwenty-frame-3 {
+  border-top: 1px solid #fff;
+}
+
+.qualitative-video-comparison-block .qualitative-video-compare .twentytwenty-handle {
+  display: none;
+  z-index: 40;
+}

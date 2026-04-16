@@ -1,0 +1,7 @@
+/* Z-index ladder for merged-duo .sync-role layers (geometry section) */
+[data-merged-duo] .sync-role--ours {
+  z-index: 20;
+}
+[data-merged-duo] .sync-role--baseline {
+  z-index: 10;
+}
