@@ -1,0 +1,16 @@
+# Trainer / hardware. These used to be hardcoded inside train.py's Trainer(...).
+devices: 4
+num_nodes: 1
+accelerator: gpu
+strategy: ddp
+max_steps: 220000
+log_every_n_steps: 100
+accumulate_grad_batches: 1
+gradient_clip_val: 1.0
+check_val_every_n_epoch: 10
+limit_val_batches: 150
+num_sanity_val_steps: 0
+precision: 32           # fp32 (default, as released). FlashAttention (via SDPA)
+                        # only engages under bf16/fp16: opt in with precision=bf16-mixed.
+                        # The renderer + geometry already run fp32 internally, so that
+                        # override is safe when you want it.

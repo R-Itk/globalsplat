@@ -1,0 +1,15 @@
+# Loss / regularizer weights. These are attached as attributes on the
+# LightningModule (GlobalSplatModule) via loss_w_dict.
+#
+# Only the weights actually consumed by the static model are kept here; the
+# zero-weight knobs from the old dynamic variant (w_track, w_dyn_mask,
+# w_smooth_*, w_knn_loss, w_var_scale, w_base_sim, w_lpips, w_depth_grad,
+# w_acc_mask) were removed because nothing in the code reads them.
+w_rgb: 2.0          # outer weight on the (MSE + perceptual) rendering loss
+w_mse: 1.0          # L2 term inside the rendering loss
+w_depth: 0.0        # >0 only enables depth rendering; no depth GT loss is computed
+
+# Subset-consistency objective
+subset_consistency: true
+subset_alpha_consistency_w: 1.0e-3
+subset_depth_consistency_w: 1.0e-2

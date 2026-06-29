@@ -1,0 +1,18 @@
+# ACID, evaluated zero-shot with RE10K-trained weights.
+#
+# ACID ships in the same *.torch chunk format as RE10K (the MVSplat/pixelSplat
+# data family), so it reuses the upstream RE10K loader unchanged -- we only point
+# `dataset_roots` at the ACID chunks. `name` therefore stays `re10k` so it routes
+# to the RE10K DataModule (see globalsplat/main.py:build_datamodule); only the
+# data location and the eval index differ.
+#
+# This base config inherits every loader/sampler knob from `re10k` and overrides
+# just the data roots. For deterministic evaluation use the overlays
+# config/dataset/acid_eval_ctx{12,24,36}.yaml, which add the fixed eval index.
+defaults:
+  - re10k
+
+# Folder containing ACID train/ and test/ (each with *.torch + index.json).
+# ACID is used zero-shot here, so only test/ is needed for evaluation.
+dataset_roots:
+  - ../data/acid/

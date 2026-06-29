@@ -1,0 +1,41 @@
+cff-version: 1.2.0
+message: "If you use this code, please cite the following paper."
+title: "GlobalSplat: Efficient Feed-Forward 3D Gaussian Splatting via Global Scene Tokens"
+authors:
+  - family-names: Itkin
+    given-names: Roni
+  - family-names: Issachar
+    given-names: Noam
+  - family-names: Keypur
+    given-names: Yehonatan
+  - family-names: Chen
+    given-names: Xingyu
+  - family-names: Chen
+    given-names: Anpei
+  - family-names: Benaim
+    given-names: Sagie
+year: 2026
+identifiers:
+  - type: other
+    value: "arXiv:2604.15284"
+    description: arXiv preprint
+url: "https://r-itk.github.io/globalsplat/"
+preferred-citation:
+  type: article
+  title: "GlobalSplat: Efficient Feed-Forward 3D Gaussian Splatting via Global Scene Tokens"
+  authors:
+    - family-names: Itkin
+      given-names: Roni
+    - family-names: Issachar
+      given-names: Noam
+    - family-names: Keypur
+      given-names: Yehonatan
+    - family-names: Chen
+      given-names: Xingyu
+    - family-names: Chen
+      given-names: Anpei
+    - family-names: Benaim
+      given-names: Sagie
+  journal: "arXiv preprint arXiv:2604.15284"
+  year: 2026
+  notes: "To appear at ECCV 2026."

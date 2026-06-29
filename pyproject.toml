@@ -1,0 +1,113 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "globalsplat"
+version = "0.1.0"
+description = "GlobalSplat: efficient feed-forward 3D Gaussian Splatting via global scene tokens (align first, decode later)."
+readme = "README.md"
+# Source-available, noncommercial: PolyForm Noncommercial 1.0.0 plus the
+# additional terms in ADDITIONAL_TERMS.md (commercial use by separate license;
+# no military/surveillance use). Not an OSI open-source license. The table form
+# below is compatible with setuptools>=61 (the PEP 639 SPDX-string form needs
+# setuptools>=77).
+license = { text = "PolyForm Noncommercial 1.0.0 with additional terms (see LICENSE and ADDITIONAL_TERMS.md)" }
+requires-python = ">=3.10"
+authors = [
+    { name = "Roni Itkin", email = "roni.itkin@gmail.com" },
+    { name = "Noam Issachar" },
+    { name = "Yehonatan Keypur" },
+    { name = "Xingyu Chen" },
+    { name = "Anpei Chen" },
+    { name = "Sagie Benaim" },
+]
+keywords = [
+    "gaussian-splatting", "3d-gaussian-splatting", "novel-view-synthesis",
+    "neural-rendering", "feed-forward", "3d-reconstruction",
+]
+classifiers = [
+    # Block accidental upload to public PyPI: this is a source-available,
+    # noncommercial (non-OSI) package and is not meant for PyPI distribution.
+    "Private :: Do Not Upload",
+    "Intended Audience :: Science/Research",
+    "Operating System :: POSIX :: Linux",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+dependencies = [
+    # Install torch/torchvision for CUDA 12.1 FIRST, from the PyTorch index:
+    #   pip install torch==2.5.1 torchvision==0.20.1 \
+    #       --index-url https://download.pytorch.org/whl/cu121
+    # The pins below are then satisfied by the cu121 build (PyPI only ships the
+    # default-CUDA wheel, so a bare install would pull the wrong CUDA).
+    "torch==2.5.1",
+    "torchvision==0.20.1",
+    "pytorch-lightning==2.4.0",
+    "einops==0.8.0",
+    "kornia==0.7.4",
+    "lpips==0.1.4",
+    "scipy==1.14.1",
+    "numpy==1.26.3",
+    "hydra-core==1.3.2",
+    "omegaconf==2.3.0",
+    "tensorboard==2.20.0",
+    "imageio==2.36.0",
+    # Required by the vendored upstream (ZPressor/MVSplat/DepthSplat) dataset and
+    # eval code, which is imported at runtime under third_party/.
+    "dacite==1.8.1",
+    "jaxtyping==0.2.34",
+    "beartype==0.19.0",
+    "sk-video==1.1.10",
+    "scikit-image==0.24.0",
+    "colorama==0.4.6",
+    "timm==1.0.20",
+    "tqdm==4.68.1",
+    "matplotlib==3.9.2",
+    "opencv-python>=4.8.1.78",
+    "moviepy==1.0.3",  # TensorBoard add_video logging (2.x removed moviepy.editor)
+    "ninja==1.13.0",  # needed to compile gsplat (and for --no-build-isolation builds)
+    # setuptools 82 removed pkg_resources, which TensorBoard still imports; 81 warns.
+    # Pin <81 so `tensorboard` works without the pkg_resources error/deprecation noise.
+    "setuptools<81",
+    # NOTE: gsplat is intentionally NOT a core dependency. It must be compiled
+    # against your CUDA toolchain + torch and has NO prebuilt wheel for torch 2.5
+    # (the wheel index tops out at torch 2.4: pt24cu121/pt24cu124), so a bare
+    # `pip install .` would try a from-source build and fail without nvcc. It is
+    # imported lazily (only by the renderer), so the package, the CPU tests, and
+    # the checkpoint converter all import and run without it. Install it via the
+    # [gpu] extra (or install.sh) on a GPU/build node:
+    #   pip install -e . --no-build-isolation     (needs nvcc 12.x + ninja)
+    # For a no-compile prebuilt wheel, use torch 2.4 and add:
+    #   --extra-index-url https://docs.gsplat.studio/whl/pt24cu121
+]
+
+[project.optional-dependencies]
+# gsplat must be compiled against your CUDA toolchain + the installed torch.
+# Installing it from source builds the CUDA kernels ahead-of-time, so there is no
+# first-call JIT compilation (and therefore no multi-rank DDP/NFS build race).
+# It needs nvcc and an already-installed torch, so install it on a GPU/build node
+# AFTER the core, with build isolation off:
+#   pip install -e .
+#   TORCH_CUDA_ARCH_LIST="8.0" pip install -e ".[gpu]" --no-build-isolation
+# TORCH_CUDA_ARCH_LIST selects the GPU arch (gsplat "sm_"); `bash install.sh`
+# auto-detects it from the node's GPUs, so set it by hand only to cross-compile
+# (e.g. 8.0=A100, 8.6=A6000/3090, 8.9=4090/L40, 9.0=H100). `bash install.sh
+# --print-arch` reports what would be used. Pin the gsplat tag to one compatible
+# with torch==2.5.1.
+gpu = [
+    "gsplat @ git+https://github.com/nerfstudio-project/gsplat.git@v1.4.0",
+]
+
+[project.urls]
+Homepage = "https://r-itk.github.io/globalsplat/"
+Paper = "https://arxiv.org/abs/2604.15284"
+# TODO(release): point at the final public repo URL before publishing.
+Repository = "https://github.com/R-Itk/globalsplat"
+
+[tool.setuptools.packages.find]
+include = ["globalsplat*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

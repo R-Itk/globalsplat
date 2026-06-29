@@ -1,0 +1,9 @@
+# @package _global_
+# GlobalSplat-32K on RealEstate10K (4096 latents x 8 splats/token).
+defaults:
+  - override /dataset: re10k
+experiment_name: globalsplat_re10k_32k
+model:
+  latent_rep_token_amount: 4096
+curriculum:
+  final_stage: 3

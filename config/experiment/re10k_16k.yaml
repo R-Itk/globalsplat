@@ -1,0 +1,9 @@
+# @package _global_
+# GlobalSplat-16K on RealEstate10K (main model).
+defaults:
+  - override /dataset: re10k
+experiment_name: globalsplat_re10k_16k
+model:
+  latent_rep_token_amount: 2048
+curriculum:
+  final_stage: 3

@@ -1,0 +1,9 @@
+# @package _global_
+# GlobalSplat-16K on DepthSplat DL3DV.
+defaults:
+  - override /dataset: dl3dv
+experiment_name: globalsplat_dl3dv_16k
+model:
+  latent_rep_token_amount: 2048
+curriculum:
+  final_stage: 3

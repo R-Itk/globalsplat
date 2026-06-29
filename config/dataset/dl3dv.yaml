@@ -1,0 +1,30 @@
+# DepthSplat DL3DV. Drives the upstream DataModule; we only add scene
+# normalization + pixel intrinsics + the batch rename (src/dataset/preprocessing.py).
+name: dl3dv
+depthsplat_root: ./third_party/ZPressor/depthsplat
+dataset_roots:
+  - ../data/dl3dv/
+
+image_shape: [256, 448]
+packed_image_shape: [270, 480]
+num_context_views: 24
+num_target_views: 12
+
+min_distance_between_context_views: 20
+max_distance_between_context_views: 50
+initial_min_distance_between_context_views: 15
+initial_max_distance_between_context_views: 30
+context_gap_warm_up_steps: 10000
+max_distance_to_context_views: 0
+target_gap_warm_up_steps: 0
+initial_max_distance_to_context_views: 0
+extra_views_sampling_strategy: farthest_point
+target_views_replace_sample: false
+
+near: 1.0
+far: 100.0
+make_baseline_1: false
+baseline_scale_bounds: false
+augment: true
+
+scene_scale_factor: 1.0

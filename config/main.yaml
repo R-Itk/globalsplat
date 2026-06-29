@@ -1,0 +1,61 @@
+# Hydra root config. Mirrors the ZPressor/MVSplat/DepthSplat API:
+#   train:  python -m globalsplat.main +experiment=re10k_16k
+#   test:   python -m globalsplat.main +experiment=re10k_16k mode=test \
+#               checkpointing.load=/path/to/ckpt.ckpt
+defaults:
+  - model: globalsplat
+  - dataset: re10k
+  - loss: default
+  - trainer: default
+  - _self_
+
+mode: train                 # train | test
+experiment_name: globalsplat_re10k_16k
+output_dir: null            # null -> Hydra run dir; set to resume into a fixed dir
+log_dir: ./logs/
+seed: 0
+# Drop the vendored loader's per-example "Skipped bad example ..." log spam.
+quiet_skipped_examples: true
+
+optimizer:
+  lr: 5.0e-4
+  weight_decay: 1.0e-6
+  batch_size: 4
+  num_workers: 8
+  prefetch_factor: 2     # DataLoader prefetch per worker (perf)
+  # Warmup -> cosine LR schedule. warmup_pct/min_lr_ratio/min_lr_floor apply when
+  # the total step count is known (Trainer.estimated_stepping_batches); the
+  # warmup_epochs_fallback is used only for the per-epoch fallback schedule.
+  warmup_pct: 0.03               # fraction of total steps spent in linear warmup
+  min_lr_ratio: 0.02             # cosine floor as a fraction of lr (1/50)
+  min_lr_floor: 1.0e-6           # absolute lower bound on the cosine floor
+  warmup_epochs_fallback: 5      # warmup epochs when total steps are unknown
+
+checkpointing:
+  load: null                # path to a .ckpt to load (weights for train, or to eval in test)
+  resume: false             # if true and load is set, resume optimizer/step state from load
+  auto_resume: true         # if no explicit load, resume from <ckpt_dir>/last.ckpt when present
+  exact_resume: false       # exact mid-epoch resume: stateful train loader that fast-forwards
+                            # consumed batches (+per-epoch-deterministic shuffle). Re-streams the
+                            # consumed chunks once on resume; off = continue with a fresh shuffle.
+  every_n_train_steps: 5000
+  save_top_k: -1
+
+test:
+  output_path: ./outputs/test
+  compute_scores: true      # PSNR / SSIM / LPIPS
+  save_image: false
+  save_gt_image: false
+  save_input_images: false
+  save_video: false
+  eval_time_skip_steps: 5   # ignore first N steps in timing benchmark
+
+# Coarse-to-fine capacity curriculum (paper Sec 3.4 / Appendix B).
+# Gaussian budget = model.latent_rep_token_amount * 2**curriculum.final_stage
+#   GlobalSplat-2K : latent_rep_token_amount=2048, final_stage=0   (2048 x 1)
+#   GlobalSplat-16K: latent_rep_token_amount=2048, final_stage=3   (2048 x 8)  [default]
+#   GlobalSplat-32K: latent_rep_token_amount=4096, final_stage=3   (4096 x 8)
+curriculum:
+  boundaries: [10000, 20000, 50000]
+  ramp_iters: 2000
+  final_stage: 3

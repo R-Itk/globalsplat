@@ -1,0 +1,11 @@
+# ACID zero-shot deterministic eval with 36 context views / 3 target views.
+# Uses the RE10K-trained weights and the fixed C3G ACID eval index. Example:
+#   python -m globalsplat.main +experiment=re10k_16k dataset=acid_eval_ctx36 \
+#       mode=test checkpointing.load=/path/to.ckpt
+# Point config/dataset/acid.yaml: dataset_roots at your ACID chunks first.
+defaults:
+  - acid
+
+num_context_views: 36
+num_target_views: 3
+eval_index_path: assets/eval_index/acid/c3g_acid_ctx_36v_trg_3v.json

@@ -1,0 +1,21 @@
+# GlobalSplat model hyper-parameters (passed as kwargs to src.model.globalsplat.GlobalSplat).
+name: globalsplat
+sh_degree: 3
+static_only: true
+
+# Encoder / tokenization
+patch_size: 8
+latent_rep_token_amount: 2048
+dim_latents: 512
+dim_rays: 256
+dim_rgb_feat: 512
+
+rounds: 4
+slot_calib_layers_per_round: 2
+
+# Candidate splats predicted per token before coarse-to-fine gating. The
+# curriculum's final_stage must satisfy 2**final_stage <= M_max. 16K/32K use 16;
+# the 2K model was trained with M_max=2 (see config/experiment/re10k_2k.yaml).
+M_max: 16
+
+use_camera_diff_as_input: false

@@ -1,0 +1,70 @@
+# Python / build / compiled
+__pycache__/
+.pytest_cache/
+.idea/
+*.py[cod]
+*.egg-info/
+.eggs/
+build/
+dist/
+*.so
+*.o
+*.a
+
+# envs / local
+.venv/
+venv/
+.env
+
+# logs / experiment outputs
+logs/
+checkpoints/
+checkpoint/
+outputs/
+runs/
+wandb/
+lightning_logs/
+tensorboard/
+
+
+# model weights / checkpoints
+*.ckpt
+*.torch
+*.pt
+*.pth
+*.onnx
+*.safetensors
+
+# tensorboard / metrics
+*.tfevents*
+events.out.tfevents*
+metric_checkpoint/
+*.mat
+
+# large data / cached arrays
+*.npy
+*.npz
+*.h5
+*.hdf5
+*.pkl
+*.pickle
+
+# archives
+*.zip
+*.tar
+*.tar.gz
+*.tgz
+*.rar
+*.7z
+
+# misc
+*.log
+.DS_Store
+
+# internal release prep (must never ship in the public repo)
+PRE_PUBLIC_TODO.md
+# cleaned weights + eval logs (hosted on HF, not in git)
+release_weights/
+# internal-only checkpoint converter (used locally to prep weights; not public)
+convert_checkpoint.py
+tests/test_checkpoint_convert.py

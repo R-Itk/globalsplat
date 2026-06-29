@@ -1,0 +1,10 @@
+# RE10K deterministic eval with 36 context views / 3 target views.
+# Use with: mode=test checkpointing.load=<ckpt>  e.g.
+#   python -m globalsplat.main +experiment=re10k_16k dataset=re10k_eval_ctx36 \
+#       mode=test checkpointing.load=/path/to.ckpt
+defaults:
+  - re10k
+
+num_context_views: 36
+num_target_views: 3
+eval_index_path: assets/eval_index/re10k/c3g_re10k_ctx_36v_trg_3v.json

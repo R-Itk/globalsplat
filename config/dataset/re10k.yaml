@@ -1,0 +1,49 @@
+# ZPressor/MVSplat RE10K. Drives the upstream DataModule; we only add scene
+# normalization + pixel intrinsics + the batch rename (src/dataset/preprocessing.py).
+name: re10k
+mvsplat_root: ./third_party/ZPressor/mvsplat
+# Folder containing train/ and test/ (each with *.torch + index.json).
+dataset_roots:
+  - ../data/re10k/
+
+image_shape: [256, 256]
+# Per-sample training view counts (this is the pre-split pool, not the per-forward count).
+# With subset consistency active, the context set is split into two subsets A/B that each
+# get an independent forward pass; the model never fuses the full context at once during
+# training. The two min/max frames are shared anchors and the middle Vin-2 views alternate,
+# so each subset holds 2 + (Vin-2)/2 views:
+#   24 context -> 13 views per forward  == the paper's "13 input views"
+#                 (arXiv:2604.15284, App. 0.B.2 / Table 6). Used here.
+#   12 context ->  7 views per forward  (prior ZPressor config; regressed at 24/36-view eval).
+# The 12 targets are shared across both subsets and match the paper.
+# NB: do NOT set num_context_views: 13 to "match the paper" -- that yields 8-view forwards.
+# 24 is the value that reproduces the paper's 13-view forward passes.
+num_context_views: 24
+num_target_views: 12
+
+# Deterministic eval: path to a fixed {scene: {context, target}} index JSON.
+# null => random bounded_v2 sampler (training). See config/dataset/re10k_eval_ctx*.yaml
+# and assets/eval_index/re10k/.
+eval_index_path: null
+
+# bounded_v2 view sampler (upstream). num_context_views controls how many views
+# the consistency objective can split into A/B subsets.
+min_distance_between_context_views: 40
+max_distance_between_context_views: 220
+initial_min_distance_between_context_views: 40
+initial_max_distance_between_context_views: 220
+context_gap_warm_up_steps: 0
+max_distance_to_context_views: 0
+target_gap_warm_up_steps: 0
+initial_max_distance_to_context_views: 0
+extra_views_sampling_strategy: farthest_point
+target_views_replace_sample: false
+
+near: 1.0
+far: 100.0
+make_baseline_1: false
+baseline_scale_bounds: false
+augment: true
+
+# Addition: camera/scene normalization scale factor (see preprocessing.py).
+scene_scale_factor: 1.0

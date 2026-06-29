@@ -1,0 +1,10 @@
+# @package _global_
+# GlobalSplat-2K on RealEstate10K (2048 latents x 1 splat/token).
+defaults:
+  - override /dataset: re10k
+experiment_name: globalsplat_re10k_2k
+model:
+  latent_rep_token_amount: 2048
+  M_max: 2          # 2K was trained with 2 candidate splats/token (not the 16K/32K default of 16)
+curriculum:
+  final_stage: 0
