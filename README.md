@@ -265,11 +265,10 @@ see [`NOTICE.md`](./NOTICE.md).
 
 ```bibtex
 @article{itkin2026globalsplat,
-  title   = {GlobalSplat: Efficient Feed-Forward 3D Gaussian Splatting via Global Scene Tokens},
-  author  = {Itkin, Roni and Issachar, Noam and Keypur, Yehonatan and Chen, Xingyu and Chen, Anpei and Benaim, Sagie},
-  journal = {arXiv preprint arXiv:2604.15284},
-  year    = {2026},
-  note    = {To appear at ECCV 2026}
+  title={GlobalSplat: Efficient Feed-Forward 3D Gaussian Splatting via Global Scene Tokens},
+  author={Itkin, Roni and Issachar, Noam and Keypur, Yehonatan and Chen, Xingyu and Chen, Anpei and Benaim, Sagie},
+  journal={arXiv preprint arXiv:2604.15284},
+  year={2026}
 }
 ```
 
